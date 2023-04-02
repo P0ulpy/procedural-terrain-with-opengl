@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+  <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$/Game" />
+      <file path="$PROJECT_DIR$/ProceduralGeneration" />
+      <file path="$PROJECT_DIR$/Renderer" />
+    </sourceRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/vcpkg" />
+      <file path="$PROJECT_DIR$/vcpkg_installed" />
+    </excludeRoots>
+  </component>
   <component name="DiscordProjectSettings">
     <option name="show" value="ASK" />
     <option name="description" value="" />
