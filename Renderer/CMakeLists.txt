@@ -8,6 +8,8 @@ find_package(SFML COMPONENTS system window graphics network CONFIG REQUIRED)
 add_library(${RENDERER_TARGET_NAME} STATIC
         Renderer.hpp
         Renderer.cpp
+        Shaders/Shader.h
+        Shaders/Shader.cpp
 )
 
 target_link_libraries(${RENDERER_TARGET_NAME}
