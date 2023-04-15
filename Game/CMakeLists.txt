@@ -2,7 +2,7 @@ SET(GAME_TARGET_NAME Game)
 
 add_executable(${GAME_TARGET_NAME}
         main.cpp
-        )
+         "Matrix.h")
 
 SET(ASSETS_DIRECTORY ${CMAKE_SOURCE_DIR}/Game/Assets)
 
