@@ -13,7 +13,7 @@ int main()
     // set version of opengl to 4.6
     const sf::ContextSettings context_settings(24, 8, 4, 4, 6);
     // cr�e la fen�tre
-    sf::Window window(sf::VideoMode(800, 800), "OpenGL", sf::Style::Default, context_settings);
+    sf::Window window(sf::VideoMode(1000, 1000), "OpenGL", sf::Style::Default, context_settings);
     window.setVerticalSyncEnabled(true);
 
     // activation de la fen�tre
@@ -33,7 +33,7 @@ int main()
     float cameraAlpha = 0;
     float cameraBeta = 0;
 
-    MapGenerator map = MapGenerator(800, 800);
+    MapGenerator map = MapGenerator(222);
 
     map.Generate();
     //map.Generate();

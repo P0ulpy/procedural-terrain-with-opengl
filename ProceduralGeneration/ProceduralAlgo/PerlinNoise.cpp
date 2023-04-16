@@ -68,7 +68,7 @@ static inline int32_t fastfloor(float fp) {
  * A vector-valued noise over 3D accesses it 96 times, and a
  * float-valued 4D noise 64 times. We want this to fit in the cache!
  */
-static const uint8_t perm[256] = {
+static std::vector<uint8_t> perm = {
     151, 160, 137, 91, 90, 15,
     131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23,
     190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33,
@@ -84,6 +84,24 @@ static const uint8_t perm[256] = {
     138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180
 };
 
+void PerlinNoise::setSeed(unsigned int seed)
+{
+    perm.resize(256);
+
+	// Fill p with values from 0 to 255
+	std::iota(perm.begin(), perm.end(), 0);
+
+	// Initialize a random engine with seed
+	std::default_random_engine engine(seed);
+
+	// Suffle  using the above random engine
+	std::shuffle(perm.begin(), perm.end(), engine);
+
+	// Duplicate the permutation vector
+    perm.insert(perm.end(), perm.begin(), perm.end());
+}
+
+
 /**
  * Helper function to hash an integer using the above permutation table
  *
@@ -96,7 +114,7 @@ static const uint8_t perm[256] = {
  *
  * @return 8-bits hashed value
  */
-static inline uint8_t hash(int32_t i) {
+inline uint8_t PerlinNoise::hash(int32_t i) {
     return perm[static_cast<uint8_t>(i)];
 }
 

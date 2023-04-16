@@ -15,8 +15,8 @@ private:
     const int scale = 4;
     float m_angle = 0.0f;
     GLuint m_program = 0;
-    int width = 100;
-    int height = 100;
+    int width = 50;
+    int height = 50;
     std::vector<unsigned int> indices;
     std::vector<float> vertices;
     
@@ -30,7 +30,7 @@ private:
 public:
 
     //Parameters:
-    float m_frequency = 0.5f;
+    float m_frequency = 1.0f;
     float m_redistribution = 2.0f;
 
 
@@ -38,10 +38,9 @@ public:
     using Point3f = Point3D<float>;
     std::vector<std::unique_ptr<Trianglef>> triangles;
 
-    MapGenerator(int screenW, int screenH)
+    MapGenerator(unsigned int seed)
     {
-        cols = screenW / scale;
-        rows = screenH / scale;
+        perlin.setSeed(seed);
     };
 
     template<typename T>
@@ -80,7 +79,7 @@ public:
 
     void Generate()
     {            
-        
+        std::cout << "Redistribution : " << m_redistribution << std::endl;
         vertices.clear();
         indices.clear();
 
