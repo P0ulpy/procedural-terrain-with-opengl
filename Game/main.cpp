@@ -33,15 +33,6 @@ int main()
     float cameraAlpha = 0;
     float cameraBeta = 0;
 
-    //using Point2f = Point2D<float>;
-    //using Point3f = Point3D<float>;
-    //using Trianglef = Triangle<float>;
-
-    //vertex_struct_texture_3D<float> p0{ Point3f { -1.0f, -1.0f, 0.f }, Point2f { -1.0f, 1.0f } };
-    //vertex_struct_texture_3D<float> p1{ Point3f { 1.0f, -1.0f, 0.f }, Point2f { 1.0f, 1.0f } };
-    //vertex_struct_texture_3D<float> p2{ Point3f { 1.0f, 1.0f, 0.f }, Point2f { 1.0f, -1.0f } };
-
-    //Trianglef triangle(p0, p1, p2);
     MapGenerator map = MapGenerator(800, 800);
 
     map.Generate();
@@ -71,12 +62,35 @@ int main()
             {
                 switch (event.key.code)
                 {
+                case sf::Keyboard::Space:
+                    cameraPos.y += 10 * dt;
+                    break;
+                case sf::Keyboard::LShift:
+                    cameraPos.y -= 10 * dt;
+                    break;
                 case sf::Keyboard::Z:
-                    cameraPos.y += 5 * dt;
+                    cameraPos.x += 10 * dt;
                     break;
                 case sf::Keyboard::S:
-                    cameraPos.y -= 5 * dt;
+                    cameraPos.x -= 10 * dt;
                     break;
+                case sf::Keyboard::F:
+                    map.m_frequency = map.m_frequency + 0.1;
+                    map.Generate();
+					break;
+                case sf::Keyboard::C:
+                    map.m_frequency = map.m_frequency - 0.1;
+                    map.Generate();
+                    break;
+                case sf::Keyboard::R:
+                    map.m_redistribution = map.m_redistribution + 0.1;
+                    map.Generate();
+                    break;
+                case sf::Keyboard::T:
+                    map.m_redistribution = map.m_redistribution - 0.1;
+                    map.Generate();
+                    break;
+
                 }
             }
             else if (event.type == sf::Event::MouseMoved)
@@ -101,12 +115,9 @@ int main()
         auto p = Mat4<float>::projection(aspect, fov, f, n);
 
         Mat4<float> vp = p * v;
-        // dessin...
-        // triangle.render();
+
         map.Render(vp);
-        
-       // triangle.update(dt);
-        //triangle.render(vp);
+
 
         glFlush();
         // termine la trame courante (en interne, �change les deux tampons de rendu)

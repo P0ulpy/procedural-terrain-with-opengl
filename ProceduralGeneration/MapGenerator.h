@@ -3,8 +3,8 @@
 #include <iostream>
 #include "Shape.h"
 #include "ProceduralAlgo/PerlinNoise.h"
-#include "ProceduralAlgo/ppm.h"
 #include <gl/glew.h>
+#include <math.h>
 #include "../Game/Matrix.h"
 
 
@@ -15,6 +15,8 @@ private:
     const int scale = 4;
     float m_angle = 0.0f;
     GLuint m_program = 0;
+    int width = 100;
+    int height = 100;
     std::vector<unsigned int> indices;
     std::vector<float> vertices;
     
@@ -22,12 +24,16 @@ private:
     using Point3f = Point3D<float>;
     using Trianglef = Triangle<float>;
 
-    const unsigned int NUM_STRIPS = 50 - 1;
-    const unsigned int NUM_VERTS_PER_STRIP = 50 * 2;
-
+    const unsigned int NUM_STRIPS = width - 1;
+    const unsigned int NUM_VERTS_PER_STRIP = height * 2;
+    PerlinNoise perlin;
 public:
 
-    ppm image;
+    //Parameters:
+    float m_frequency = 0.5f;
+    float m_redistribution = 2.0f;
+
+
     using Trianglef = Triangle<float>;
     using Point3f = Point3D<float>;
     std::vector<std::unique_ptr<Trianglef>> triangles;
@@ -73,19 +79,30 @@ public:
     }
 
     void Generate()
-    {
-        PerlinNoise perlin(1,1,5,2.5);
-        int width = 50;
-        int height = 50;
+    {            
+        
+        vertices.clear();
+        indices.clear();
 
         for (float i = 0; i < height; i++)
         {
             for (float j = 0; j < width; j++)
             {
+                double nx = i / width - 0.5, ny = j / height - 0.5;
+                float e = m_frequency * perlin.noise(m_frequency * nx, m_frequency * ny)+
+                          +(m_frequency /2)* perlin.noise(m_frequency * 2 * nx, m_frequency* 2 * ny)+
+                          +(m_frequency / 4)* perlin.noise(m_frequency * 4 * nx, m_frequency*4 * ny)+
+                          +(m_frequency / 8)* perlin.noise(m_frequency * 8 * nx, m_frequency*8 * ny)+
+                          +(m_frequency / 16)* perlin.noise(m_frequency * 16 * nx, m_frequency*16 * ny)
+                    ;
+                e = (e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) + (m_frequency / 8) + (m_frequency / 16)));
+               // float elevation = perlin.noise(m_frequency* nx,m_frequency* ny) * 5;
+                float elevation = std::pow(e, m_redistribution ) * (height / 4);
                 vertices.push_back(i);
-                vertices.push_back(perlin.noise(i, j) * 2);
+                vertices.push_back(elevation);
                 vertices.push_back(j);
             }
+
         }
 
 
