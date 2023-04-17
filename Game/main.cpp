@@ -3,9 +3,7 @@
 #include <SFML/OpenGL.hpp>
 #include <array>
 #include "Matrix.h"
-//#include "Shader.h"
-#include "MapGenerator.h"
-
+#include "Map/MapGenerator.h"
 
 int main()
 {

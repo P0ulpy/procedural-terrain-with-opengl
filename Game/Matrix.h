@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <cmath>
+
 template<typename T>
 struct Point2D
 {
