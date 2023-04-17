@@ -83,11 +83,11 @@ int main()
                     map.Generate();
                     break;
                 case sf::Keyboard::R:
-                    map.m_redistribution = map.m_redistribution + 0.1;
+                    map.m_redistribution = map.m_redistribution + 1;
                     map.Generate();
                     break;
                 case sf::Keyboard::T:
-                    map.m_redistribution = map.m_redistribution - 0.1;
+                    map.m_redistribution = map.m_redistribution - 1;
                     map.Generate();
                     break;
 

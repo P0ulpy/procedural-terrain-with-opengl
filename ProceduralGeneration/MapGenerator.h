@@ -5,6 +5,7 @@
 #include "ProceduralAlgo/PerlinNoise.h"
 #include <gl/glew.h>
 #include <math.h>
+#include <cmath>
 #include "../Game/Matrix.h"
 
 
@@ -31,7 +32,8 @@ public:
 
     //Parameters:
     float m_frequency = 1.0f;
-    float m_redistribution = 2.0f;
+    //De 0 à 10
+    unsigned int m_redistribution = 2;
 
 
     using Trianglef = Triangle<float>;
@@ -89,16 +91,17 @@ public:
             {
                 double nx = i / width - 0.5, ny = j / height - 0.5;
                 float e = m_frequency * perlin.noise(m_frequency * nx, m_frequency * ny)+
-                          +(m_frequency /2)* perlin.noise(m_frequency * 2 * nx, m_frequency* 2 * ny)+
-                          +(m_frequency / 4)* perlin.noise(m_frequency * 4 * nx, m_frequency*4 * ny)+
-                          +(m_frequency / 8)* perlin.noise(m_frequency * 8 * nx, m_frequency*8 * ny)+
-                          +(m_frequency / 16)* perlin.noise(m_frequency * 16 * nx, m_frequency*16 * ny)
+                          (m_frequency / 2) * perlin.noise(m_frequency * 2 * nx, m_frequency * 2 * ny)+
+                          (m_frequency / 4) * perlin.noise(m_frequency * 4 * nx, m_frequency * 4 * ny)+
+                          (m_frequency / 8) * perlin.noise(m_frequency * 8 * nx, m_frequency * 8 * ny)+
+                          (m_frequency / 16) * perlin.noise(m_frequency * 16 * nx, m_frequency * 16 * ny)
                     ;
-                e = (e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) + (m_frequency / 8) + (m_frequency / 16)));
-               // float elevation = perlin.noise(m_frequency* nx,m_frequency* ny) * 5;
-                float elevation = std::pow(e, m_redistribution ) * (height / 4);
+                e = e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) +  (m_frequency/8) + (m_frequency/16));
+
+                float elevation = pow(e, m_redistribution);
+
                 vertices.push_back(i);
-                vertices.push_back(elevation);
+                vertices.push_back(elevation * (height / 4));
                 vertices.push_back(j);
             }
 
