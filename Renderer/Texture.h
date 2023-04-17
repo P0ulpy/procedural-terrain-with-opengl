@@ -8,7 +8,7 @@
 #include <SFML/OpenGL.hpp>
 #include <string>
 #include <stdexcept>
-#include "Matrix.h"
+#include "../Game/Matrix.h"
 #include "SFML/Graphics/Image.hpp"
 
 template<typename T>
