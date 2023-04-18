@@ -36,9 +36,6 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glUniform1i(glGetUniformLocation(m_program, "rockTexture"), 1);
     glUniform1i(glGetUniformLocation(m_program, "sandTexture"), 2);
 
-    glClearColor(0, 207, 220, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     Mat4<T> model;
 
     //Rotation sur l'axe Y

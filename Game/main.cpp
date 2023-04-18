@@ -104,6 +104,7 @@ int main()
         }
 
         // effacement les tampons de couleur/profondeur
+        glClearColor(0, 207, 220, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         Mat4<float> v = Mat4<float>::rotationX(-cameraBeta) * Mat4<float>::rotationY(-cameraAlpha) * Mat4<float>::translation(-cameraPos.x, -cameraPos.y, -cameraPos.z);
