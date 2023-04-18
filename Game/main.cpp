@@ -27,12 +27,12 @@ int main()
     using Trianglef = Terrain<float>;
     std::vector<Trianglef*> triangles;
 
-    Point3f cameraPos{ 0.f, 0.f, 0.f };
+    Point3f cameraPos{ -10, 25.f, 25.f };
     float cameraAlpha = 0;
     float cameraBeta = 0;
 
     MapGenerator map(50,50);
-    map.setSeed(153);
+    map.setSeed(234);
 
     map.Generate();
     //map.Generate();

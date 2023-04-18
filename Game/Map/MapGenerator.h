@@ -4,6 +4,17 @@
 #include <Terrain.h>
 #include <ProceduralAlgo/PerlinNoise.h>
 
+enum BIOME {
+	WATER,
+	BEACH,
+    FOREST,
+    JUNGLE,
+	SAVANNAH,
+    MOUNTAIN,
+	DESERT,
+    SNOW
+};
+
 class MapGenerator
 {
 private:
@@ -25,6 +36,8 @@ public:
     unsigned int m_redistribution = 2;
 
     MapGenerator(unsigned int width, unsigned int height);
+
+    BIOME Biome(float e);
 
     void setSeed(unsigned int seed);
 

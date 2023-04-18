@@ -9,28 +9,35 @@ void MapGenerator::Generate() {
     vertices.clear();
     indices.clear();
 
-    for (int i = 0; i < m_height; i++) {
-        for (int j = 0; j < m_width; j++) {
-            double nx = (float) i / (float) m_width - 0.5;
+    for (float i = 0; i < m_height; i++)
+    {
+        for (float j = 0; j < m_width; j++)
+        {
+            double nx = i / m_width - 0.5;
             double ny = j / m_height - 0.5;
 
             float e = m_frequency * PerlinNoise::noise(m_frequency * nx, m_frequency * ny) +
-                      (m_frequency / 2) * PerlinNoise::noise(m_frequency * 2 * nx, m_frequency * 2 * ny) +
-                      (m_frequency / 4) * PerlinNoise::noise(m_frequency * 4 * nx, m_frequency * 4 * ny) +
-                      (m_frequency / 8) * PerlinNoise::noise(m_frequency * 8 * nx, m_frequency * 8 * ny) +
-                      (m_frequency / 16) * PerlinNoise::noise(m_frequency * 16 * nx, m_frequency * 16 * ny);
-            e = e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) + (m_frequency / 8) + (m_frequency / 16));
+                (m_frequency / 2) * PerlinNoise::noise(m_frequency * 2 * nx, m_frequency * 2 * ny) +
+                (m_frequency / 4) * PerlinNoise::noise(m_frequency * 4 * nx, m_frequency * 4 * ny) +
+                (m_frequency / 8) * PerlinNoise::noise(m_frequency * 8 * nx, m_frequency * 8 * ny) +
+                (m_frequency / 16) * PerlinNoise::noise(m_frequency * 16 * nx, m_frequency * 16 * ny) + 
+                (m_frequency / 32) * PerlinNoise::noise(m_frequency * 32 * nx, m_frequency * 32 * ny)
+                ;
+            e = e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) + (m_frequency / 8) + (m_frequency / 16) + (m_frequency / 32));
 
             float elevation;
-            if (std::signbit(e) == 1) {
-                elevation = pow(e * 0.8, -m_redistribution);
-            } else {
-                elevation = pow(e * 0.8, m_redistribution);
+            if (std::signbit(e) == 1)
+            {
+                elevation = pow(e * 0.5, -m_redistribution);
+            }
+            else
+            {
+                elevation = pow(e * 0.5, m_redistribution);
             }
 
 
             vertices.push_back(i);
-            vertices.push_back(elevation * (float) m_height / 4);
+            vertices.push_back(elevation * m_height / 4);
             vertices.push_back(j);
 
             vertices.push_back(i / (m_width - 1));
@@ -56,4 +63,18 @@ void MapGenerator::Generate() {
 
 void MapGenerator::setSeed(unsigned int seed) {
     m_perlin.setSeed(seed);
+}
+
+BIOME MapGenerator::Biome(float e)
+{
+    if (e < 0.1f)
+        return WATER;
+    else if (e < 0.2f)
+        return BEACH;
+    else if (e < 0.5f)
+        return FOREST;
+    else if (e < 0.9f)
+        return MOUNTAIN;
+    else
+        return SNOW;
 }
