@@ -1,7 +1,3 @@
-//
-// Created by Flo on 17/04/2023.
-//
-
 #pragma once
 
 template<typename T>

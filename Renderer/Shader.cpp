@@ -1,37 +1,30 @@
-//
-// Created by Admin on 17/03/2023.
-//
-
 #include "Shader.h"
 #include <GL/glew.h>
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
-unsigned Shader::loadShaders(ShaderInfo* shaderInfo)
-{
+unsigned Shader::loadShaders(ShaderInfo *shaderInfo) {
     if (shaderInfo == nullptr)
         throw std::runtime_error("ShaderInfo is null");
 
-    auto program = glCreateProgram();
-    auto* entry = shaderInfo;
+    GLuint program = glCreateProgram();
+    ShaderInfo *entry = shaderInfo;
 
-    while (entry->type != GL_NONE)
-    {
-        auto shaderId = glCreateShader(entry->type);
+    while (entry->type != GL_NONE) {
+        GLuint shaderId = glCreateShader(entry->type);
         entry->shaderId = shaderId;
-        auto str = readShader(entry->filename);
-        const auto source = str.c_str();
 
-        if (source == nullptr)
-        {
-            for (entry = shaderInfo; entry->type != GL_NONE; ++entry)
-            {
+        std::string str = readShader(entry->filename);
+        const GLchar *source = str.c_str();
+
+        if (source == nullptr) {
+            for (entry = shaderInfo; entry->type != GL_NONE; ++entry) {
                 glDeleteShader(entry->shaderId);
                 entry->shaderId = 0;
             }
-
             return 0;
         }
 
@@ -41,17 +34,19 @@ unsigned Shader::loadShaders(ShaderInfo* shaderInfo)
         GLint hasCompiled;
         glGetShaderiv(shaderId, GL_COMPILE_STATUS, &hasCompiled);
 
-        if (!hasCompiled)
-        {
+        if (!hasCompiled) {
             GLsizei length;
             glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
-            GLchar* log = new GLchar(length + 1);
-            glGetShaderInfoLog(shaderId, length, &length, log);
+
+            std::string log(length + 1, '\0');
+            glGetShaderInfoLog(shaderId, length, &length, log.data());
 
             std::cerr << "Shader compilation failed: " << log << std::endl;
-            delete[] log;
-            log = nullptr;
 
+            for (entry = shaderInfo; entry->type != GL_NONE; ++entry) {
+                glDeleteShader(entry->shaderId);
+                entry->shaderId = 0;
+            }
             return 0;
         }
 
@@ -62,38 +57,31 @@ unsigned Shader::loadShaders(ShaderInfo* shaderInfo)
     glLinkProgram(program);
     GLint linked;
     glGetProgramiv(program, GL_LINK_STATUS, &linked);
-    if (!linked)
-    {
+    if (!linked) {
         GLsizei length;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-        GLchar* log = new GLchar(length + 1);
-        glGetProgramInfoLog(program, length, &length, log);
+
+        std::string log(length + 1, '\0');
+        glGetProgramInfoLog(program, length, &length, log.data());
 
         std::cerr << "Shader linking failed: " << log << std::endl;
-        delete[] log;
-        log = nullptr;
 
-        for (entry = shaderInfo; entry->type != GL_NONE; ++entry)
-        {
+        for (entry = shaderInfo; entry->type != GL_NONE; ++entry) {
             glDeleteShader(entry->shaderId);
             entry->shaderId = 0;
         }
-
         return 0;
     }
-
     return program;
 }
 
-std::string Shader::readShader(const char* filename)
-{
+std::string Shader::readShader(const char *filename) {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open())
-        throw std::runtime_error("Filename cannot be opened");
+        throw std::runtime_error("Filename can't be opened");
 
     std::stringstream buffer;
     buffer << inputFile.rdbuf();
 
-    inputFile.close();
     return buffer.str();
 }

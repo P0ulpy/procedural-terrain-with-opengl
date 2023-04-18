@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
 
-#include <Triangle.h>
+#include <Terrain.h>
 #include <ProceduralAlgo/PerlinNoise.h>
 
 class MapGenerator
@@ -14,8 +14,9 @@ private:
     using Point2f = Point2D<float>;
     using Point3f = Point3D<float>;
 
-    Triangle<float> m_triangle;
+    Terrain<float> m_triangle;
     PerlinNoise m_perlin;
+
 
 public:
     // Parameters:

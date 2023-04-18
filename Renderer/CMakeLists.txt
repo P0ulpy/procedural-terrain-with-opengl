@@ -11,9 +11,9 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         Shader.h
         Shader.cpp
         Texture.h
-        Triangle.h
-        Triangle.cpp
-        Triangle.tpp)
+        Terrain.h
+        Terrain.cpp
+        Terrain.tpp)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW

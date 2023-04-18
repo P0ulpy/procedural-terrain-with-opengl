@@ -24,7 +24,7 @@ int main()
 
     // chargement des ressources, initialisation des �tats OpenGL, ...
     using Point2f = Point2D<float>;
-    using Trianglef = Triangle<float>;
+    using Trianglef = Terrain<float>;
     std::vector<Trianglef*> triangles;
 
     Point3f cameraPos{ 0.f, 0.f, 0.f };
@@ -89,7 +89,9 @@ int main()
                     map.m_redistribution = map.m_redistribution - 1;
                     map.Generate();
                     break;
-
+                case sf::Keyboard::Escape:
+                    window.close();
+                    return 0;
                 }
             }
             else if (event.type == sf::Event::MouseMoved)
