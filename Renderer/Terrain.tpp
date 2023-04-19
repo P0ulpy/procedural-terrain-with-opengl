@@ -8,7 +8,7 @@
 
 template<typename T>
 Terrain<T>::Terrain()
-        : grassTexture("Assets/Textures/grass.bmp"),
+        : grassTexture("Assets/Textures/grass.png"),
           rockTexture("Assets/Textures/rock.bmp"), sandTexture("Assets/Textures/sand.bmp") {
 
 }
