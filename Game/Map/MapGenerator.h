@@ -33,7 +33,7 @@ public:
     // Parameters:
     float m_frequency = 1.0f;
     // From 0 to 10
-    unsigned int m_redistribution = 2;
+    float m_redistribution = 1;
 
     MapGenerator(unsigned int width, unsigned int height);
 

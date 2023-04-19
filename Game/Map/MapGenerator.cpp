@@ -1,11 +1,12 @@
 #include "MapGenerator.h"
 
-#include <cmath>
+#include <math.h>
 
 MapGenerator::MapGenerator(unsigned int width, unsigned int height)
         : m_width(static_cast<int>(width)), m_height(static_cast<int>(height)) {}
 
 void MapGenerator::Generate() {
+    std::cout << "Redistribution : " << m_redistribution << std::endl;
     vertices.clear();
     indices.clear();
 
@@ -25,16 +26,7 @@ void MapGenerator::Generate() {
                 ;
             e = e / (m_frequency + (m_frequency / 2) + (m_frequency / 4) + (m_frequency / 8) + (m_frequency / 16) + (m_frequency / 32));
 
-            float elevation;
-            if (std::signbit(e) == 1)
-            {
-                elevation = pow(e * 0.5, -m_redistribution);
-            }
-            else
-            {
-                elevation = pow(e * 0.5, m_redistribution);
-            }
-
+            float elevation = std::pow(std::abs(e), m_redistribution);
 
             vertices.push_back(i);
             vertices.push_back(elevation * m_height / 4);
@@ -65,16 +57,3 @@ void MapGenerator::setSeed(unsigned int seed) {
     m_perlin.setSeed(seed);
 }
 
-BIOME MapGenerator::Biome(float e)
-{
-    if (e < 0.1f)
-        return WATER;
-    else if (e < 0.2f)
-        return BEACH;
-    else if (e < 0.5f)
-        return FOREST;
-    else if (e < 0.9f)
-        return MOUNTAIN;
-    else
-        return SNOW;
-}

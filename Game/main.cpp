@@ -11,7 +11,7 @@ int main()
     // set version of opengl to 4.6
     const sf::ContextSettings context_settings(24, 8, 4, 4, 6);
     // cr�e la fen�tre
-    sf::Window window(sf::VideoMode(1920, 1080), "OpenGL", sf::Style::Fullscreen, context_settings);
+    sf::Window window(sf::VideoMode(800, 800), "OpenGL", sf::Style::Default, context_settings);
     window.setVerticalSyncEnabled(true);
 
     // activation de la fen�tre
@@ -64,7 +64,7 @@ int main()
                 case sf::Keyboard::Space:
                     cameraPos.y += 10 * dt;
                     break;
-                case sf::Keyboard::LShift:
+                case sf::Keyboard::W:
                     cameraPos.y -= 10 * dt;
                     break;
                 case sf::Keyboard::Z:
@@ -82,11 +82,11 @@ int main()
                     map.Generate();
                     break;
                 case sf::Keyboard::R:
-                    map.m_redistribution = map.m_redistribution + 1;
+                    map.m_redistribution = map.m_redistribution + 0.2;
                     map.Generate();
                     break;
                 case sf::Keyboard::T:
-                    map.m_redistribution = map.m_redistribution - 1;
+                    map.m_redistribution = map.m_redistribution - 0.2;
                     map.Generate();
                     break;
                 case sf::Keyboard::Escape:
