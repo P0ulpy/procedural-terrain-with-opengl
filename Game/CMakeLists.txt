@@ -1,8 +1,14 @@
 SET(GAME_TARGET_NAME Game)
 
-add_executable(${GAME_TARGET_NAME}
+SET(GAME_SOURCES
         main.cpp
-)
+        GameLoop/GameLoop.cpp
+        GameLoop/GameLoop.hpp
+        GameLoop/Scene.cpp
+        GameLoop/Scene.hpp
+        Objects/IUpdatable.hpp)
+
+add_executable(${GAME_TARGET_NAME} ${GAME_SOURCES})
 
 include_directories(${CMAKE_SOURCE_DIR}/Renderer)
 include_directories(${CMAKE_SOURCE_DIR}/ProceduralGeneration)

@@ -5,10 +5,14 @@ find_package(imgui CONFIG REQUIRED)
 find_package(ImGui-SFML CONFIG REQUIRED)
 find_package(SFML COMPONENTS system window graphics network CONFIG REQUIRED)
 
-add_library(${RENDERER_TARGET_NAME} STATIC
+SET(RENDER_SOURCES
         Renderer.hpp
         Renderer.cpp
-)
+        Camera/Camera.cpp
+        Camera/Camera.hpp
+        Renderable/IRender.hpp Renderable/Cube.cpp Renderable/Cube.hpp Shader/Shader.cpp Shader/Shader.hpp)
+
+add_library(${RENDERER_TARGET_NAME} STATIC ${RENDER_SOURCES})
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW
