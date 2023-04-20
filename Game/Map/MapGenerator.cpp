@@ -2,20 +2,18 @@
 
 #include <math.h>
 
-MapGenerator::MapGenerator(unsigned int width, unsigned int height)
-        : m_width(static_cast<int>(width)), m_height(static_cast<int>(height)) {}
+MapGenerator::MapGenerator(){}
 
 void MapGenerator::Generate(int playerPosX, int playerPosZ) {
-    vertices.clear();
-    indices.clear();
 
-
-
-    for (float i = playerPosZ - renderDistance; i < playerPosZ + renderDistance; i++)
+    m_vertices.clear();
+    m_indices.clear();
+    for (float i = playerPosX - renderDistance; i < playerPosX + renderDistance; i++)
     {
 
-        for (float j = playerPosX - renderDistance; j < playerPosX + renderDistance; j++)
+        for (float j = playerPosZ - renderDistance; j < playerPosZ + renderDistance; j++)
         {
+            
             double nx = i / 16 - 0.5;
             double ny = j / 16 - 0.5;
 
@@ -30,12 +28,12 @@ void MapGenerator::Generate(int playerPosX, int playerPosZ) {
 
             float elevation = std::pow(std::abs(e), m_redistribution);
 
-            vertices.push_back(i);
-            vertices.push_back(elevation * 20);
-            vertices.push_back(j);
+            m_vertices.push_back(i);
+            m_vertices.push_back(elevation * 20);
+            m_vertices.push_back(j);
 
-            vertices.push_back(i / ((renderDistance * 2) - 1));
-            vertices.push_back(j / ((renderDistance * 2) - 1));
+            m_vertices.push_back(i / ((renderDistance * 2) - 1));
+            m_vertices.push_back(j / ((renderDistance * 2) - 1));
         }
 
     }
@@ -46,12 +44,12 @@ void MapGenerator::Generate(int playerPosX, int playerPosZ) {
         {
             for (int k = 0; k < 2; k++)      // for each side of the strip
             {
-                indices.push_back(j + (renderDistance * 2) * (i + k));
+                m_indices.push_back(j + (renderDistance * 2) * (i + k));
             }
         }
     }
 
-    m_triangle.GenerateVertices(vertices, indices, (renderDistance * 2), (renderDistance * 2));
+    m_terrain.GenerateVertices(m_vertices, m_indices, (renderDistance * 2), (renderDistance * 2));
 }
 
 void MapGenerator::setSeed(unsigned int seed) {

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include <iostream>
 
 #include <valarray>
 
@@ -68,18 +69,28 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     sandTexture.unbind();
 
     glDisable(GL_DEPTH_TEST);
+
+    //Libération de la mémoire
+    glDeleteVertexArrays(1, &terrainVAO);
+    glDeleteBuffers(1, &terrainVBO);
+    glDeleteBuffers(1, &terrainEBO);
+    glDeleteProgram(m_program);
+
+
 }
 
 template<typename T>
-void Terrain<T>::GenerateVertices(std::vector<float> vertices, std::vector<uint32_t> indices, int32_t map_width,
+void Terrain<T>::GenerateVertices(std::vector<float> vertices, 
+                                  std::vector<uint32_t> indices, 
+                                  int32_t map_width,
                                   int32_t map_height) {
     m_num_strips = map_width - 1;
     m_num_verts_per_strip = map_height * 2;
 
     ShaderInfo shader[] = {
-            {GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert"},
-            {GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag"},
-            {GL_NONE,            nullptr}
+           {GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert"},
+           {GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag"},
+           {GL_NONE,            nullptr}
     };
 
     auto program = Shader::loadShaders(shader);
@@ -90,7 +101,8 @@ void Terrain<T>::GenerateVertices(std::vector<float> vertices, std::vector<uint3
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     /*       for (auto& triangle : triangles)
                triangle->render(viewProjection);*/
-    GLuint terrainVAO, terrainVBO, terrainEBO;
+
+
     glGenVertexArrays(1, &terrainVAO);
     glBindVertexArray(terrainVAO);
 
@@ -117,4 +129,5 @@ void Terrain<T>::GenerateVertices(std::vector<float> vertices, std::vector<uint3
                  GL_STATIC_DRAW);
 
     glBindVertexArray(terrainVAO);
+
 }

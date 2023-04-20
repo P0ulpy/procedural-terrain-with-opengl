@@ -25,14 +25,13 @@ int main()
     // chargement des ressources, initialisation des �tats OpenGL, ...
     using Point2f = Point2D<float>;
     using Trianglef = Terrain<float>;
-    std::vector<Trianglef*> triangles;
 
     Point3f cameraPos{ 0, 25.f, 0.f };
     float cameraAlpha = 0;
     float cameraBeta = 0;
 
-    MapGenerator map(50,50);
-    map.setSeed(234);
+    MapGenerator map;
+    map.setSeed(121);
 
     map.Generate(0,0);
     //map.Generate();
@@ -74,20 +73,20 @@ int main()
                     cameraPos.x -= 10 * dt;
                     break;
                 case sf::Keyboard::F:
-                    map.m_frequency = map.m_frequency + 0.1;
-                    map.Generate(0,0);
+                    map.m_frequency = map.m_frequency + 0.05;
+                    map.Generate(cameraPos.x,cameraPos.z);
 					break;
                 case sf::Keyboard::C:
-                    map.m_frequency = map.m_frequency - 0.1;
-                    map.Generate(0,0);
+                    map.m_frequency = map.m_frequency - 0.05;
+                    map.Generate(cameraPos.x, cameraPos.z);
                     break;
                 case sf::Keyboard::R:
                     map.m_redistribution = map.m_redistribution + 0.2;
-                    map.Generate(0, 0);
+                    map.Generate(cameraPos.x, cameraPos.z);
                     break;
                 case sf::Keyboard::T:
                     map.m_redistribution = map.m_redistribution - 0.2;
-                    map.Generate(0,0);
+                    map.Generate(cameraPos.x, cameraPos.z);
                     break;
                 case sf::Keyboard::Escape:
                     window.close();
@@ -117,7 +116,7 @@ int main()
         auto p = Mat4<float>::projection(aspect, fov, f, n);
 
         Mat4<float> vp = p * v;
-
+        map.Generate(cameraPos.x, cameraPos.z);
         map.Render(vp);
 
 

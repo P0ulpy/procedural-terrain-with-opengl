@@ -17,8 +17,7 @@ public:
 
     void Render(const Mat4<T> &viewProjection);
 
-    void
-    GenerateVertices(std::vector<float> vertices, std::vector<uint32_t> indices, int32_t map_width, int32_t map_height);
+    void GenerateVertices(std::vector<float> vertices, std::vector<uint32_t> indices, int32_t map_width, int32_t map_height);
 
     ~Terrain();
 
@@ -28,7 +27,7 @@ private:
     uint32_t m_num_strips{};
     uint32_t m_num_verts_per_strip{};
     T m_angle = 0.0f;
-
+    GLuint terrainVAO, terrainVBO, terrainEBO;
     uint32_t m_vao{};
     uint32_t m_vbo{};
     uint32_t m_program{};

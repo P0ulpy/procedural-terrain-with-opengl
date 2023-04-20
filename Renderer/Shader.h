@@ -15,7 +15,6 @@ struct ShaderInfo
 struct Shader
 {
     static unsigned int loadShaders(ShaderInfo* shaderInfo);
-
 private:
     static std::string readShader(const char* filename);
 };
