@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "UserInterface.h"
 
 int main() {
     using Point3f = Point3D<float>;
@@ -121,6 +122,8 @@ int main() {
             map.Generate(cameraPos.x, cameraPos.z);
         }
         ImGui::End();
+
+        UserInterface::drawInfo(dt);
 
         // effacement les tampons de couleur/profondeur
         glClearColor(0, 207, 220, 0);

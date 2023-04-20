@@ -13,7 +13,9 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         Texture.h
         Terrain.h
         Terrain.cpp
-        Terrain.tpp)
+        Terrain.tpp
+        UserInterface.h
+        UserInterface.cpp)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW
