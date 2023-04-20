@@ -27,6 +27,7 @@ private:
     Terrain<float> m_terrain;
     PerlinNoise m_perlin;
 
+    float m_textureRepeat = 10.0f;
 
 public:
     // Parameters:

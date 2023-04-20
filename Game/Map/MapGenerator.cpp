@@ -1,8 +1,6 @@
 #include "MapGenerator.h"
 
-#include <math.h>
-
-MapGenerator::MapGenerator(){}
+MapGenerator::MapGenerator()= default;
 
 void MapGenerator::Generate(int playerPosX, int playerPosZ) {
 
@@ -32,8 +30,8 @@ void MapGenerator::Generate(int playerPosX, int playerPosZ) {
             m_vertices.push_back(elevation * 20);
             m_vertices.push_back(j);
 
-            m_vertices.push_back(i / ((renderDistance * 2) - 1));
-            m_vertices.push_back(j / ((renderDistance * 2) - 1));
+            m_vertices.push_back(i / m_textureRepeat);
+            m_vertices.push_back(j / m_textureRepeat);
         }
 
     }
