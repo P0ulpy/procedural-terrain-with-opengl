@@ -58,7 +58,7 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
         glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
                        m_num_verts_per_strip, // number of indices to render
                        GL_UNSIGNED_INT,     // index data type
-                       (void *) (sizeof(unsigned int)
+                       (void *) (sizeof(int)
                                  * m_num_verts_per_strip
                                  * strip)); // offset to starting index
     }

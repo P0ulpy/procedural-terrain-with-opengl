@@ -35,6 +35,7 @@ public:
     // From 0 to 10
     float m_redistribution = 1;
 
+    int renderDistance = 200;
     MapGenerator(unsigned int width, unsigned int height);
 
     BIOME Biome(float e);
@@ -44,7 +45,7 @@ public:
     template<typename T>
     void Render(const Mat4<T>& viewProjection);
 
-    void Generate();
+    void Generate(int playerPosX, int playerPosZ);
 };
 
 #include "MapGenerator.tpp"

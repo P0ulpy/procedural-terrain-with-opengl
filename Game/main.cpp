@@ -11,7 +11,7 @@ int main()
     // set version of opengl to 4.6
     const sf::ContextSettings context_settings(24, 8, 4, 4, 6);
     // cr�e la fen�tre
-    sf::Window window(sf::VideoMode(800, 800), "OpenGL", sf::Style::Default, context_settings);
+    sf::Window window(sf::VideoMode(1920, 1080), "OpenGL", sf::Style::Fullscreen, context_settings);
     window.setVerticalSyncEnabled(true);
 
     // activation de la fen�tre
@@ -27,14 +27,14 @@ int main()
     using Trianglef = Terrain<float>;
     std::vector<Trianglef*> triangles;
 
-    Point3f cameraPos{ -10, 25.f, 25.f };
+    Point3f cameraPos{ 0, 25.f, 0.f };
     float cameraAlpha = 0;
     float cameraBeta = 0;
 
     MapGenerator map(50,50);
     map.setSeed(234);
 
-    map.Generate();
+    map.Generate(0,0);
     //map.Generate();
     sf::Clock dtClock;
     // la boucle principale
@@ -75,19 +75,19 @@ int main()
                     break;
                 case sf::Keyboard::F:
                     map.m_frequency = map.m_frequency + 0.1;
-                    map.Generate();
+                    map.Generate(0,0);
 					break;
                 case sf::Keyboard::C:
                     map.m_frequency = map.m_frequency - 0.1;
-                    map.Generate();
+                    map.Generate(0,0);
                     break;
                 case sf::Keyboard::R:
                     map.m_redistribution = map.m_redistribution + 0.2;
-                    map.Generate();
+                    map.Generate(0, 0);
                     break;
                 case sf::Keyboard::T:
                     map.m_redistribution = map.m_redistribution - 0.2;
-                    map.Generate();
+                    map.Generate(0,0);
                     break;
                 case sf::Keyboard::Escape:
                     window.close();
