@@ -54,3 +54,7 @@ void MapGenerator::setSeed(unsigned int seed) {
     m_perlin.setSeed(seed);
 }
 
+const std::vector<float> &MapGenerator::getVertices() const {
+    return m_vertices;
+}
+

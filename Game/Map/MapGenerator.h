@@ -46,6 +46,7 @@ public:
     void Render(const Mat4<T>& viewProjection);
     void Generate(int playerPosX, int playerPosZ);
     void setSeed(unsigned int seed);
+    const std::vector<float> &getVertices() const;
 };
 
 #include "MapGenerator.tpp"

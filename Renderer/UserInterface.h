@@ -8,5 +8,5 @@ class UserInterface {
 public:
     UserInterface();
 
-    static void drawInfo(float dt);
+    static void drawInfo(float dt, int vertices);
 };

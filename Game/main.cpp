@@ -138,7 +138,7 @@ int main() {
         }
         ImGui::End();
 
-        UserInterface::drawInfo(dt);
+        UserInterface::drawInfo(dt, static_cast<int>(map.getVertices().size() / 5)); // 1 sommet = 5 composantes
 
         // effacement les tampons de couleur/profondeur
         glClearColor(0, 207, 220, 0);
