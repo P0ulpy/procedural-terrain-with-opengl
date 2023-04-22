@@ -9,7 +9,7 @@ void UserInterface::drawInfo(float dt, int vertices) {
 
     float framerate = 1.0f / dt;
     snprintf(fps_text, sizeof(fps_text), "FPS: %.1f", framerate);
-    snprintf(vertex_count_text, sizeof(vertex_count_text), "Vertices: %.1d", vertices);
+    snprintf(vertex_count_text, sizeof(vertex_count_text), "Vertices:%.1d", vertices);
 
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
     ImGui::Begin("Framerate", nullptr,

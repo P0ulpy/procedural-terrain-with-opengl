@@ -117,25 +117,19 @@ int main() {
             map.setSeed(seed);
             map.Generate(cameraPos.x, cameraPos.z);
         }
-        if (ImGui::Button("Increase Frequency")) {
-            map.m_frequency += 0.05;
+
+        if (ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f")) {
             map.Generate(cameraPos.x, cameraPos.z);
         }
 
-        if (ImGui::Button("Decrease Frequency")) {
-            map.m_frequency -= 0.05;
+        if (ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f")) {
             map.Generate(cameraPos.x, cameraPos.z);
         }
 
-        if (ImGui::Button("Increase Redistribution")) {
-            map.m_redistribution += 0.2;
-            map.Generate(cameraPos.x, cameraPos.z);
+        if (ImGui::Button("Change vertice mode")) {
+            //
         }
 
-        if (ImGui::Button("Decrease Redistribution")) {
-            map.m_redistribution -= 0.2;
-            map.Generate(cameraPos.x, cameraPos.z);
-        }
         ImGui::End();
 
         UserInterface::drawInfo(dt, static_cast<int>(map.getVertices().size() / 5)); // 1 sommet = 5 composantes
