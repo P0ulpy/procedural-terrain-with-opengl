@@ -84,7 +84,8 @@ void Shader::HandleShaderCompilationError(ShaderInfo* shaderInfo)
     auto* errLog = new GLchar[length + 1];
     glGetShaderInfoLog(shaderInfo->shaderId, length, &length, errLog);
 
-    Logger::Err("Shader compilation failed: ", errLog);
+    //Logger::Err("Shader compilation failed: ", errLog);
+    std::cout << "Shader compilation failed: " << errLog << std::endl;
 
     delete[] errLog;
     errLog = nullptr;
@@ -97,7 +98,8 @@ void Shader::HandleShaderLinkError(ShaderInfo *shaderInfo, GLuint program)
     auto* errLog = new GLchar[length + 1];
     glGetProgramInfoLog(program, length, &length, errLog);
 
-    Logger::Err("Shader linking failed: ", errLog);
+    //Logger::Err("Shader linking failed: ", errLog);
+    std::cout << "Shader linking failed: " << errLog << std::endl;
 
     delete[] errLog;
     errLog = nullptr;

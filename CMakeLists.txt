@@ -5,7 +5,7 @@ project(procedural-terrain-with-opengl)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include_directories(${CMAKE_SOURCE_DIR}/vendors/cpp-logger/includes)
+include_directories(${CMAKE_SOURCE_DIR}/vendors/cpp-logger/Includes)
 add_subdirectory(vendors/cpp-logger)
 
 add_subdirectory(Renderer)

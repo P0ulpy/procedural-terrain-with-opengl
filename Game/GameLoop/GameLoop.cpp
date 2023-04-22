@@ -2,22 +2,41 @@
 // Created by Flo on 14/04/2023.
 //
 
+#include "GameLoop.hpp"
+
 #include <SFML/Window/ContextSettings.hpp>
 #include <Renderer.hpp>
 
-#include "GameLoop.hpp"
+GameLoop* GameLoop::s_instance = nullptr;
 
 const sf::ContextSettings contextSettings = sf::ContextSettings(24, 8, 4, 4, 6);
 
 GameLoop::GameLoop()
     : window(sf::VideoMode(800, 600), "Game", sf::Style::Default, contextSettings)
+    // Dirty way to manage camera lifetime i will refactor it later
+    , camera(new GameCamera(window))
 {
+    if(nullptr != s_instance)
+        throw std::runtime_error("GameLoop already instantiated");
 
+    s_instance = this;
 }
+
+GameLoop::~GameLoop()
+{
+    s_instance = nullptr;
+}
+
 
 void GameLoop::Init()
 {
+    if(nullptr == m_scene)
+        throw std::runtime_error("No scene set");
+
     Renderer::Init();
+    m_scene->Init();
+    m_scene->AddObject<GameCamera>(camera);
+
     window.setActive(true);
 }
 
@@ -68,15 +87,18 @@ void GameLoop::HandleEvents()
 
 void GameLoop::Update(float dt)
 {
-    // iterate over all the objects in the scene
+    m_scene->Update(dt);
 }
 
 void GameLoop::Render()
 {
-    Renderer::Begin(camera);
+    camera->ComputeViewProjection();
 
-    // iterate over all the objects in the scene
+    Renderer::Begin(*camera);
+
+    m_scene->Render(*camera);
 
     Renderer::End();
+
     window.display();
 }

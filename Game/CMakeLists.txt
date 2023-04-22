@@ -6,7 +6,14 @@ SET(GAME_SOURCES
         GameLoop/GameLoop.hpp
         GameLoop/Scene.cpp
         GameLoop/Scene.hpp
-        Objects/IUpdatable.hpp)
+        Objects/IUpdatable.hpp
+        Scenes/TerrainScene.cpp
+        Scenes/TerrainScene.hpp
+        Scenes/InterfaceTestsScene.cpp
+        Scenes/InterfaceTestsScene.hpp
+        Objects/GameCamera.cpp
+        Objects/GameCamera.hpp
+)
 
 add_executable(${GAME_TARGET_NAME} ${GAME_SOURCES})
 

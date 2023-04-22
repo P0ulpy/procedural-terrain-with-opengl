@@ -4,13 +4,26 @@
 
 #pragma once
 
-#include "IRender.hpp"
+#include <gl/glew.h>
 
-class Cube : public IRender
+#include "IRenderable.hpp"
+
+template <typename T>
+class Cube : public IRenderable
 {
 public:
     Cube();
+    ~Cube();
 
     void Load() override;
-    void Render() override;
+    void Render(Camera& camera) override;
+
+private:
+    T m_angle = 0.0f;
+    GLuint m_vao;
+    GLuint m_vbo;
+    GLuint m_program;
+    GLsizei m_nVertices;
 };
+
+#include "Cube.tpp"

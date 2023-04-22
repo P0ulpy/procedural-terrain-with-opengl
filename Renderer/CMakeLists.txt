@@ -10,7 +10,15 @@ SET(RENDER_SOURCES
         Renderer.cpp
         Camera/Camera.cpp
         Camera/Camera.hpp
-        Renderable/IRender.hpp Renderable/Cube.cpp Renderable/Cube.hpp Shader/Shader.cpp Shader/Shader.hpp)
+        Renderable/IRenderable.hpp
+        Renderable/Cube.tpp
+        Renderable/Cube.hpp
+        Shader/Shader.cpp
+        Shader/Shader.hpp
+        Math/Mat.hpp
+        Math/Point.hpp
+        Math/Constants.hpp
+        Color/Color.hpp Math/Vector.hpp)
 
 add_library(${RENDERER_TARGET_NAME} STATIC ${RENDER_SOURCES})
 
