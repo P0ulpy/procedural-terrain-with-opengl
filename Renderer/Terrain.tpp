@@ -21,6 +21,16 @@ Terrain<T>::~Terrain() {
 }
 
 template<typename T>
+void Terrain<T>::FreeMemory() {
+
+	glDeleteVertexArrays(1, &terrainVAO);
+	glDeleteBuffers(1, &terrainVBO);
+	glDeleteBuffers(1, &terrainEBO);
+	glDeleteProgram(m_program);
+
+}
+
+template<typename T>
 void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glEnable(GL_DEPTH_TEST);
 
@@ -63,18 +73,18 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
                                  * m_num_verts_per_strip
                                  * strip)); // offset to starting index
     }
+    glDisable(GL_DEPTH_TEST);
 
     grassTexture.unbind();
     rockTexture.unbind();
     sandTexture.unbind();
 
-    glDisable(GL_DEPTH_TEST);
+
+
 
     //Libération de la mémoire
-    glDeleteVertexArrays(1, &terrainVAO);
-    glDeleteBuffers(1, &terrainVBO);
-    glDeleteBuffers(1, &terrainEBO);
-    glDeleteProgram(m_program);
+
+     FreeMemory();
 
 
 }

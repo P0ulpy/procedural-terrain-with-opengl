@@ -19,6 +19,7 @@ public:
 
     void GenerateVertices(std::vector<float> vertices, std::vector<uint32_t> indices, int32_t map_width, int32_t map_height);
 
+    void FreeMemory();
     ~Terrain();
 
 private:

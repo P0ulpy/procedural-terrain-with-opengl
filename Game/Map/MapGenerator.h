@@ -20,33 +20,42 @@ class MapGenerator
 private:
     std::vector<unsigned int> m_indices;
     std::vector<float> m_vertices;
-    
-    using Point2f = Point2D<float>;
-    using Point3f = Point3D<float>;
-
     Terrain<float> m_terrain;
     PerlinNoise m_perlin;
-
+    using Point2f = Point2D<float>;
+    using Point3f = Point3D<float>;
+    
     float m_textureRepeat = 10.0f;
+    int lastPlayerPosX, lastPlayerPosZ = 0;
+
 
 public:
-    // Parameters:
-    float m_frequency = 0.1f;
-    // From 0 to 10
-    float m_redistribution = 1;
-    int renderDistance = 100;
-
-
     MapGenerator();
+    // Parameters:
+    // ELEVATION OCTAVES 
+    float m_frequency = 0.1f;
+    // ELEVATION REDISTRIBUTION
+    float m_redistribution = 3;
+    // GENERATION DISTANCE 
+    int generationDistance = 100;
+    // MAX HEIGHT OF MOUNTAIN
+    int maxHeight = 30;
+    // NUMBER OF TERRACES
+    int terraces = 30;
+    //SET SEED OF PERLIN NOISE
+    int m_seed;
 
-    //Temp or not?
-    BIOME Biome(float e);
-
+    int getSeed() {
+        return m_seed;
+    };
     template<typename T>
     void Render(const Mat4<T>& viewProjection);
     void Generate(int playerPosX, int playerPosZ);
     void setSeed(unsigned int seed);
     const std::vector<float> &getVertices() const;
+ 
+    float CalculateElevation(float x, float z);
+    float noise(float nx, float nz);
 };
 
 #include "MapGenerator.tpp"

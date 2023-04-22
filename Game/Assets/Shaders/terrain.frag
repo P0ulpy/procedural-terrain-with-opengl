@@ -16,8 +16,8 @@ void main()
     vec4 rockColor = texture(rockTexture, TexCoord);
     vec4 sandColor = texture(sandTexture, TexCoord);
 
-    float sandThreshold = 0.3;
-    float grassThreshold = 2;
+    float sandThreshold = 0.8;
+    float grassThreshold = 4;
     float transitionWidth = 0.6;
 
     float sandWeight = smoothstep(sandThreshold - transitionWidth, sandThreshold + transitionWidth, Height);
