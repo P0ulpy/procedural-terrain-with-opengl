@@ -33,9 +33,10 @@ int main() {
     Point3f cameraPos{0, 25.f, 0.f};
     float cameraAlpha = 0;
     float cameraBeta = 0;
+    int seed = 121;
 
     MapGenerator map;
-    map.setSeed(121);
+    map.setSeed(seed);
 
     map.Generate(0, 0);
     //map.Generate();
@@ -85,6 +86,16 @@ int main() {
                         map.m_redistribution = map.m_redistribution - 0.2;
                         map.Generate(cameraPos.x, cameraPos.z);
                         break;
+                    case sf::Keyboard::P:
+                        seed++;
+                        map.setSeed(seed);
+                        map.Generate(cameraPos.x, cameraPos.z);
+                        break;
+                    case sf::Keyboard::M:
+                        seed--;
+                        map.setSeed(seed);
+                        map.Generate(cameraPos.x, cameraPos.z);
+                        break;
                     case sf::Keyboard::Escape:
                         window.close();
                         ImGui::SFML::Shutdown();
@@ -102,6 +113,10 @@ int main() {
         ImGui::SFML::Update(window, dtClock.restart());
 
         ImGui::Begin("Terrain parameters");
+        if (ImGui::SliderInt("Seed", &seed, 0, 1000)) {
+            map.setSeed(seed);
+            map.Generate(cameraPos.x, cameraPos.z);
+        }
         if (ImGui::Button("Increase Frequency")) {
             map.m_frequency += 0.05;
             map.Generate(cameraPos.x, cameraPos.z);
