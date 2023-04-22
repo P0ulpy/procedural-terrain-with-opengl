@@ -68,6 +68,7 @@ void GameCamera::HandleMouse(float dt)
     auto mousePos = sf::Mouse::getPosition(GameLoop::Instance()->window);
     auto cCenter = GetCenter();
 
+    // a bit dirty
     if(mousePos != cCenter)
     {
         auto delta = mousePos - cCenter;

@@ -5,6 +5,8 @@
 #include "GameLoop.hpp"
 
 #include <SFML/Window/ContextSettings.hpp>
+#include <imgui-SFML.h>
+
 #include <Renderer.hpp>
 
 GameLoop* GameLoop::s_instance = nullptr;
@@ -33,7 +35,9 @@ void GameLoop::Init()
     if(nullptr == m_scene)
         throw std::runtime_error("No scene set");
 
+    ImGui::SFML::Init(window);
     Renderer::Init();
+
     m_scene->Init();
     m_scene->AddObject<GameCamera>(camera);
 
@@ -42,6 +46,7 @@ void GameLoop::Init()
 
 void GameLoop::Clean()
 {
+    ImGui::SFML::Shutdown(window);
     Renderer::ShutDown();
     window.close();
 }
@@ -69,6 +74,8 @@ void GameLoop::HandleEvents()
     sf::Event event {};
     while (window.pollEvent(event))
     {
+        ImGui::SFML::ProcessEvent(event);
+
         switch(event.type)
         {
             case sf::Event::Closed:
@@ -87,12 +94,15 @@ void GameLoop::HandleEvents()
 
 void GameLoop::Update(float dt)
 {
+    ImGui::SFML::Update(window, m_dtClock.getElapsedTime());
     m_scene->Update(dt);
 }
 
 void GameLoop::Render()
 {
     camera->ComputeViewProjection();
+
+    ImGui::SFML::Render(window);
 
     Renderer::Begin(*camera);
 

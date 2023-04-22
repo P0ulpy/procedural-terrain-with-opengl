@@ -13,7 +13,9 @@ SET(GAME_SOURCES
         Scenes/InterfaceTestsScene.hpp
         Objects/GameCamera.cpp
         Objects/GameCamera.hpp
-)
+        UISystem/Widget.cpp
+        UISystem/Widget.hpp
+        UISystem/UiWindow.cpp UISystem/UiWindow.hpp)
 
 add_executable(${GAME_TARGET_NAME} ${GAME_SOURCES})
 
