@@ -2,13 +2,26 @@
 
 MapGenerator::MapGenerator()= default;
 
-void MapGenerator::Generate(int playerPosX, int playerPosZ) {
+void MapGenerator::GenerateAllChunks(int playerPosX, int playerPosZ) {
+
+    m_terrain.FreeMemory();
+    for (int x = 1; x <= m_chunksAroundUsX; x++) {
+        for (int z = 1; z <= m_chunksAroundUsZ; z++) {
+
+			Generate(playerPosX, playerPosZ, x * generationDistance , z * generationDistance);
+		}
+	}
+    m_terrain.GenerateVertices(m_chunksAroundUsX * m_chunksAroundUsZ);
+
+}
+
+void MapGenerator::Generate(int playerPosX, int playerPosZ, int genDistX, int genDistZ) {
     m_vertices.clear();
     m_indices.clear();
 
-    for (float x = playerPosX - generationDistance; x < playerPosX + generationDistance; x++)
+    for (float x = playerPosX - genDistX; x < playerPosX + genDistX; x++)
     {
-        for (float z = playerPosZ - generationDistance; z < playerPosZ + generationDistance; z++)
+        for (float z = playerPosZ - genDistZ; z < playerPosZ + genDistZ; z++)
         {
 
             m_vertices.push_back(x);
@@ -20,18 +33,18 @@ void MapGenerator::Generate(int playerPosX, int playerPosZ) {
         }
     }
 
-    for (unsigned int i = 0; i < generationDistance * 2 - 1; i++)       // for each row a.k.a. each strip
+    for (unsigned int i = 0; i < genDistX * 2 - 1; i++)       // for each row a.k.a. each strip
     {
-        for (unsigned int j = 0; j < generationDistance * 2; j++)      // for each column
+        for (unsigned int j = 0; j < genDistZ * 2; j++)      // for each column
         {
             for (int k = 0; k < 2; k++)      // for each side of the strip
             {
-                m_indices.push_back(j + (generationDistance * 2) * (i + k));
+                m_indices.push_back(j + (genDistX * 2) * (i + k));
             }
         }
     }
 
-    m_terrain.GenerateVertices(m_vertices, m_indices, (generationDistance * 2), (generationDistance * 2));
+    m_terrain.GenerateChunks(m_vertices, m_indices, (genDistX * 2), (genDistZ * 2));
 }
 
 void MapGenerator::setSeed(unsigned int seed) {

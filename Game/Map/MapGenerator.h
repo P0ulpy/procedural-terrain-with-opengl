@@ -37,20 +37,24 @@ public:
     // ELEVATION REDISTRIBUTION
     float m_redistribution = 3;
     // GENERATION DISTANCE 
-    int generationDistance = 100;
+    int generationDistance = 50;
     // MAX HEIGHT OF MOUNTAIN
     int maxHeight = 30;
     // NUMBER OF TERRACES
     int terraces = 30;
     //SET SEED OF PERLIN NOISE
     int m_seed;
+    //NUMBER OF CHUNKS AROUND US
+    int m_chunksAroundUsX = 4;
+    int m_chunksAroundUsZ = 4;
 
     int getSeed() {
         return m_seed;
     };
     template<typename T>
     void Render(const Mat4<T>& viewProjection);
-    void Generate(int playerPosX, int playerPosZ);
+    void Generate(int playerPosX, int playerPosZ, int genDistX, int genDistY);
+    void GenerateAllChunks(int playerPosX, int playerPosZ);
     void setSeed(unsigned int seed);
     const std::vector<float> &getVertices() const;
  

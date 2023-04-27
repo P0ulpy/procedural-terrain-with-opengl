@@ -22,11 +22,23 @@ Terrain<T>::~Terrain() {
 
 template<typename T>
 void Terrain<T>::FreeMemory() {
+    for(auto vao : terrainVAO)
+		glDeleteVertexArrays(1, &vao);
+    for (auto vbo : terrainVBO)
+        glDeleteBuffers(1, &vbo);
+    for (auto ebo : terrainEBO)
+        glDeleteBuffers(1, &ebo);
+    glDeleteProgram(m_program);
 
-	glDeleteVertexArrays(1, &terrainVAO);
-	glDeleteBuffers(1, &terrainVBO);
-	glDeleteBuffers(1, &terrainEBO);
-	glDeleteProgram(m_program);
+    terrainVAO.clear();
+    terrainVBO.clear();
+    terrainEBO.clear();
+
+    m_vertices.clear();
+    m_indices.clear();
+
+    NUM_STRIPS.clear();
+    NUM_VERTS_PER_STRIPS.clear();
 
 }
 
@@ -75,69 +87,75 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     }
     glDisable(GL_DEPTH_TEST);
 
-    grassTexture.unbind();
-    rockTexture.unbind();
-    sandTexture.unbind();
-
-
-
-
-    //Libération de la mémoire
-
-     FreeMemory();
-
-
 }
 
 template<typename T>
-void Terrain<T>::GenerateVertices(std::vector<float> vertices, 
-                                  std::vector<uint32_t> indices, 
-                                  int32_t map_width,
-                                  int32_t map_height) {
-    m_num_strips = map_width - 1;
-    m_num_verts_per_strip = map_height * 2;
+void Terrain<T>::GenerateChunks(
+    std::vector<float> vertices,
+    std::vector<uint32_t> indices,
+    int32_t map_width,
+    int32_t map_height)
+{
+    terrainVAO.push_back(chunkVAO);
+    terrainVBO.push_back(chunkVBO);
+    terrainEBO.push_back(chunkEBO);
 
-    ShaderInfo shader[] = {
-           {GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert"},
-           {GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag"},
-           {GL_NONE,            nullptr}
-    };
+    m_vertices.push_back(vertices);
+    m_indices.push_back(indices);
+    NUM_STRIPS.push_back(map_width - 1);    
+    NUM_VERTS_PER_STRIPS.push_back(map_height * 2);
+}
 
-    auto program = Shader::loadShaders(shader);
-    glUseProgram(program);
-    m_program = program;
+template<typename T>
+void Terrain<T>::GenerateVertices(int nbrOfChunks)
+{
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    /*       for (auto& triangle : triangles)
-               triangle->render(viewProjection);*/
+    for (int i = 0; i < nbrOfChunks; ++i)
+    {
+        m_num_strips = NUM_STRIPS[i];
+        m_num_verts_per_strip = NUM_VERTS_PER_STRIPS[i];
+
+        ShaderInfo shader[] = {
+               {GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert"},
+               {GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag"},
+               {GL_NONE,            nullptr}
+        };
+
+        auto program = Shader::loadShaders(shader);
+        glUseProgram(program);
+        m_program = program;
+
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
-    glGenVertexArrays(1, &terrainVAO);
-    glBindVertexArray(terrainVAO);
+        glGenVertexArrays(1, &terrainVAO[i]);
+        glBindVertexArray(terrainVAO[i]);
 
-    glGenBuffers(1, &terrainVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, terrainVBO);
-    glBufferData(GL_ARRAY_BUFFER,
-                 vertices.size() * sizeof(float),       // size of vertices buffer
-                 &vertices[0],                          // pointer to first element
-                 GL_STATIC_DRAW);
+        glGenBuffers(1, &terrainVBO[i]);
+        glBindBuffer(GL_ARRAY_BUFFER, terrainVBO[i]);
+        glBufferData(GL_ARRAY_BUFFER,
+            m_vertices[i].size() * sizeof(float),       // size of vertices buffer
+            &m_vertices[i][0],                          // pointer to first element
+            GL_STATIC_DRAW);
 
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) nullptr);
-    glEnableVertexAttribArray(0);
+        // position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) nullptr);
+        glEnableVertexAttribArray(0);
 
-    // Texture coordinates attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+        // Texture coordinates attribute
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
-    glGenBuffers(1, &terrainEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 indices.size() * sizeof(unsigned int), // size of indices buffer
-                 &indices[0],                           // pointer to first element
-                 GL_STATIC_DRAW);
+        glGenBuffers(1, &terrainEBO[i]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainEBO[i]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+            m_indices[i].size() * sizeof(unsigned int), // size of indices buffer
+            &m_indices[i][0],                           // pointer to first element
+            GL_STATIC_DRAW);
 
-    glBindVertexArray(terrainVAO);
+        glBindVertexArray(terrainVAO[i]);
+
+    }
 
 }

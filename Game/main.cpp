@@ -19,7 +19,7 @@ int main() {
     // activation de la fen�tre
     window.setActive(true);
 
-    ImGui::SFML::Init(window);
+    //ImGui::SFML::Init(window);
 
     // fucking lines of hell
     glewExperimental = GL_TRUE;
@@ -37,7 +37,8 @@ int main() {
 
     MapGenerator map;
     map.setSeed(seed);
-
+   // map.Generate(0, 0);
+    map.GenerateAllChunks(0, 0);
     
     //map.Generate();
     sf::Clock dtClock;
@@ -49,7 +50,7 @@ int main() {
         // gestion des �v�nements
         sf::Event event{};
         while (window.pollEvent(event)) {
-            ImGui::SFML::ProcessEvent(event);
+           // ImGui::SFML::ProcessEvent(event);
             if (event.type == sf::Event::Closed) {
                 // on stoppe le programme
                 running = false;
@@ -73,25 +74,29 @@ int main() {
                         break;
                     case sf::Keyboard::F:
                         map.m_frequency = map.m_frequency + 0.05;
+                        map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::C:
                         map.m_frequency = map.m_frequency - 0.05;
+                        map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::R:
                         map.m_redistribution = map.m_redistribution + 0.2;
+                        map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::T:
                         map.m_redistribution = map.m_redistribution - 0.2;
+                        map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::P:
                         seed++;
                         map.setSeed(seed);
-                        map.Generate(cameraPos.x, cameraPos.z);
+                        map.GenerateAllChunks(cameraPos.x, cameraPos.z);
                         break;
                     case sf::Keyboard::M:
                         seed--;
                         map.setSeed(seed);
-                        map.Generate(cameraPos.x, cameraPos.z);
+                        map.GenerateAllChunks(cameraPos.x, cameraPos.z);
                         break;
                     case sf::Keyboard::Escape:
                         window.close();
@@ -99,53 +104,55 @@ int main() {
                         return 0;
                     case sf::Keyboard::I:
                         map.terraces = map.terraces + 1;
+                        map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::K:
                         map.terraces = map.terraces - 1;
+                        map.GenerateAllChunks(0, 0);
                         break;
                 }
             } else if (event.type == sf::Event::MouseMoved) {
-                //cameraAlpha += static_cast<float>(event.mouseMove.x - 960) * -0.001f;
-                //cameraBeta += static_cast<float>(event.mouseMove.y - 590) * 0.001f;
+                cameraAlpha += static_cast<float>(event.mouseMove.x - 960) * -0.001f;
+                cameraBeta += static_cast<float>(event.mouseMove.y - 590) * 0.001f;
 
-                //sf::Mouse::setPosition(sf::Vector2i(960, 590), window);
+                sf::Mouse::setPosition(sf::Vector2i(960, 590), window);
             }
             
         }
 
-        ImGui::SFML::Update(window, dtClock.restart());
+        //ImGui::SFML::Update(window, dtClock.restart());
 
-        ImGui::Begin("Terrain parameters");
-        if (ImGui::SliderInt("Seed", &seed, 0, 256)) {
-            map.setSeed(seed);
-        }
+        //ImGui::Begin("Terrain parameters");
+        //if (ImGui::SliderInt("Seed", &seed, 0, 256)) {
+        //    map.setSeed(seed);
+        //}
 
-        if (ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f")) {
+        //if (ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f")) {
 
-        }
+        //}
 
-        if (ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f")) {
-            
-        }
+        //if (ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f")) {
+        //    
+        //}
 
-        if (ImGui::Button("Change vertice mode")) {
-            //
-        }
+        //if (ImGui::Button("Change vertice mode")) {
+        //    //
+        //}
 
-        if (ImGui::Button("Increase Nbr of Terraces")) {
-            //
-            map.terraces += 1;
-        }
+        //if (ImGui::Button("Increase Nbr of Terraces")) {
+        //    //
+        //    map.terraces += 1;
+        //}
 
-        if (ImGui::Button("Decrease Nbr of Terraces")) {
-            //
-            map.terraces -= 1;
-        }
+        //if (ImGui::Button("Decrease Nbr of Terraces")) {
+        //    //
+        //    map.terraces -= 1;
+        //}
 
 
-        ImGui::End();
+        //ImGui::End();
 
-        UserInterface::drawInfo(dt, static_cast<int>(map.getVertices().size() / 5)); // 1 sommet = 5 composantes
+       // UserInterface::drawInfo(dt, static_cast<int>(map.getVertices().size() / 5)); // 1 sommet = 5 composantes
 
         // effacement les tampons de couleur/profondeur
         glClearColor(0, 207, 220, 0);
@@ -157,18 +164,18 @@ int main() {
         float aspect = 1920.f / 1080.f;
         float fov = 45.0f / 180.0f * 3.14159265358979323846f;
         float n = 0.1f;
-        float f = 100.0f;
+        float f = 10000.0f;
         // Matrice de projection
         auto p = Mat4<float>::projection(aspect, fov, f, n);
 
         Mat4<float> vp = p * v;
-        map.Generate(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+       // map.Generate(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
         map.Render(vp);
 
 
         glFlush();
         // termine la trame courante (en interne, �change les deux tampons de rendu)
-        ImGui::SFML::Render(window);
+       // ImGui::SFML::Render(window);
         window.display();
     }
 
