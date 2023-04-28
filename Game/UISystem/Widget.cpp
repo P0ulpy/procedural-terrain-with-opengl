@@ -17,13 +17,13 @@ Widget::~Widget()
     }
 }
 
-void Widget::Update(float dt)
+void Widget::OnGui()
 {
     OnGuiBegin();
 
     for(auto& child : m_children)
     {
-        child->Update(dt);
+        child->OnGui();
     }
 
     OnGuiEnd();

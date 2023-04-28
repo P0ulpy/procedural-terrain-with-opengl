@@ -10,5 +10,10 @@ void InterfaceTestsScene::Init()
 {
     AddObject<Cube<float>>(new Cube<float>());
 
-    //AddObject<UIWindow>(new UIWindow("Test", ImVec2(200.f, 200.f)));
+    AddObject<UIWindow>(new UIWindow(
+        "Test",
+        ImVec2(300, 40),
+        ImGuiCond_Always,
+        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoFocusOnAppearing
+    ));
 }

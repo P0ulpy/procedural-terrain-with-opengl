@@ -4,21 +4,22 @@
 
 #include "Camera.hpp"
 
-Camera::Camera(sf::RenderTarget &target, const Point3df &position, const CameraParameters &parameters)
+Camera::Camera(sf::RenderTarget &target, const Transformable &transform, const CameraParameters &parameters)
         : m_target(&target)
-        , m_position(position)
-        , m_near(parameters.near)
-        , m_far(parameters.far)
+        , m_transform(transform)
+        , near(parameters.near)
+        , far(parameters.far)
+        , fov(parameters.fov)
 {}
 
 void Camera::ComputeViewProjection()
 {
     float aspect = GetAspectRatio();
 
-    m_viewMatrix = Mat4f::RotationX(-m_beta)
-                   * Mat4f::RotationY(-m_alpha)
-                   * Mat4f::Translation(-m_position.x, -m_position.y, -m_position.z);
+    m_viewMatrix = Mat4f::RotationX(-m_transform.rot.yawn)
+                   * Mat4f::RotationY(-m_transform.rot.pitch)
+                   * Mat4f::Translation(-m_transform.pos.x, -m_transform.pos.y, -m_transform.pos.z);
 
-    m_projectionMatrix = Mat4f::Projection(aspect, m_fov, m_far, m_near);
+    m_projectionMatrix = Mat4f::Projection(aspect, fov, far, near);
     m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
 }

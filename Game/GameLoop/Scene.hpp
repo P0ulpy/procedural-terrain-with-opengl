@@ -9,6 +9,7 @@
 
 #include "../Objects/IUpdatable.hpp"
 #include "Renderable/IRenderable.hpp"
+#include "../UISystem/Widget.hpp"
 
 class Scene
 {
@@ -17,6 +18,7 @@ public:
     virtual void Init() = 0;
 
     void Update(float dt);
+    void OnGui();
     void Render(Camera& camera);
 
     template <class TObject>
@@ -35,6 +37,9 @@ public:
         if constexpr (std::is_base_of_v<IUpdatable, TObject>)
             m_updatables.push_back(object);
 
+        if constexpr (std::is_base_of_v<Widget, TObject>)
+            m_widgets.push_back(object);
+
         if constexpr (std::is_base_of_v<IRenderable, TObject>)
         {
             object->Load();
@@ -48,6 +53,9 @@ public:
         if constexpr (std::is_base_of_v<IUpdatable, TObject>)
             std::remove(m_updatables.begin(), m_updatables.end(), object);
 
+        if constexpr (std::is_base_of_v<Widget, TObject>)
+            std::remove(m_widgets.begin(), m_widgets.end(), object);
+
         if constexpr (std::is_base_of_v<IRenderable, TObject>)
             std::remove(m_renderables.begin(), m_renderables.end(), object);
 
@@ -59,5 +67,6 @@ protected:
     std::vector<std::unique_ptr<void, void(*)(void const*)>> m_objects;
 
     std::vector<IUpdatable*> m_updatables;
+    std::vector<Widget*> m_widgets;
     std::vector<IRenderable*> m_renderables;
 };

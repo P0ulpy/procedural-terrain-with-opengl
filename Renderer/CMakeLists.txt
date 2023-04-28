@@ -18,7 +18,7 @@ SET(RENDER_SOURCES
         Math/Mat.hpp
         Math/Point.hpp
         Math/Constants.hpp
-        Color/Color.hpp Math/Vector.hpp)
+        Color/Color.hpp Math/Vector.hpp Math/Transformable.hpp)
 
 add_library(${RENDERER_TARGET_NAME} STATIC ${RENDER_SOURCES})
 

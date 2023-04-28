@@ -5,7 +5,6 @@
 #include "GameLoop.hpp"
 
 #include <SFML/Window/ContextSettings.hpp>
-#include <imgui-SFML.h>
 
 #include <Renderer.hpp>
 
@@ -29,24 +28,30 @@ GameLoop::~GameLoop()
     s_instance = nullptr;
 }
 
-
 void GameLoop::Init()
 {
     if(nullptr == m_scene)
         throw std::runtime_error("No scene set");
 
-    ImGui::SFML::Init(window);
+    //ImGui::SFML::Init(window);
+
+    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    //auto& io = ImGui::GetIO();
+
+    //io.ConfigWindowsMoveFromTitleBarOnly = false;
+    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+
     Renderer::Init();
 
-    m_scene->Init();
     m_scene->AddObject<GameCamera>(camera);
+    m_scene->Init();
 
     window.setActive(true);
 }
 
 void GameLoop::Clean()
 {
-    ImGui::SFML::Shutdown(window);
+    //ImGui::SFML::Shutdown();
     Renderer::ShutDown();
     window.close();
 }
@@ -57,11 +62,11 @@ void GameLoop::Run()
 
     while (m_isRunning)
     {
-        float dt = m_dtClock.restart().asSeconds();
+        m_dt = m_dtClock.restart();
 
         HandleEvents();
 
-        Update(dt);
+        Update(m_dt.asSeconds());
 
         Render();
     }
@@ -74,7 +79,7 @@ void GameLoop::HandleEvents()
     sf::Event event {};
     while (window.pollEvent(event))
     {
-        ImGui::SFML::ProcessEvent(event);
+        //ImGui::SFML::ProcessEvent(event);
 
         switch(event.type)
         {
@@ -94,7 +99,6 @@ void GameLoop::HandleEvents()
 
 void GameLoop::Update(float dt)
 {
-    ImGui::SFML::Update(window, m_dtClock.getElapsedTime());
     m_scene->Update(dt);
 }
 
@@ -102,13 +106,12 @@ void GameLoop::Render()
 {
     camera->ComputeViewProjection();
 
-    ImGui::SFML::Render(window);
+    //ImGui::SFML::Update(window, m_dt);
 
     Renderer::Begin(*camera);
-
     m_scene->Render(*camera);
-
     Renderer::End();
 
+    //ImGui::SFML::Render(window);
     window.display();
 }

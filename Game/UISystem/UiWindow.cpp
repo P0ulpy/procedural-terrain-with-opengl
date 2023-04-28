@@ -6,16 +6,18 @@
 
 #include <imgui-SFML.h>
 #include <imgui.h>
+#include <iostream>
 
 UIWindow::UIWindow()
 {
 
 }
 
-UIWindow::UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond)
+UIWindow::UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond, ImGuiWindowFlags flags)
     : m_title(title)
     , m_size(size)
     , m_cond(cond)
+    , m_flags(flags)
 {
 
 }

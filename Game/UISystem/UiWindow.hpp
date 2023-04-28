@@ -14,7 +14,7 @@ class UIWindow : public Widget
 {
 public:
     UIWindow();
-    UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond = 0);
+    UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond = 0, ImGuiWindowFlags flags = 0);
 
     [[nodiscard]] bool IsOpen() const { return m_isOpen; }
 

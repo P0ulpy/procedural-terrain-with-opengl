@@ -20,3 +20,11 @@ void Scene::Render(Camera& camera)
         renderable->Render(camera);
     }
 }
+
+void Scene::OnGui()
+{
+    for (auto* widget : m_widgets)
+    {
+        widget->OnGui();
+    }
+}

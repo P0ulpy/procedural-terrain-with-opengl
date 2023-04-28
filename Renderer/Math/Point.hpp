@@ -6,6 +6,40 @@
 
 #include <ostream>
 
+template <typename T>
+struct EulerRotation
+{
+    T yawn;
+    T pitch;
+    T roll;
+
+    EulerRotation(const T yawn = 0, const T pitch = 0, const T roll = 0)
+        : yawn(yawn), pitch(pitch), roll(roll)
+    {}
+
+    EulerRotation(const EulerRotation& angle)
+            : yawn(angle.yawn), pitch(angle.pitch), roll(angle.roll)
+    {}
+
+    EulerRotation ToRad() const
+    {
+        return {
+            DegToRad<T>(yawn),
+            DegToRad<T>(pitch),
+            DegToRad<T>(roll)
+        };
+    }
+
+    EulerRotation ToDeg() const
+    {
+        return {
+                RadToDeg<T>(yawn),
+                RadToDeg<T>(pitch),
+                RadToDeg<T>(roll)
+        };
+    }
+};
+
 template<typename T>
 struct Point2d
 {
@@ -78,3 +112,4 @@ using Point2df = Point2d<float>;
 using Point2di = Point2d<int>;
 using Point3df = Point3d<float>;
 using Point3di = Point3d<int>;
+using EulerRotationf = EulerRotation<float>;

@@ -21,4 +21,7 @@ public:
     void HandleMouse(float dt);
 
     float camSpeed = 2.f;
+
+protected:
+    bool m_lockMouse = false;
 };

@@ -8,6 +8,7 @@
 #include "../Math/Point.hpp"
 #include "../Math/Constants.hpp"
 #include "../Math/Mat.hpp"
+#include "../Math/Transformable.hpp"
 
 struct CameraParameters
 {
@@ -20,7 +21,7 @@ class Camera
 {
 public:
     virtual ~Camera() = default;
-    Camera(sf::RenderTarget& target, const Point3df& position, const CameraParameters& parameters);
+    Camera(sf::RenderTarget& target, const Transformable& transform, const CameraParameters& parameters);
 
     void ComputeViewProjection();
 
@@ -31,33 +32,25 @@ public:
 
     [[nodiscard]] CameraParameters GetParameters() {
         return {
-            .fov = m_fov,
-            .near = m_near,
-            .far = m_far,
+            .fov = fov,
+            .near = near,
+            .far = far,
         };
     }
 
-    void SetFOV(float fov) { m_fov = fov / 180.0f * PI<float>; }
-    void SetNear(float near) { m_near = near; }
-    void SetFar(float far) { m_far = far; }
+    float fov { 45.0f };
+    float near { 0.1f };
+    float far { 100.0f };
 
-    [[nodiscard]] Point3d<float> GetPosition() const { return m_position; };
-    [[nodiscard]] float GetAlpha() const { return m_alpha; };
-    [[nodiscard]] float GetBeta() const { return m_beta; };
+    [[nodiscard]] Transformable& GetTransform() { return m_transform; }
 
 protected:
-    float m_fov { 45.0f };
-    float m_near { 0.1f };
-    float m_far { 100.0f };
 
     Mat4f m_viewMatrix {};
     Mat4f m_projectionMatrix {};
     Mat4f m_viewProjectionMatrix {};
 
-    float m_alpha { 0.0f };
-    float m_beta { 0.0f };
-
-    Point3df m_position { 0.f, 0.f, 0.f };
+    Transformable m_transform {};
 
     sf::RenderTarget* m_target { nullptr };
 };

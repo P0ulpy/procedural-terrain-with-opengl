@@ -19,8 +19,11 @@ private:
 public:
     GameLoop();
     ~GameLoop();
+
     void SetScene(Scene* scene) { m_scene = std::unique_ptr<Scene>(scene); };
     void Run();
+
+    [[nodiscard]] sf::Time GetDeltaTime() const { return m_dt; }
 
 public:
     sf::RenderWindow window;
@@ -37,6 +40,7 @@ private:
 private:
     bool m_isRunning { true };
     sf::Clock m_dtClock {};
+    sf::Time m_dt {};
 
     std::unique_ptr<Scene> m_scene { nullptr };
 };

@@ -17,6 +17,7 @@ struct ShaderInfo
 struct Shader
 {
     static GLuint LoadShaders(ShaderInfo* shaderInfo);
+    static void DestroyShaders(ShaderInfo* shaderInfo);
 
 private:
     static std::string ReadShader(const char* filename);

@@ -77,6 +77,15 @@ std::string Shader::ReadShader(const char* filename)
     return buffer.str();
 }
 
+void Shader::DestroyShaders(ShaderInfo *shaderInfo)
+{
+    for (auto* entry = shaderInfo; entry->type != GL_NONE; ++entry)
+    {
+        glDeleteShader(entry->shaderId);
+        entry->shaderId = 0;
+    }
+}
+
 void Shader::HandleShaderCompilationError(ShaderInfo* shaderInfo)
 {
     GLsizei length = 0;
@@ -104,9 +113,5 @@ void Shader::HandleShaderLinkError(ShaderInfo *shaderInfo, GLuint program)
     delete[] errLog;
     errLog = nullptr;
 
-    for (auto* entry = shaderInfo; entry->type != GL_NONE; ++entry)
-    {
-        glDeleteShader(entry->shaderId);
-        entry->shaderId = 0;
-    }
+    DestroyShaders(shaderInfo);
 }

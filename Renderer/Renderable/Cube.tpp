@@ -106,7 +106,7 @@ void Cube<T>::Render(Camera& camera)
     // TODO : Move me in Update
     m_angle += 0.00025f;
 
-    Mat4<T> model = Mat4<T>::RotationX(m_angle) * Mat4<T>::RotationY(m_angle) * Mat4<T>::RotationY(m_angle);
+    Mat4<T> model = Mat4<T>::RotationY(m_angle);
     model(2, 3) = -5.0f;
 
     Mat4<T> mvp = camera.GetViewProjectionMatrix() * model;

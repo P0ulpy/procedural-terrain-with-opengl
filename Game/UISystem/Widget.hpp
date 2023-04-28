@@ -9,16 +9,17 @@
 
 #include "../Objects/IUpdatable.hpp"
 
-class Widget : public IUpdatable
+class Widget
 {
 public:
     Widget() = default;
-    ~Widget() override;
+    virtual ~Widget();
 
-    void Update(float dt) override;
     void SetParent(Widget* parent) { m_parent = parent; }
     void AddChild(Widget* child);
     void RemoveChild(Widget* child);
+
+    virtual void OnGui();
 
 protected:
     virtual void OnGuiBegin() = 0;

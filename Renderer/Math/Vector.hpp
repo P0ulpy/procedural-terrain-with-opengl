@@ -12,13 +12,25 @@ struct Vector3d : public Point3d<T>
     Vector3d(const T x = 0, const T y = 0, const T z = 0) : Point3d<T>(x, y, z) {}
     Vector3d(const Vector3d& vec): Point3d<T>(vec) {}
 
-    Vector3d operator^(const Vector3d& other) const
+    Vector3d Cross(const Vector3d& other) const { return Cross(*this, other); }
+
+    static Vector3d Cross(const Vector3d& vec1, const Vector3d& vec2)
     {
         return Vector3d(
-            this->y * other.z - this->z * other.y,
-            this->z * other.x - this->x * other.z,
-            this->x * other.y - this->y * other.x
+            vec1.y * vec2.z - vec1.z * vec2.y,
+            vec1.z * vec2.x - vec1.x * vec2.z,
+            vec1.x * vec2.y - vec1.y * vec2.x
         );
+    }
+
+    T Dot(const Vector3d& other) const
+    {
+        return this->x * other.x + this->y * other.y + this->z * other.z;
+    }
+
+    static T Dot(const Vector3d& vec1, const Vector3d& vec2)
+    {
+        return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
     }
 
     Vector3d& Normalize()
