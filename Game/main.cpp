@@ -81,11 +81,11 @@ int main() {
                         map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::R:
-                        map.m_redistribution = map.m_redistribution + 0.2;
+                        map.m_redistribution = map.m_redistribution + 1;
                         map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::T:
-                        map.m_redistribution = map.m_redistribution - 0.2;
+                        map.m_redistribution = map.m_redistribution - 1;
                         map.GenerateAllChunks(0, 0);
                         break;
                     case sf::Keyboard::P:

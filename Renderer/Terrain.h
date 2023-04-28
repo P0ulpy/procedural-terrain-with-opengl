@@ -24,7 +24,7 @@ public:
     ~Terrain();
 
 private:
-    Texture grassTexture, rockTexture, sandTexture;
+    Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
 
     uint32_t m_num_strips{};
     uint32_t m_num_verts_per_strip{};

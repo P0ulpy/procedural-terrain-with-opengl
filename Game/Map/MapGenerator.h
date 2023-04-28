@@ -39,7 +39,7 @@ public:
     // GENERATION DISTANCE 
     int generationDistance = 50;
     // MAX HEIGHT OF MOUNTAIN
-    int maxHeight = 30;
+    int maxHeight = 50;
     // NUMBER OF TERRACES
     int terraces = 30;
     //SET SEED OF PERLIN NOISE

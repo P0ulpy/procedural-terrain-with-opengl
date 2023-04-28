@@ -10,7 +10,11 @@
 template<typename T>
 Terrain<T>::Terrain()
         : grassTexture("Assets/Textures/grass.png"),
-          rockTexture("Assets/Textures/rock.bmp"), sandTexture("Assets/Textures/sand.bmp") {
+          rockTexture("Assets/Textures/rock.bmp"), 
+          sandTexture("Assets/Textures/sand.bmp"), 
+          waterTexture("Assets/Textures/water.bmp"),
+          snowTexture("Assets/Textures/neige.bmp") 
+{
 
 }
 
@@ -55,9 +59,18 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glActiveTexture(GL_TEXTURE2);
     sandTexture.bind();
 
+    glActiveTexture(GL_TEXTURE3);
+    waterTexture.bind();
+
+    glActiveTexture(GL_TEXTURE4);
+    snowTexture.bind();
+
+
     glUniform1i(glGetUniformLocation(m_program, "grassTexture"), 0);
     glUniform1i(glGetUniformLocation(m_program, "rockTexture"), 1);
     glUniform1i(glGetUniformLocation(m_program, "sandTexture"), 2);
+    glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
+    glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
 
     Mat4<T> model;
 

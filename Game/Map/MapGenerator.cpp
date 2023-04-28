@@ -25,11 +25,21 @@ void MapGenerator::Generate(int playerPosX, int playerPosZ, int genDistX, int ge
         {
 
             m_vertices.push_back(x);
-            m_vertices.push_back(CalculateElevation(x,z) * maxHeight);
-            m_vertices.push_back(z);
+            //FOR WATER LEVEL
+            if (CalculateElevation(x, z) <= 0.005)
+            {
+                m_vertices.push_back(0.005);
+            }
+            else
+            {
+                m_vertices.push_back(CalculateElevation(x, z) * maxHeight);
+            }
 
+            m_vertices.push_back(z);
             m_vertices.push_back(x / m_textureRepeat);
             m_vertices.push_back(z / m_textureRepeat);
+
+            
         }
     }
 
@@ -62,23 +72,18 @@ float MapGenerator::CalculateElevation(float x, float z) {
     double nz = z / 16 - 0.5;
 
     float e = 
-        m_frequency * noise(1 * m_frequency * nx, 1 * m_frequency * nz) +
-        m_frequency * 0.5 * noise(2 * m_frequency * nx, 2 * m_frequency * nz) +
-        m_frequency * 0.25 * noise(4 * m_frequency * nx, 4 * m_frequency * nz) +
-        m_frequency * 0.13 * noise(8 * m_frequency * nx, 8 * m_frequency * nz) +
-        m_frequency * 0.06 * noise(16 * m_frequency * nx, 16 * m_frequency * nz) +
-        m_frequency * 0.03 * noise(32 * m_frequency * nx, 32 * m_frequency * nz)
+        m_frequency * m_perlin.noise(1 * m_frequency * nx, 1 * m_frequency * nz) +
+        m_frequency * 0.5 * m_perlin.noise(2 * m_frequency * nx, 2 * m_frequency * nz) +
+        m_frequency * 0.25 * m_perlin.noise(4 * m_frequency * nx, 4 * m_frequency * nz) +
+        m_frequency * 0.13 * m_perlin.noise(8 * m_frequency * nx, 8 * m_frequency * nz) +
+        m_frequency * 0.06 * m_perlin.noise(16 * m_frequency * nx, 16 * m_frequency * nz) +
+        m_frequency * 0.03 * m_perlin.noise(32 * m_frequency * nx, 32 * m_frequency * nz)
         ;
 
     e = e / (m_frequency + (m_frequency * 0.5) + (m_frequency * 0.25) + (m_frequency * 0.13) + (m_frequency * 0.06) + (m_frequency * 0.03));
     e = std::pow(std::abs(e), m_redistribution);
-
-    return std::round(e * terraces) / terraces;
+    return e;
 }
 
-inline float MapGenerator::noise(float nx, float nz)
-{
-    return m_perlin.noise(nx, nz)/2 + 0.5;
-}
 
 
