@@ -72,6 +72,11 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
     glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
 
+    GLint lightPosLoc = glGetUniformLocation(m_program, "lightPos");
+    GLint lightDirLoc = glGetUniformLocation(m_program, "lightDir");
+    glUniform3f(lightPosLoc, 0.f, 500.0f, 0.f);
+    glUniform3f(lightDirLoc, 0.f, -1.f, 0.f);
+
     Mat4<T> model;
 
     //Rotation sur l'axe Y

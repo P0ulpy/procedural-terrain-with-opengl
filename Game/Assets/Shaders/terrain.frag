@@ -3,6 +3,7 @@
 in vec2 TexCoord;
 in vec3 Normal;
 in float Height;
+in vec3 FragPos;
 
 out vec4 FragColor;
 
@@ -11,6 +12,23 @@ uniform sampler2D rockTexture;
 uniform sampler2D sandTexture;
 uniform sampler2D waterTexture;
 uniform sampler2D snowTexture;
+
+uniform vec3 lightPos;
+uniform vec3 lightDir;
+
+vec3 Lights(vec3 normal) {
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 viewDir = normalize(lightPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+
+    vec3 ambient = 0.1 * vec3(2.0, 2.0, 2.0);
+    vec3 diffuse = diff * vec3(1.0, 1.0, 1.0);
+    vec3 specular = spec * vec3(1.1, 1.1, 1.1);
+
+    return ambient + diffuse + specular;
+}
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
@@ -59,6 +77,9 @@ void main()
 
     float noise = simplexNoise(TexCoord * patchSize);
 
+    vec3 normal = normalize(Normal);
+    vec3 lighting = Lights(normal);
+
     snowColor = mix(snowColor, rockColor*2, noise);
 
     float sandThreshold = 0.7;
@@ -78,7 +99,6 @@ void main()
     finalColor = mix(finalColor, rockColor, grassWeight);
     finalColor = mix(finalColor, snowColor, rockWeight);
 
-
-    FragColor = finalColor;
+    FragColor = vec4(finalColor.rgb * lighting, finalColor.a);
 }
 

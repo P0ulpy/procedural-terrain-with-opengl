@@ -7,6 +7,7 @@ layout (location = 2) in vec3 aNormal;
 out vec2 TexCoord;
 out vec3 Normal;
 out float Height;
+out vec3 FragPos;
 
 uniform mat4 model;
 
@@ -16,4 +17,6 @@ void main()
     TexCoord = aTexCoord;
     Normal = aNormal;
     Height = aPos.y;
+    FragPos = vec3(model * vec4(aPos, 1.0));
+
 }
