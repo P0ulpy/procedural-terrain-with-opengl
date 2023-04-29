@@ -17,6 +17,6 @@ void main()
     TexCoord = aTexCoord;
     Normal = aNormal;
     Height = aPos.y;
-    FragPos = vec3(model * vec4(aPos, 1.0));
+    FragPos = vec3(gl_Position);
 
 }
