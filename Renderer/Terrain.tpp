@@ -49,6 +49,8 @@ void Terrain<T>::FreeMemory() {
 template<typename T>
 void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glActiveTexture(GL_TEXTURE0);
     grassTexture.bind();
@@ -98,6 +100,7 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
                                  * m_num_verts_per_strip
                                  * strip)); // offset to starting index
     }
+    glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
 }
