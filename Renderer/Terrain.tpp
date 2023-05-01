@@ -67,12 +67,15 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
     glActiveTexture(GL_TEXTURE4);
     snowTexture.bind();
 
-
     glUniform1i(glGetUniformLocation(m_program, "grassTexture"), 0);
     glUniform1i(glGetUniformLocation(m_program, "rockTexture"), 1);
     glUniform1i(glGetUniformLocation(m_program, "sandTexture"), 2);
     glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
     glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
+
+    float time = waterClock.getElapsedTime().asSeconds();
+    GLint timeLocation = glGetUniformLocation(m_program, "time");
+    glUniform1f(timeLocation, time);
 
     Mat4<T> model;
 

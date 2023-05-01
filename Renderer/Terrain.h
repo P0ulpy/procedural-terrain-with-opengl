@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <SFML/System/Clock.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -26,9 +27,10 @@ public:
 private:
     Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
 
+    sf::Clock waterClock;
+
     uint32_t m_num_strips{};
     uint32_t m_num_verts_per_strip{};
-
 
     T m_angle = 0.0f;
     GLuint chunkVAO, chunkVBO, chunkEBO;

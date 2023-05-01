@@ -12,6 +12,7 @@ uniform sampler2D rockTexture;
 uniform sampler2D sandTexture;
 uniform sampler2D waterTexture;
 uniform sampler2D snowTexture;
+uniform float time;
 
 const vec3 lightPos = { 0.f, 500.0f, 0.f };
 const vec3 lightDir = { 0.f, -1.f, 0.f };
@@ -65,15 +66,26 @@ float simplexNoise(vec2 uv) {
     return 130.0 * dot(m, g);
 }
 
+const float patchSize = 4;
+
+const float sandThreshold = 0.7;
+const float grassThreshold = 4;
+const float waterThreshold = 0.1;
+const float rockThreshold = 20;
+
+const float transitionWidth = 0.6;
+
 void main()
 {
-    const float patchSize = 4;
+    vec2 waterCoord = TexCoord;
+    waterCoord.x += sin(time + waterCoord.y * 10.0) * 0.1;
+    waterCoord.y += cos(time + waterCoord.x * 10.0) * 0.1;
+    vec4 waterColor = texture(waterTexture, waterCoord);
+    waterColor.a = 0.5;
 
     vec4 grassColor = texture(grassTexture, TexCoord);
     vec4 rockColor = texture(rockTexture, TexCoord);
     vec4 sandColor = texture(sandTexture, TexCoord);
-    vec4 waterColor = texture(waterTexture, TexCoord);
-    waterColor.a = 0.5;
     vec4 snowColor = texture(snowTexture, TexCoord);
 
     float noise = simplexNoise(TexCoord * patchSize);
@@ -84,12 +96,6 @@ void main()
     vec4 rockColorMix = rockColor * 2;
     rockColorMix.a = 1.0;
     snowColor = mix(snowColor, rockColorMix, noise);
-
-    const float sandThreshold = 0.7;
-    const float grassThreshold = 4;
-    const float waterThreshold = 0.1;
-    const float rockThreshold = 20;
-    const float transitionWidth = 0.6;
 
     //float waterWeight = step(waterThreshold, Height);
     float waterWeight = smoothstep(waterThreshold - transitionWidth, waterThreshold + transitionWidth, Height);
