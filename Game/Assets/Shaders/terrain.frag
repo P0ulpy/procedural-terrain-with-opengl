@@ -14,7 +14,7 @@ uniform sampler2D waterTexture;
 uniform sampler2D snowTexture;
 uniform float time;
 
-const vec3 lightPos = { 0.f, 500.0f, 0.f };
+const vec3 lightPos = { 0.f, 800.0f, 0.f };
 const vec3 lightDir = { 0.f, -1.f, 0.f };
 
 vec3 Lights(vec3 normal) {

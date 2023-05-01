@@ -103,6 +103,13 @@ void Terrain<T>::Render(const Mat4<T> &viewProjection) {
                                  * m_num_verts_per_strip
                                  * strip)); // offset to starting index
     }
+
+    grassTexture.unbind();
+    rockTexture.unbind();
+    sandTexture.unbind();
+    snowTexture.unbind();
+    waterTexture.unbind();
+
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
@@ -174,7 +181,6 @@ void Terrain<T>::GenerateVertices(int nbrOfChunks)
             GL_STATIC_DRAW);
 
         glBindVertexArray(terrainVAO[i]);
-
     }
 
 }

@@ -127,28 +127,13 @@ int main() {
         //    map.setSeed(seed);
         //}
 
-        //if (ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f")) {
-
-        //}
-
-        //if (ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f")) {
-        //    
-        //}
+//        ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f");
+//        ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f");
+//        ImGui::SliderInt("Nbr of Terraces", &map.terraces, 0.0f,100.0f,"%.2d");
 
         //if (ImGui::Button("Change vertice mode")) {
         //    //
         //}
-
-        //if (ImGui::Button("Increase Nbr of Terraces")) {
-        //    //
-        //    map.terraces += 1;
-        //}
-
-        //if (ImGui::Button("Decrease Nbr of Terraces")) {
-        //    //
-        //    map.terraces -= 1;
-        //}
-
 
         //ImGui::End();
 
