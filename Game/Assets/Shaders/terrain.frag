@@ -24,8 +24,8 @@ vec3 Lights(vec3 normal) {
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
 
-    vec3 ambient = 0.1 * vec3(2.0, 2.0, 2.0);
-    vec3 diffuse = diff * vec3(1.0, 1.0, 1.0);
+    vec3 ambient = 0.1 * vec3(1.0, 1.0, 1.0);
+    vec3 diffuse = diff * vec3(2.0, 2.0, 2.0);
     vec3 specular = spec * vec3(1.1, 1.1, 1.1);
 
     return ambient + diffuse + specular;
@@ -97,7 +97,6 @@ void main()
     rockColorMix.a = 1.0;
     snowColor = mix(snowColor, rockColorMix, noise);
 
-    //float waterWeight = step(waterThreshold, Height);
     float waterWeight = smoothstep(waterThreshold - transitionWidth, waterThreshold + transitionWidth, Height);
     float sandWeight = smoothstep(sandThreshold - transitionWidth, sandThreshold + transitionWidth, Height);
     float grassWeight = smoothstep(grassThreshold - transitionWidth, grassThreshold + transitionWidth, Height);
