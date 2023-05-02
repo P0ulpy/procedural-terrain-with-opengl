@@ -36,12 +36,11 @@ struct Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        sf::Image image;
-        if (!image.loadFromFile(filename))
+        if (!m_image.loadFromFile(filename))
             throw std::runtime_error("Cannot load texture");
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, static_cast<GLsizei>(image.getSize().x),
-                     static_cast<GLsizei>(image.getSize().y), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, static_cast<GLsizei>(m_image.getSize().x),
+                     static_cast<GLsizei>(m_image.getSize().y), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_image.getPixelsPtr());
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
@@ -51,6 +50,12 @@ struct Texture {
 
     void unbind() const {
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    sf::Image m_image;
+
+    const sf::Image &getImage() const {
+        return m_image;
     }
 
     GLuint m_texture;

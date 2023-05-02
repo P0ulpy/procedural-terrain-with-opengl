@@ -15,7 +15,7 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         Terrain.cpp
         Terrain.tpp
         UserInterface.h
-        UserInterface.cpp)
+        UserInterface.cpp SkyBox.cpp SkyBox.h)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW
