@@ -5,43 +5,32 @@
 #include "Shader.h"
 #include "Texture.h"
 
-#include "../Game/Matrix.h"
+#include "Math/Matrix.hpp"
+#include "Chunk.hpp"
+#include "ChunkContainer.hpp"
 
-template<typename T>
-class Terrain {
-    using vertex_type = vertex_struct_texture_3D<T>;
-
-
+class Terrain
+{
 public:
     Terrain();
 
-    void Render(const Mat4<T> &viewProjection);
+    void Render(const Mat4f &viewProjection);
 
-    void GenerateVertices(int nbrOfChunks);
-    void GenerateChunks(std::vector<float> vertices, std::vector<uint32_t> indices, int32_t map_width, int32_t map_height);
+    void GenerateVertices();
+    void AddChunk(int32_t chunkX, int32_t chunkZ, const std::vector<float>& vertices, const std::vector<uint32_t>& indices);
 
     void FreeMemory();
     ~Terrain();
 
 private:
+    ChunkContainer m_chunks;
+
     Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
 
-    uint32_t m_num_strips{};
-    uint32_t m_num_verts_per_strip{};
+    GLsizei m_num_strips { Chunk::SIZE - 1 };
+    GLsizei m_num_verts_per_strip { Chunk::SIZE * 2 };
 
-
-    T m_angle = 0.0f;
     GLuint chunkVAO, chunkVBO, chunkEBO;
 
-    std::vector<GLuint> terrainVAO, terrainVBO, terrainEBO;
-    std::vector<std::vector<float>> m_vertices;
-    std::vector<std::vector<uint32_t>> m_indices;
-    std::vector<uint32_t> NUM_STRIPS;
-    std::vector<uint32_t> NUM_VERTS_PER_STRIPS;
-
-    uint32_t m_vao{};
-    uint32_t m_vbo{};
-    uint32_t m_program{};
+    uint32_t m_program {};
 };
-
-#include "Terrain.tpp"

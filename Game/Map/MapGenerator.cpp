@@ -5,84 +5,93 @@ MapGenerator::MapGenerator()= default;
 void MapGenerator::GenerateAllChunks(int playerPosX, int playerPosZ) {
 
     m_terrain.FreeMemory();
-    for (int x = 1; x <= m_chunksAroundUsX; x++) {
-        for (int z = 1; z <= m_chunksAroundUsZ; z++) {
 
-			Generate(playerPosX, playerPosZ, x * generationDistance , z * generationDistance);
-		}
-	}
-    m_terrain.GenerateVertices(m_chunksAroundUsX * m_chunksAroundUsZ);
+    auto chunkIndex = ChunkContainer::GetChunkIndex(0, 0);
 
+    // Generate chunks around us
+    for (int x = chunkIndex.first - m_chunksAroundUs; x < chunkIndex.first + m_chunksAroundUs; ++x)
+        for (int z = chunkIndex.second - m_chunksAroundUs; z < chunkIndex.second + m_chunksAroundUs; ++z)
+            GenerateChunk(x, z);
+
+    m_terrain.GenerateVertices();
 }
 
-void MapGenerator::Generate(int playerPosX, int playerPosZ, int genDistX, int genDistZ) {
-    m_vertices.clear();
-    m_indices.clear();
+void MapGenerator::GenerateChunk(int32_t chunkX, int32_t chunkZ)
+{
+    // position of up-left corner of the chunk
+    int32_t chunkWorldPosX = chunkX * Chunk::SIZE;
+    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE;
 
-    for (float x = playerPosX - genDistX; x < playerPosX + genDistX; x++)
+    // vectors size reservation
+    //constexpr size_t verticesPerRow = Chunk::SIZE * Chunk::SIZE;
+    //constexpr size_t verticesCount = verticesPerRow * 5; // 5 represent the count of vertices we add each time we loop
+    std::vector<float> vertices;//(verticesCount);
+    //constexpr size_t indicesCount = ((Chunk::SIZE - 1) * Chunk::SIZE) * 2;
+    std::vector<uint32_t> indices;//(indicesCount);
+
+    for(int x = chunkWorldPosX; x < chunkWorldPosX + Chunk::SIZE; ++x)
     {
-        for (float z = playerPosZ - genDistZ; z < playerPosZ + genDistZ; z++)
+        for(int z = chunkWorldPosZ; z < chunkWorldPosZ + Chunk::SIZE; ++z)
         {
-
-            m_vertices.push_back(x);
-            //FOR WATER LEVEL
-            if (CalculateElevation(x, z) <= 0.005)
+            /*if((z + 1 == chunkWorldPosZ + Chunk::SIZE) || (x + 1 == chunkWorldPosX + Chunk::SIZE))
             {
-                m_vertices.push_back(0.005);
-            }
+                vertices.push_back((float)x);
+                vertices.push_back(30.f);
+                vertices.push_back((float)z);
+                vertices.push_back((float)x / m_textureRepeat);
+                vertices.push_back((float)z / m_textureRepeat);
+
+                continue;
+            }*/
+
+            vertices.push_back((float)x);
+
+            auto elevation = (float)ComputeElevation((float)x, (float)z);
+
+            // TODO : Prototype a "layer" system for the terrain witch can process elevation through a list of layers without having to hardcode it here
+
+            constexpr float water_level = 0.005f;
+            if (elevation <= water_level)
+                vertices.push_back(water_level);
             else
-            {
-                m_vertices.push_back(CalculateElevation(x, z) * maxHeight);
-            }
+                vertices.push_back(elevation * (float)maxHeight);
 
-            m_vertices.push_back(z);
-            m_vertices.push_back(x / m_textureRepeat);
-            m_vertices.push_back(z / m_textureRepeat);
-
-            
+            vertices.push_back((float)z);
+            vertices.push_back((float)x / m_textureRepeat);
+            vertices.push_back((float)z / m_textureRepeat);
         }
     }
 
-    for (unsigned int i = 0; i < genDistX * 2 - 1; i++)       // for each row a.k.a. each strip
-    {
-        for (unsigned int j = 0; j < genDistZ * 2; j++)      // for each column
-        {
-            for (int k = 0; k < 2; k++)      // for each side of the strip
-            {
-                m_indices.push_back(j + (genDistX * 2) * (i + k));
-            }
-        }
-    }
+    for (uint32_t i = 0; i < Chunk::SIZE - 1; ++i)
+        for (uint32_t j = 0; j < Chunk::SIZE; ++j)
+            for (uint32_t k = 0; k < 2; ++k)
+                indices.push_back(j + Chunk::SIZE * (i + k));
 
-    m_terrain.GenerateChunks(m_vertices, m_indices, (genDistX * 2), (genDistZ * 2));
+    m_terrain.AddChunk(chunkX, chunkZ, vertices, indices);
 }
 
-void MapGenerator::setSeed(unsigned int seed) {
+void MapGenerator::SetSeed(unsigned int seed)
+{
     m_perlin.setSeed(seed);
-    m_seed = seed;
+    m_seed = static_cast<int>(seed);
 }
 
-const std::vector<float> &MapGenerator::getVertices() const {
-    return m_vertices;
-}
-
-
-float MapGenerator::CalculateElevation(float x, float z) {
+double MapGenerator::ComputeElevation(float x, float z) const
+{
     double nx = x / 16 - 0.5;
     double nz = z / 16 - 0.5;
 
-    float e = 
-        m_frequency * m_perlin.noise(1 * m_frequency * nx, 1 * m_frequency * nz) +
-        m_frequency * 0.5 * m_perlin.noise(2 * m_frequency * nx, 2 * m_frequency * nz) +
-        m_frequency * 0.25 * m_perlin.noise(4 * m_frequency * nx, 4 * m_frequency * nz) +
-        m_frequency * 0.13 * m_perlin.noise(8 * m_frequency * nx, 8 * m_frequency * nz) +
-        m_frequency * 0.06 * m_perlin.noise(16 * m_frequency * nx, 16 * m_frequency * nz) +
-        m_frequency * 0.03 * m_perlin.noise(32 * m_frequency * nx, 32 * m_frequency * nz)
-        ;
+    double elevation =
+        m_frequency * PerlinNoise::noise(1 * m_frequency * nx, 1 * m_frequency * nz) +
+        m_frequency * 0.5 * PerlinNoise::noise(2 * m_frequency * nx, 2 * m_frequency * nz) +
+        m_frequency * 0.25 * PerlinNoise::noise(4 * m_frequency * nx, 4 * m_frequency * nz) +
+        m_frequency * 0.13 * PerlinNoise::noise(8 * m_frequency * nx, 8 * m_frequency * nz) +
+        m_frequency * 0.06 * PerlinNoise::noise(16 * m_frequency * nx, 16 * m_frequency * nz) +
+        m_frequency * 0.03 * PerlinNoise::noise(32 * m_frequency * nx, 32 * m_frequency * nz);
 
-    e = e / (m_frequency + (m_frequency * 0.5) + (m_frequency * 0.25) + (m_frequency * 0.13) + (m_frequency * 0.06) + (m_frequency * 0.03));
-    e = std::pow(std::abs(e), m_redistribution);
-    return e;
+    elevation = elevation / (m_frequency + (m_frequency * 0.5) + (m_frequency * 0.25) + (m_frequency * 0.13) + (m_frequency * 0.06) + (m_frequency * 0.03));
+    elevation = std::pow(std::abs(elevation), m_redistribution);
+    return elevation;
 }
 
 

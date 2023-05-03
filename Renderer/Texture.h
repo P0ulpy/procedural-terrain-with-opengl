@@ -4,21 +4,21 @@
 #include <SFML/OpenGL.hpp>
 #include <string>
 #include <stdexcept>
-#include "../Game/Matrix.h"
+#include "Math/Matrix.hpp"
 #include "SFML/Graphics/Image.hpp"
 
 template<typename T>
 struct vertex_struct_texture
 {
-    Point2D<T> p;
-    Point2D<T> t;
+    Point2df p;
+    Point2df t;
 };
 
 template<typename T>
 struct vertex_struct_texture_3D
 {
-    Point3D<T> p;
-    Point2D<T> t;
+    Point3df p;
+    Point2df t;
 };
 
 struct Texture

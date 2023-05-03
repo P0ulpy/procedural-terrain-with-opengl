@@ -4,7 +4,7 @@
 #include <SFML/OpenGL.hpp>
 #include <stdexcept>
 #include <valarray>
-#include "../Game/Matrix.h"
+#include "Math/Matrix.hpp"
 #include "SFML/Graphics/Image.hpp"
 #include "Shader.h"
 #include "Texture.h"
