@@ -9,21 +9,14 @@ class MapGenerator
 public:
     MapGenerator();
 
-    // Parameters:
-    // ELEVATION OCTAVES 
-    float m_frequency = 0.1f;
-    // ELEVATION REDISTRIBUTION
-    float m_redistribution = 3;
-    // GENERATION DISTANCE 
+    float m_frequency = 0.4f, m_amplitude = 1.f, m_lacunarity = 2.f, m_persistance = 0.5f, m_redistribution = 2.f;
+    int m_octaves = 8;
+
     int generationDistance = 50;
-    // MAX HEIGHT OF MOUNTAIN
     int maxHeight = 50;
-    // NUMBER OF TERRACES
     int terraces = 30;
-    // SET SEED OF PERLIN NOISE
     int m_seed;
 
-    // NUMBER OF CHUNKS AROUND US
     int m_chunksAroundUs = 2;
 
 public:

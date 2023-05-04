@@ -12,7 +12,7 @@
 class Chunk
 {
 public:
-    constexpr static int32_t SIZE = 100;
+    constexpr static int32_t SIZE = 128;
 
     Chunk();
     ~Chunk();
@@ -23,7 +23,7 @@ public:
     void Generate(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, GLuint program, Texture* grassTexture, Texture* rockTexture, Texture* sandTexture, Texture* waterTexture, Texture* snowTexture);
     void GenerateVertices();
 
-    void Render(const Mat4f& viewProjection);
+    void Render();
 
 private:
     GLuint VAO {}, VBO {}, EBO {};

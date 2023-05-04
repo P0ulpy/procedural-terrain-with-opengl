@@ -2,9 +2,12 @@
 
 MapGenerator::MapGenerator()= default;
 
-void MapGenerator::GenerateAllChunks(int playerPosX, int playerPosZ) {
-
+void MapGenerator::GenerateAllChunks(int playerPosX, int playerPosZ)
+{
     m_terrain.FreeMemory();
+
+    m_perlin.~PerlinNoise();
+    m_perlin = PerlinNoise(m_frequency, m_amplitude, m_lacunarity, m_persistance);
 
     auto chunkIndex = ChunkContainer::GetChunkIndex(0, 0);
 
@@ -19,8 +22,8 @@ void MapGenerator::GenerateAllChunks(int playerPosX, int playerPosZ) {
 void MapGenerator::GenerateChunk(int32_t chunkX, int32_t chunkZ)
 {
     // position of up-left corner of the chunk
-    int32_t chunkWorldPosX = chunkX * Chunk::SIZE;
-    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE;
+    int32_t chunkWorldPosX = chunkX * Chunk::SIZE + chunkX * - 1;
+    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE + chunkZ * - 1;
 
     // vectors size reservation
     //constexpr size_t verticesPerRow = Chunk::SIZE * Chunk::SIZE;
@@ -33,17 +36,6 @@ void MapGenerator::GenerateChunk(int32_t chunkX, int32_t chunkZ)
     {
         for(int z = chunkWorldPosZ; z < chunkWorldPosZ + Chunk::SIZE; ++z)
         {
-            /*if((z + 1 == chunkWorldPosZ + Chunk::SIZE) || (x + 1 == chunkWorldPosX + Chunk::SIZE))
-            {
-                vertices.push_back((float)x);
-                vertices.push_back(30.f);
-                vertices.push_back((float)z);
-                vertices.push_back((float)x / m_textureRepeat);
-                vertices.push_back((float)z / m_textureRepeat);
-
-                continue;
-            }*/
-
             vertices.push_back((float)x);
 
             auto elevation = (float)ComputeElevation((float)x, (float)z);
@@ -78,19 +70,13 @@ void MapGenerator::SetSeed(unsigned int seed)
 
 double MapGenerator::ComputeElevation(float x, float z) const
 {
-    double nx = x / 16 - 0.5;
-    double nz = z / 16 - 0.5;
+    const double nx = x / Chunk::SIZE - 0.5;
+    const double nz = z / Chunk::SIZE - 0.5;
 
-    double elevation =
-        m_frequency * PerlinNoise::noise(1 * m_frequency * nx, 1 * m_frequency * nz) +
-        m_frequency * 0.5 * PerlinNoise::noise(2 * m_frequency * nx, 2 * m_frequency * nz) +
-        m_frequency * 0.25 * PerlinNoise::noise(4 * m_frequency * nx, 4 * m_frequency * nz) +
-        m_frequency * 0.13 * PerlinNoise::noise(8 * m_frequency * nx, 8 * m_frequency * nz) +
-        m_frequency * 0.06 * PerlinNoise::noise(16 * m_frequency * nx, 16 * m_frequency * nz) +
-        m_frequency * 0.03 * PerlinNoise::noise(32 * m_frequency * nx, 32 * m_frequency * nz);
+    double elevation = m_perlin.fractal(m_octaves, nx, nz);
 
-    elevation = elevation / (m_frequency + (m_frequency * 0.5) + (m_frequency * 0.25) + (m_frequency * 0.13) + (m_frequency * 0.06) + (m_frequency * 0.03));
     elevation = std::pow(std::abs(elevation), m_redistribution);
+
     return elevation;
 }
 

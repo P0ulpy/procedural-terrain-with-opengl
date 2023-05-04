@@ -40,13 +40,6 @@ void Terrain::FreeMemory()
 
 void Terrain::Render(const Mat4f &viewProjection)
 {
-    for(auto& [ key, chunk ] : m_chunks.GetData())
-    {
-        chunk.GenerateVertices();
-        chunk.Render(viewProjection);
-    }
-
-    return;
     glEnable(GL_DEPTH_TEST);
 
     glActiveTexture(GL_TEXTURE0);
@@ -70,19 +63,9 @@ void Terrain::Render(const Mat4f &viewProjection)
     glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
     glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
 
-    Mat4f model;
+    Mat4f model = Mat4f::Identity();
     // TODO : Use the Transformable utility tool instead
     //Mat4f model = Mat4f::RotationY(0) * Mat4f::Translation(0.f, 0.f, 0.f);
-
-    model(0, 0) = std::cos(0);
-    model(0, 2) = std::sin(0);
-    model(2, 0) = -std::sin(0);
-    model(2, 2) = std::cos(0);
-
-    model(1, 1) = 1.0f;
-    model(3, 3) = 1.0f;
-
-    model(2, 3) = -5.0f;
 
     // TODO : Use camera viewProjection instead of computing it by hand each times
     Mat4f mvp = viewProjection * model;
@@ -90,14 +73,10 @@ void Terrain::Render(const Mat4f &viewProjection)
     auto mvpLocation = glGetUniformLocation(m_program, "model");
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
-    // render the mesh triangle strip by triangle strip - each row at a time
-    for (unsigned int strip = 0; strip < m_num_strips; ++strip) {
-        glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
-                       m_num_verts_per_strip, // number of indices to render
-                       GL_UNSIGNED_INT,     // index data type
-                       (void *) (sizeof(int)
-                                 * m_num_verts_per_strip
-                                 * strip)); // offset to starting index
+
+    for(auto& [ key, chunk ] : m_chunks.GetData())
+    {
+        chunk.Render();
     }
 
     glDisable(GL_DEPTH_TEST);

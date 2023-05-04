@@ -81,56 +81,20 @@ void Chunk::GenerateVertices()
     glBindVertexArray(VAO);
 }
 
-void Chunk::Render(const Mat4f& viewProjection)
+void Chunk::Render()
 {
-    glEnable(GL_DEPTH_TEST);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-    glActiveTexture(GL_TEXTURE0);
-    grassTexture->bind();
-
-    glActiveTexture(GL_TEXTURE1);
-    rockTexture->bind();
-
-    glActiveTexture(GL_TEXTURE2);
-    sandTexture->bind();
-
-    glActiveTexture(GL_TEXTURE3);
-    waterTexture->bind();
-
-    glActiveTexture(GL_TEXTURE4);
-    snowTexture->bind();
-
-    glUniform1i(glGetUniformLocation(m_program, "grassTexture"), 0);
-    glUniform1i(glGetUniformLocation(m_program, "rockTexture"), 1);
-    glUniform1i(glGetUniformLocation(m_program, "sandTexture"), 2);
-    glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
-    glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
-
-    Mat4f model = Mat4f::Identity();
-    // TODO : Use the Transformable utility tool instead
-    //Mat4f model = Mat4f::RotationY(0) * Mat4f::Translation(0.f, 0.f, 0.f);
-
-    // TODO : Use camera viewProjection instead of computing it by hand each times
-    Mat4f mvp = viewProjection * model;
-
-    auto mvpLocation = glGetUniformLocation(m_program, "model");
-
-    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
     // render the mesh triangle strip by triangle strip - each row at a time
-    for (unsigned int strip = 0; strip < Chunk::SIZE - 1; ++strip) {
+    for (unsigned int strip = 0; strip < Chunk::SIZE - 1; ++strip)
+    {
         glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
-                       Chunk::SIZE * 2, // number of indices to render
+                       Chunk::SIZE * 2,     // number of indices to render
                        GL_UNSIGNED_INT,     // index data type
                        (void *) (sizeof(int)
                                  * (Chunk::SIZE * 2)
                                  * strip)); // offset to starting index
     }
-
-    glDisable(GL_DEPTH_TEST);
-
-    grassTexture->unbind();
-    rockTexture->unbind();
-    sandTexture->unbind();
-    waterTexture->unbind();
-    snowTexture->unbind();
 }
