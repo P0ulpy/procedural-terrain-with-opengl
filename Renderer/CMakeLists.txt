@@ -18,6 +18,7 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         Math/Point.hpp
         Math/Vector.hpp
         Chunk.hpp Chunk.cpp ChunkContainer.hpp ChunkContainer.cpp)
+        UserInterface.cpp SkyBox.cpp SkyBox.h)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW

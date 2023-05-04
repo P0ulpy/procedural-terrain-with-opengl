@@ -1,8 +1,9 @@
-#version 430 core
+#version 460 core
 
 in vec2 TexCoord;
 in vec3 Normal;
 in float Height;
+in vec3 FragPos;
 
 out vec4 FragColor;
 
@@ -11,6 +12,24 @@ uniform sampler2D rockTexture;
 uniform sampler2D sandTexture;
 uniform sampler2D waterTexture;
 uniform sampler2D snowTexture;
+uniform float time;
+
+const vec3 lightPos = { 0.f, 800.0f, 0.f };
+const vec3 lightDir = { 0.f, -1.f, 0.f };
+
+vec3 Lights(vec3 normal) {
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 viewDir = normalize(lightPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+
+    vec3 ambient = 0.1 * vec3(1.0, 1.0, 1.0);
+    vec3 diffuse = diff * vec3(2.0, 2.0, 2.0);
+    vec3 specular = spec * vec3(1.1, 1.1, 1.1);
+
+    return ambient + diffuse + specular;
+}
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
@@ -47,30 +66,40 @@ float simplexNoise(vec2 uv) {
     return 130.0 * dot(m, g);
 }
 
+const float patchSize = 4;
+
+const float sandThreshold = 0.7;
+const float grassThreshold = 4;
+const float waterThreshold = 0.1;
+const float rockThreshold = 20;
+
+const float transitionWidth = 0.6;
+
 void main()
 {
-    float patchSize = 4;
+    vec2 waterCoord = TexCoord;
+    waterCoord.x += sin(time + waterCoord.y * 10.0) * 0.1;
+    waterCoord.y += cos(time + waterCoord.x * 10.0) * 0.1;
+    vec4 waterColor = texture(waterTexture, waterCoord);
+    waterColor.a = 0.5;
 
     vec4 grassColor = texture(grassTexture, TexCoord);
     vec4 rockColor = texture(rockTexture, TexCoord);
     vec4 sandColor = texture(sandTexture, TexCoord);
-    vec4 waterColor = texture(waterTexture, TexCoord);
     vec4 snowColor = texture(snowTexture, TexCoord);
 
     float noise = simplexNoise(TexCoord * patchSize);
 
-    snowColor = mix(snowColor, rockColor*2, noise);
+    vec3 normal = normalize(Normal);
+    vec3 lighting = Lights(normal);
 
-    float sandThreshold = 0.7;
-    float grassThreshold = 4;
-    float waterThreshold = 0.005;
-    float rockThreshold = 20;
-    float transitionWidth = 0.6;
+    vec4 rockColorMix = rockColor * 2;
+    rockColorMix.a = 1.0;
+    snowColor = mix(snowColor, rockColorMix, noise);
 
-
+    float waterWeight = smoothstep(waterThreshold - transitionWidth, waterThreshold + transitionWidth, Height);
     float sandWeight = smoothstep(sandThreshold - transitionWidth, sandThreshold + transitionWidth, Height);
     float grassWeight = smoothstep(grassThreshold - transitionWidth, grassThreshold + transitionWidth, Height);
-    float waterWeight = smoothstep(waterThreshold - transitionWidth, waterThreshold + transitionWidth, Height);
     float rockWeight = smoothstep(rockThreshold - transitionWidth, rockThreshold + transitionWidth, Height);
 
     vec4 finalColor = mix(waterColor, sandColor, waterWeight);
@@ -78,7 +107,6 @@ void main()
     finalColor = mix(finalColor, rockColor, grassWeight);
     finalColor = mix(finalColor, snowColor, rockWeight);
 
-
-    FragColor = finalColor;
+    FragColor = vec4(finalColor.rgb * lighting, finalColor.a);
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <SFML/System/Clock.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -27,6 +28,7 @@ private:
 
     Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
 
+    sf::Clock waterClock;
     GLsizei m_num_strips { Chunk::SIZE - 1 };
     GLsizei m_num_verts_per_strip { Chunk::SIZE * 2 };
 
