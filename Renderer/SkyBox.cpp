@@ -14,14 +14,14 @@ SkyBox::~SkyBox() {
     glDeleteBuffers(1, &m_vbo);
 }
 
-void SkyBox::Render(const Mat4<float> &viewProjection, const Point3f &cameraPos) const {
+void SkyBox::Render(const Mat4f &viewProjection, const Point3df &cameraPos) const {
     glUseProgram(m_shaderProgram);
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
 
-    glUniformMatrix4fv(m_uniformViewProjection, 1, GL_FALSE, viewProjection.data());
-    Mat4<float> modelMatrix = Mat4<float>::translation(cameraPos);
-    glUniformMatrix4fv(m_uniformModel, 1, GL_FALSE, modelMatrix.data());
+    glUniformMatrix4fv(m_uniformViewProjection, 1, GL_FALSE, viewProjection.Data());
+    Mat4<float> modelMatrix = Mat4<float>::Translation(cameraPos);
+    glUniformMatrix4fv(m_uniformModel, 1, GL_FALSE, modelMatrix.Data());
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glActiveTexture(GL_TEXTURE0);

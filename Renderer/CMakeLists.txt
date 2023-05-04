@@ -17,7 +17,7 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         UserInterface.cpp
         Math/Point.hpp
         Math/Vector.hpp
-        Chunk.hpp Chunk.cpp ChunkContainer.hpp ChunkContainer.cpp)
+        Chunk.hpp Chunk.cpp ChunkContainer.hpp ChunkContainer.cpp
         UserInterface.cpp SkyBox.cpp SkyBox.h)
 
 target_link_libraries(${RENDERER_TARGET_NAME}

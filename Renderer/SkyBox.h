@@ -5,15 +5,13 @@
 #include <vector>
 #include "Shader.h"
 
-using Point3f = Point3D<float>;
-
 class SkyBox {
 public:
     SkyBox();
 
     ~SkyBox();
 
-    void Render(const Mat4<float> &viewProjection, const Point3f &cameraPos) const;
+    void Render(const Mat4f &viewProjection, const Point3df &cameraPos) const;
 
     void LoadShaders();
 

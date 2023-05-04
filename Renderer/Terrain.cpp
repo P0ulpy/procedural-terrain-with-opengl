@@ -41,6 +41,8 @@ void Terrain::FreeMemory()
 void Terrain::Render(const Mat4f &viewProjection)
 {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glActiveTexture(GL_TEXTURE0);
     grassTexture.bind();
@@ -63,6 +65,10 @@ void Terrain::Render(const Mat4f &viewProjection)
     glUniform1i(glGetUniformLocation(m_program, "waterTexture"), 3);
     glUniform1i(glGetUniformLocation(m_program, "snowTexture"), 4);
 
+    float time = waterClock.getElapsedTime().asSeconds();
+    GLint timeLocation = glGetUniformLocation(m_program, "time");
+    glUniform1f(timeLocation, time);
+
     Mat4f model = Mat4f::Identity();
     // TODO : Use the Transformable utility tool instead
     //Mat4f model = Mat4f::RotationY(0) * Mat4f::Translation(0.f, 0.f, 0.f);
@@ -79,6 +85,7 @@ void Terrain::Render(const Mat4f &viewProjection)
         chunk.Render();
     }
 
+    glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
     grassTexture.unbind();

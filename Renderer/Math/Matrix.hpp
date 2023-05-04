@@ -51,7 +51,7 @@ struct Mat4
 
     static Mat4<Type> Translation(const Point3d<Type>& pt)
     {
-        return translation(pt.x, pt.y, pt.z);
+        return Translation(pt.x, pt.y, pt.z);
     }
 
     static Mat4<Type> Projection(const Type& aspect, const Type& fov, const Type& farPlane, const Type& nearPlane)
