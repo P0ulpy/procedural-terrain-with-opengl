@@ -27,19 +27,15 @@ Terrain::~Terrain()
 
 void Terrain::FreeMemory()
 {
-    /* TODO : Vérifier si c'est nécessaire
-    glDeleteVertexArrays(1, &chunkVAO);
-    glDeleteBuffers(1, &chunkVBO);
-    glDeleteBuffers(1, &chunkEBO);
-    */
-
     m_chunks.FreeChunks();
 
-    glDeleteProgram(m_program);
+  //  glDeleteProgram(m_program);
 }
 
 void Terrain::Render(const Mat4f &viewProjection)
 {
+    glUseProgram(m_program);
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

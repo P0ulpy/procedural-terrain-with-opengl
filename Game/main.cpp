@@ -7,6 +7,7 @@
 #include "imgui-SFML.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "UserInterface.hpp"
+#include "Skybox.hpp"
 
 int main()
 {
@@ -15,11 +16,11 @@ int main()
     // cr�e la fen�tre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "OpenGL", sf::Style::Default, context_settings);
     window.setVerticalSyncEnabled(true);
-
+    
     // activation de la fen�tre
     window.setActive(true);
 
-    //ImGui::SFML::Init(window);
+   // ImGui::SFML::Init(window);
 
     // fucking lines of hell
     glewExperimental = GL_TRUE;
@@ -32,6 +33,7 @@ int main()
     int seed = 121;
 
     MapGenerator map;
+    SkyBox skybox;
     map.SetSeed(seed);
     map.GenerateAllChunks(0, 0);
     
@@ -45,11 +47,11 @@ int main()
         // gestion des �v�nements
         sf::Event event{};
         while (window.pollEvent(event)) {
-           // ImGui::SFML::ProcessEvent(event);
+            //ImGui::SFML::ProcessEvent(event);
             if (event.type == sf::Event::Closed) {
                 // on stoppe le programme
                 running = false;
-               // ImGui::SFML::Shutdown();
+             //  ImGui::SFML::Shutdown();
             } else if (event.type == sf::Event::Resized) {
                 // on ajuste le viewport lorsque la fen�tre est redimensionn�e
                 glViewport(0, 0, event.size.width, event.size.height);
@@ -101,7 +103,7 @@ int main()
                         break;
                     case sf::Keyboard::Escape:
                         window.close();
-                        ImGui::SFML::Shutdown();
+                       // ImGui::SFML::Shutdown();
                         return 0;
                     case sf::Keyboard::I:
                         map.terraces = map.terraces + 1;
@@ -123,6 +125,27 @@ int main()
             }
         }
 
+       // ImGui::SFML::Update(window, dtClock.restart());
+
+       //ImGui::Begin("Terrain parameters");
+       //if (ImGui::SliderInt("Seed", &seed, 0, 256)) {
+       //    map.SetSeed(seed);
+       //}
+
+       //ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f");
+       //ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f");
+       //ImGui::SliderInt("Nbr of Terraces", &map.terraces, 0.0f,100.0f,"%.2d");
+
+       //if (ImGui::Button("Change vertice mode")) {
+       //    
+       //}
+
+       //ImGui::End();
+
+       // UserInterface::drawInfo(dt, static_cast<int>(map.GetVertices().size() / 5)); // 1 sommet = 5 composantes
+
+
+
         // effacement les tampons de couleur/profondeur
         glClearColor(0, 207, 220, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -138,14 +161,26 @@ int main()
         auto p = Mat4f::Projection(aspect, fov, f, n);
         map.checkPlayerChunk(cameraPos.x, cameraPos.z);
         Mat4<float> vp = p * v;
-        // map.Generate(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+       
+        
+      
+        skybox.Render(vp, cameraPos);
         map.Render(vp);
-
+        /*glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
+       // glActiveTexture(GL_TEXTURE0);
 
         glFlush();
+
+
+
         // termine la trame courante (en interne, �change les deux tampons de rendu)
-        // ImGui::SFML::Render(window);
+        //ImGui::SFML::Render(window);
         window.display();
+
+
+        
     }
 
     // lib�ration des ressources...

@@ -19,6 +19,7 @@ void SkyBox::Render(const Mat4f &viewProjection, const Point3df &cameraPos) cons
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
 
+    
     glUniformMatrix4fv(m_uniformViewProjection, 1, GL_FALSE, viewProjection.Data());
     Mat4<float> modelMatrix = Mat4<float>::Translation(cameraPos);
     glUniformMatrix4fv(m_uniformModel, 1, GL_FALSE, modelMatrix.Data());
@@ -31,6 +32,8 @@ void SkyBox::Render(const Mat4f &viewProjection, const Point3df &cameraPos) cons
     glUniform1i(skyboxUniLoc, 0);
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glDepthMask(GL_TRUE);
@@ -80,6 +83,7 @@ void SkyBox::initSkyBox() {
             -1.0f, -1.0f, 1.0f,
             1.0f, -1.0f, 1.0f
     };
+    
 
     glGenVertexArrays(1, &m_vao);
     glGenBuffers(1, &m_vbo);
