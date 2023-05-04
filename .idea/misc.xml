@@ -8,6 +8,7 @@
       <file path="$PROJECT_DIR$/Renderer" />
     </sourceRoots>
     <excludeRoots>
+      <file path="$PROJECT_DIR$/out" />
       <file path="$PROJECT_DIR$/vcpkg" />
       <file path="$PROJECT_DIR$/vcpkg_installed" />
     </excludeRoots>

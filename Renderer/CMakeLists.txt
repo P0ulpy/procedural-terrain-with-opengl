@@ -8,7 +8,17 @@ find_package(SFML COMPONENTS system window graphics network CONFIG REQUIRED)
 add_library(${RENDERER_TARGET_NAME} STATIC
         Renderer.hpp
         Renderer.cpp
-)
+        Shader.h
+        Shader.cpp
+        Texture.h
+        Terrain.h
+        Terrain.cpp
+        UserInterface.h
+        UserInterface.cpp
+        Math/Point.hpp
+        Math/Vector.hpp
+        Chunk.hpp Chunk.cpp ChunkContainer.hpp ChunkContainer.cpp
+        UserInterface.cpp SkyBox.cpp SkyBox.h)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW
