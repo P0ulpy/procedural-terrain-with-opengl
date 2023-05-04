@@ -80,9 +80,9 @@ void Terrain::Render(const Mat4f &viewProjection)
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
 
-    for(auto& [ key, chunk ] : m_chunks.GetData())
+    for(auto* chunk : m_chunks.m_activeChunks)
     {
-        chunk.Render();
+        chunk->Render();
     }
 
     glDisable(GL_BLEND);
@@ -107,8 +107,9 @@ void Terrain::AddChunk(
 
 void Terrain::GenerateVertices()
 {
-    for(auto& [key, chunk] : m_chunks.GetData())
+    for (auto& [key, chunk] : m_chunks.GetData())
     {
         chunk.GenerateVertices();
     }
 }
+

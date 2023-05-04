@@ -23,6 +23,8 @@ public:
     void FreeMemory();
     ~Terrain();
 
+    ChunkContainer &GetChunks() { return m_chunks; }
+
 private:
     ChunkContainer m_chunks;
 

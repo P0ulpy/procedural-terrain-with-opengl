@@ -12,7 +12,7 @@
 class Chunk
 {
 public:
-    constexpr static int32_t SIZE = 128;
+    constexpr static int32_t SIZE = 64;
 
     Chunk();
     ~Chunk();
@@ -22,9 +22,9 @@ public:
 
     void Generate(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, GLuint program, Texture* grassTexture, Texture* rockTexture, Texture* sandTexture, Texture* waterTexture, Texture* snowTexture);
     void GenerateVertices();
-
     void Render();
 
+    bool getGenerated() { return m_generated; }
 private:
     GLuint VAO {}, VBO {}, EBO {};
     std::vector<float> m_vertices {};
@@ -36,4 +36,6 @@ private:
     GLuint m_program {};
 
     Texture* grassTexture; Texture* rockTexture; Texture* sandTexture; Texture* waterTexture;Texture* snowTexture;
+
+    bool m_generated = false;
 };

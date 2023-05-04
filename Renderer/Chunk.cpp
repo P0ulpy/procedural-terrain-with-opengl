@@ -37,6 +37,7 @@ void Chunk::Generate(const std::vector<float> &vertices,
                      GLuint program, Texture* grassTexture, Texture* rockTexture, Texture* sandTexture, Texture* waterTexture, Texture* snowTexture
                      )
 {
+    m_generated = true;
     m_vertices = vertices;
     m_indices = indices;
     m_program = program;
@@ -45,6 +46,8 @@ void Chunk::Generate(const std::vector<float> &vertices,
     this->sandTexture = sandTexture;
     this->waterTexture = waterTexture;
     this->snowTexture = snowTexture;
+
+    GenerateVertices();
 }
 
 void Chunk::GenerateVertices()

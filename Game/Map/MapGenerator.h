@@ -17,7 +17,11 @@ public:
     int terraces = 30;
     int m_seed;
 
-    int m_chunksAroundUs = 2;
+    int m_chunksAroundUs = 8;
+
+    //Debug 
+    int increment = 0;
+
 
 public:
     template<typename T>
@@ -26,18 +30,22 @@ public:
     [[nodiscard]] double ComputeElevation(float x, float z) const;
 
     void GenerateAllChunks(int playerPosX, int playerPosZ);
+    void GenerateNewChunks(int playerPosX, int playerPosZ);
 
     [[nodiscard]] int GetSeed() const { return m_seed; };
     void SetSeed(unsigned int seed);
 
+    void checkPlayerChunk(int playerPosX, int playerPosZ);
+
 private:
     void GenerateChunk(int32_t chunkX, int32_t chunkZ);
-
+    void SetChunkActive(int32_t chunkX, int32_t chunkZ);
 private:
     Terrain m_terrain;
     PerlinNoise m_perlin;
 
     float m_textureRepeat = 10.0f;
+    std::pair<int32_t,int32_t> lastChunkIndex { 0, 0 };
 };
 
 #include "MapGenerator.tpp"
