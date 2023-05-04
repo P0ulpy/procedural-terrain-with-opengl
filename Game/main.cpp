@@ -6,7 +6,7 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "UserInterface.h"
+#include "UserInterface.hpp"
 
 int main()
 {
@@ -149,7 +149,7 @@ int main()
     }
 
     // lib�ration des ressources...
-
+    // ImGui::SFML::Shutdown();
     return 0;
 }
 

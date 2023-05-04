@@ -1,4 +1,4 @@
-#include "SkyBox.h"
+#include "SkyBox.hpp"
 
 SkyBox::SkyBox() : m_textures(
         {Texture("Assets/Textures/SkyBox/right.jpg"), Texture("Assets/Textures/SkyBox/left.jpg"),

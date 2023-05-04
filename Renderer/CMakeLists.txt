@@ -13,12 +13,11 @@ add_library(${RENDERER_TARGET_NAME} STATIC
         Texture.h
         Terrain.h
         Terrain.cpp
-        UserInterface.h
-        UserInterface.cpp
+        UserInterface.hpp
         Math/Point.hpp
         Math/Vector.hpp
         Chunk.hpp Chunk.cpp ChunkContainer.hpp ChunkContainer.cpp
-        UserInterface.cpp SkyBox.cpp SkyBox.h)
+        UserInterface.tpp SkyBox.cpp SkyBox.hpp)
 
 target_link_libraries(${RENDERER_TARGET_NAME}
         PUBLIC GLEW::GLEW
