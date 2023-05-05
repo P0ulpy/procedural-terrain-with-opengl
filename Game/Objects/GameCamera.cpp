@@ -57,8 +57,14 @@ void GameCamera::HandleMouse(float dt)
     if(mousePos != cCenter)
     {
         auto delta = mousePos - cCenter;
-        float yawDelta = static_cast<float>(delta.x) * -1.f * dt;
-        float pitchDelta = static_cast<float>(delta.y) * 1.f * dt;
+
+        if(delta.x > 0) delta.x = 1;
+        if(delta.y > 0) delta.y = 1;
+        if(delta.x < 0) delta.x = -1;
+        if(delta.y < 0) delta.y = -1;
+
+        float yawDelta = static_cast<float>(delta.x) * -1.f * camSensitivity;
+        float pitchDelta = static_cast<float>(delta.y) * 1.f * camSensitivity;
 
         m_transform.Rotate(pitchDelta, yawDelta, 0.f);
 

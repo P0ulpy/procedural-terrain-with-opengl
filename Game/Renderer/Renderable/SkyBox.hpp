@@ -4,14 +4,15 @@
 #include <vector>
 #include <Texture/Texture.hpp>
 #include <Shader/Shader.hpp>
+#include "IRenderable.hpp"
 
-class SkyBox {
+class SkyBox : public IRenderable
+{
 public:
-    SkyBox();
+    ~SkyBox() override;
 
-    ~SkyBox();
-
-    void Render(const Mat4f &viewProjection, const Point3df &cameraPos) const;
+    void Load() override;
+    void Render(Camera& camera) override;
 
     void LoadShaders();
 
@@ -24,5 +25,14 @@ private:
     GLuint m_shaderProgram{};
     GLint m_uniformViewProjection{};
     GLint m_uniformModel{};
-    std::array<Texture, 6> m_textures;
+
+    std::array<Texture, 6> m_textures
+    {
+        Texture("Assets/Textures/SkyBox/right.jpg"),
+        Texture("Assets/Textures/SkyBox/left.jpg"),
+        Texture("Assets/Textures/SkyBox/top.jpg"),
+        Texture("Assets/Textures/SkyBox/bottom.jpg"),
+        Texture("Assets/Textures/SkyBox/front.jpg"),
+        Texture("Assets/Textures/SkyBox/back.jpg")
+    };
 };

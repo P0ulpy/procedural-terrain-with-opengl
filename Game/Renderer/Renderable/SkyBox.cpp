@@ -1,10 +1,7 @@
 #include "SkyBox.hpp"
 
-SkyBox::SkyBox() : m_textures(
-        {Texture("Assets/Textures/SkyBox/right.jpg"), Texture("Assets/Textures/SkyBox/left.jpg"),
-         Texture("Assets/Textures/SkyBox/top.jpg"),
-         Texture("Assets/Textures/SkyBox/bottom.jpg"), Texture("Assets/Textures/SkyBox/front.jpg"),
-         Texture("Assets/Textures/SkyBox/back.jpg")}) {
+void SkyBox::Load()
+{
     LoadShaders();
     initSkyBox();
 }
@@ -14,13 +11,14 @@ SkyBox::~SkyBox() {
     glDeleteBuffers(1, &m_vbo);
 }
 
-void SkyBox::Render(const Mat4f &viewProjection, const Point3df &cameraPos) const {
+void SkyBox::Render(Camera& camera)
+{
     glUseProgram(m_shaderProgram);
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
 
-    glUniformMatrix4fv(m_uniformViewProjection, 1, GL_FALSE, viewProjection.Data());
-    Mat4<float> modelMatrix = Mat4<float>::Translation(cameraPos);
+    glUniformMatrix4fv(m_uniformViewProjection, 1, GL_FALSE, camera.GetViewProjectionMatrix().Data());
+    Mat4<float> modelMatrix = Mat4<float>::Translation(camera.GetTransform().pos);
     glUniformMatrix4fv(m_uniformModel, 1, GL_FALSE, modelMatrix.Data());
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -109,16 +107,15 @@ void SkyBox::initSkyBox() {
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void SkyBox::LoadShaders() {
+void SkyBox::LoadShaders()
+{
     ShaderInfo shaders[] = {
             {GL_VERTEX_SHADER,   "Assets/Shaders/skybox.vert"},
             {GL_FRAGMENT_SHADER, "Assets/Shaders/skybox.frag"},
             {GL_NONE,            nullptr}
     };
+
     m_shaderProgram = Shader::LoadShaders(shaders);
     m_uniformViewProjection = glGetUniformLocation(m_shaderProgram, "viewProjection");
     m_uniformModel = glGetUniformLocation(m_shaderProgram, "model");
 }
-
-
-

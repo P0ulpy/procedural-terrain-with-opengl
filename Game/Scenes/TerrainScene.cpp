@@ -6,18 +6,14 @@
 
 #include <Renderable/Terrain/Terrain.hpp>
 #include <Renderable/SkyBox.hpp>
-#include <Renderable/Cube.hpp>
 
 #include "../Map/TerrainGenerator.hpp"
 
 void TerrainScene::Init()
 {
-    //AddObject<SkyBox>(new SkyBox());
-
-    //AddObject<Cube<float>>(new Cube<float>());
+    AddObject<SkyBox>(new SkyBox());
 
     auto terrain = new Terrain();
-
     auto terrainGenerator = new TerrainGenerator(terrain);
     AddObject<TerrainGenerator>(terrainGenerator);
     AddObject<Terrain>(terrain);

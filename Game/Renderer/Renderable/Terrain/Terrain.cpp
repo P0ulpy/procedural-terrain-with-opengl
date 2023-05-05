@@ -20,7 +20,7 @@ void Terrain::Load()
 void Terrain::Cleanup()
 {
     m_chunks.FreeChunks();
-    glDeleteProgram(m_program);
+    //glDeleteProgram(m_program);
 }
 
 void Terrain::Render(Camera& camera)

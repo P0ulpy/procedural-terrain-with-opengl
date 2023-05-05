@@ -20,6 +20,7 @@ public:
     void HandleMouse(float dt);
 
     float camSpeed = 30.f;
+    float camSensitivity = 0.01f;
 
 protected:
     bool m_lockMouse = false;
