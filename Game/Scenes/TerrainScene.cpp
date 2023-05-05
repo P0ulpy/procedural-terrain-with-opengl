@@ -8,6 +8,7 @@
 #include <Renderable/SkyBox.hpp>
 
 #include "../Map/TerrainGenerator.hpp"
+#include "../UISystem/UiWindow.hpp"
 
 void TerrainScene::Init()
 {
@@ -20,4 +21,11 @@ void TerrainScene::Init()
 
     terrainGenerator->SetSeed(121);
     terrainGenerator->GenerateAllChunks(0, 0);
+
+    AddObject<UIWindow>(new UIWindow(
+            "Test",
+            ImVec2(300, 40),
+            ImGuiCond_Always,
+            ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoFocusOnAppearing
+    ));
 }

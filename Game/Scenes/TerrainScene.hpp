@@ -10,4 +10,6 @@ class TerrainScene : public Scene
 {
 public:
     void Init() override;
+
+    uint32_t verticesMode = 0;
 };
