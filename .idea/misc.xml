@@ -4,8 +4,8 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/Game" />
+      <file path="$PROJECT_DIR$/Game/Renderer" />
       <file path="$PROJECT_DIR$/ProceduralGeneration" />
-      <file path="$PROJECT_DIR$/Renderer" />
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/out" />

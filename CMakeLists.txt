@@ -5,6 +5,5 @@ project(procedural-terrain-with-opengl)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(Renderer)
 add_subdirectory(ProceduralGeneration)
 add_subdirectory(Game)
