@@ -101,3 +101,14 @@ void Terrain::GenerateVertices() {
     }
 }
 
+size_t Terrain::GetTotalVertices() const {
+    size_t totalVertices = 0;
+
+    for (const auto *chunk: m_chunks.m_activeChunks) {
+        totalVertices += chunk->GetVerticesCount();
+    }
+
+    return totalVertices;
+}
+
+

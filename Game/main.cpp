@@ -127,11 +127,6 @@ int main() {
             }
         }
 
-
-        // UserInterface::drawInfo(dt, static_cast<int>(map.GetVertices().size() / 5)); // 1 sommet = 5 composantes
-
-
-
         // effacement les tampons de couleur/profondeur
         glClearColor(0, 207, 220, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -156,7 +151,8 @@ int main() {
 
         glFlush();
         ImGui::SFML::Update(window, dtClock.restart());
-        UserInterface::drawInfo(dt, 40);
+        UserInterface::drawInfo(dt, static_cast<int>(map.GetTotalVertices()));
+
         ImGui::Begin("Terrain parameters");
         if (ImGui::SliderInt("Seed", &seed, 1, 256)) {
             //mapGenerator.setSeed(seed);
@@ -174,7 +170,7 @@ int main() {
         }
 
         if (ImGui::Button("Change vertices mode")) {
-            if (verticesMode <= 2) {
+            if (verticesMode <= 1) {
                 verticesMode++;
             } else {
                 verticesMode = 0;

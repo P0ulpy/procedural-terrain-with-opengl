@@ -84,3 +84,7 @@ void Chunk::Render() const {
                                  * strip)); // offset to starting index
     }
 }
+size_t Chunk::GetVerticesCount() const {
+    return m_vertices.size() / 5;
+}
+

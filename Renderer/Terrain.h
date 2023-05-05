@@ -25,6 +25,8 @@ public:
 
     ChunkContainer &GetChunks() { return m_chunks; }
 
+    size_t GetTotalVertices() const;
+
 private:
     ChunkContainer m_chunks;
 

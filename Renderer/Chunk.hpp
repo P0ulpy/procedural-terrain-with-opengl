@@ -25,6 +25,8 @@ public:
 
     bool getGenerated() const { return m_generated; }
 
+    size_t GetVerticesCount() const;
+
 private:
     GLuint VAO{}, VBO{}, EBO{};
     std::vector<float> m_vertices{};

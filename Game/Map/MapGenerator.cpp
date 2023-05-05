@@ -133,5 +133,9 @@ double MapGenerator::ComputeElevation(float x, float z) const
     return elevation;
 }
 
+size_t MapGenerator::GetTotalVertices() const {
+    return m_terrain.GetTotalVertices();
+}
+
 
 

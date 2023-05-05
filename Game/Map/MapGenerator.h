@@ -37,6 +37,8 @@ public:
 
     void checkPlayerChunk(int playerPosX, int playerPosZ);
 
+    size_t GetTotalVertices() const;
+
 private:
     void GenerateChunk(int32_t chunkX, int32_t chunkZ);
     void SetChunkActive(int32_t chunkX, int32_t chunkZ);
