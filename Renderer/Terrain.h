@@ -34,7 +34,7 @@ private:
     GLsizei m_num_strips { Chunk::SIZE - 1 };
     GLsizei m_num_verts_per_strip { Chunk::SIZE * 2 };
 
-    GLuint chunkVAO, chunkVBO, chunkEBO;
+    GLuint chunkVAO{}, chunkVBO{}, chunkEBO{};
 
     uint32_t m_program {};
 };

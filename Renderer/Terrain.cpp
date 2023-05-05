@@ -8,32 +8,28 @@ Terrain::Terrain()
           rockTexture("Assets/Textures/rock.bmp"),
           sandTexture("Assets/Textures/sand.bmp"),
           waterTexture("Assets/Textures/water.bmp"),
-          snowTexture("Assets/Textures/neige.bmp")
-{
+          snowTexture("Assets/Textures/neige.bmp") {
     // TODO : Put in terrain class, chunk should not be responsible for loading shaders
     ShaderInfo shader[] = {
-            { GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert" },
-            { GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag" },
-            { GL_NONE, nullptr }
+            {GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert"},
+            {GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag"},
+            {GL_NONE,            nullptr}
     };
 
     m_program = Shader::loadShaders(shader);
 }
 
-Terrain::~Terrain()
-{
+Terrain::~Terrain() {
     FreeMemory();
 }
 
-void Terrain::FreeMemory()
-{
+void Terrain::FreeMemory() {
     m_chunks.FreeChunks();
 
-  //  glDeleteProgram(m_program);
+    //  glDeleteProgram(m_program);
 }
 
-void Terrain::Render(const Mat4f &viewProjection)
-{
+void Terrain::Render(const Mat4f &viewProjection) {
     glUseProgram(m_program);
 
     glEnable(GL_DEPTH_TEST);
@@ -76,8 +72,7 @@ void Terrain::Render(const Mat4f &viewProjection)
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
 
-    for(auto* chunk : m_chunks.m_activeChunks)
-    {
+    for (auto *chunk: m_chunks.m_activeChunks) {
         chunk->Render();
     }
 
@@ -94,17 +89,14 @@ void Terrain::Render(const Mat4f &viewProjection)
 void Terrain::AddChunk(
         int32_t chunkX,
         int32_t chunkZ,
-        const std::vector<float>& vertices,
-        const std::vector<uint32_t>& indices)
-{
+        const std::vector<float> &vertices,
+        const std::vector<uint32_t> &indices) {
     m_chunks(chunkX, chunkZ)
-        .Generate(vertices, indices, m_program, &grassTexture, &rockTexture, &sandTexture, &waterTexture, &snowTexture);
+            .Generate(vertices, indices, m_program);
 }
 
-void Terrain::GenerateVertices()
-{
-    for (auto& [key, chunk] : m_chunks.GetData())
-    {
+void Terrain::GenerateVertices() {
+    for (auto &[key, chunk]: m_chunks.GetData()) {
         chunk.GenerateVertices();
     }
 }

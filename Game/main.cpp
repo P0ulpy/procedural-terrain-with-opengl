@@ -27,10 +27,11 @@ int main() {
 
     ImGui::SFML::Init(window);
 
-    Point3df cameraPos{0, 10.f, 0.f};
+    Point3df cameraPos{0, 60.f, 0.f};
     float cameraAlpha = 0;
     float cameraBeta = 0;
     int seed = 121;
+    unsigned int verticesMode = 0;
 
     MapGenerator map;
     SkyBox skybox;
@@ -117,12 +118,12 @@ int main() {
                         break;
                 }
             } else if (event.type == sf::Event::MouseMoved) {
-                sf::Vector2i halfWindowSize = {(int) window.getSize().x / 2, (int) window.getSize().y / 2};
-
-                cameraAlpha += static_cast<float>(event.mouseMove.x - halfWindowSize.x) * -0.001f;
-                cameraBeta += static_cast<float>(event.mouseMove.y - halfWindowSize.y) * 0.001f;
-
-                sf::Mouse::setPosition(halfWindowSize, window);
+//                sf::Vector2i halfWindowSize = {(int) window.getSize().x / 2, (int) window.getSize().y / 2};
+//
+//                cameraAlpha += static_cast<float>(event.mouseMove.x - halfWindowSize.x) * -0.001f;
+//                cameraBeta += static_cast<float>(event.mouseMove.y - halfWindowSize.y) * 0.001f;
+//
+//                sf::Mouse::setPosition(halfWindowSize, window);
             }
         }
 
@@ -173,7 +174,25 @@ int main() {
         }
 
         if (ImGui::Button("Change vertices mode")) {
-            //
+            if (verticesMode <= 2) {
+                verticesMode++;
+            } else {
+                verticesMode = 0;
+            }
+            switch (verticesMode) {
+                case 0:
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    break;
+                case 1:
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+                    break;
+                case 2:
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                    break;
+                default:
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    break;
+            }
         }
 
         ImGui::End();
