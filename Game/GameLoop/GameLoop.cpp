@@ -15,7 +15,7 @@ GameLoop* GameLoop::s_instance = nullptr;
 const sf::ContextSettings contextSettings = sf::ContextSettings(24, 8, 4, 4, 6);
 
 GameLoop::GameLoop()
-    : window(sf::VideoMode(1000, 800), "Game", sf::Style::Default, contextSettings)
+    : window(sf::VideoMode(1700, 1000), "Game", sf::Style::Default, contextSettings)
     // Dirty way to manage camera lifetime i will refactor it later
     , camera(new GameCamera(window))
 {
@@ -40,12 +40,12 @@ void GameLoop::Init()
 
     ImGui::SFML::Init(window);
 
-    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    //auto& io = ImGui::GetIO();
+    // Can't be used because of our dumb version of imgui & OpenGL
+    // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    auto& io = ImGui::GetIO();
 
-    //io.ConfigWindowsMoveFromTitleBarOnly = false;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-
+    io.ConfigWindowsMoveFromTitleBarOnly = false;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 
     m_scene->AddObject<GameCamera>(camera);
     m_scene->Init();

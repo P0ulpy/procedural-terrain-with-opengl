@@ -66,6 +66,9 @@ public:
     }
 
 protected:
+    virtual void OnUpdate(float deltaTime) {};
+
+protected:
     // Only purpose is to manage objects lifetime
     std::vector<std::unique_ptr<void, void(*)(void const*)>> m_objects;
 

@@ -24,6 +24,7 @@ struct ChunkContainer
     const Chunk& operator()(int32_t x, int32_t z) const;
 
     [[nodiscard]] std::vector<Chunk*>& GetActiveChunks() { return m_activeChunks; }
+    [[nodiscard]] const std::vector<Chunk*>& GetActiveChunks() const { return m_activeChunks; }
     [[nodiscard]] std::map<ChunkContainerIndex, Chunk>& GetData() { return m_data; }
 
 private:

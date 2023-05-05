@@ -36,6 +36,7 @@ void TerrainGenerator::GenerateNewChunks(int32_t chunkX, int32_t chunkZ)
 
 void TerrainGenerator::GenerateAllChunks(int playerPosX, int playerPosZ)
 {
+    m_needToGenerateAllChunks = false;
     m_terrain->Cleanup();
 
     m_perlin.~PerlinNoise();

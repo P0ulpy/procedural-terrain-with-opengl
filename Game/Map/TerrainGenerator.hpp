@@ -22,6 +22,8 @@ public:
     [[nodiscard]] int GetSeed() const { return m_seed; };
     void SetSeed(unsigned int seed);
 
+    bool IsNeedToGenerateAllChunks() const { return m_needToGenerateAllChunks; }
+    void SetNeedToGenerateAllChunks() { m_needToGenerateAllChunks = true; }
 public:
     int m_seed = 0;
 
@@ -46,4 +48,6 @@ private:
     //Debug number of new chunks generated
     int m_newGeneratedChunks = 0;
     ChunkContainer::ChunkContainerIndex m_lastChunkIndex { 0, 0 };
+
+    bool m_needToGenerateAllChunks = false;
 };

@@ -93,3 +93,13 @@ void Terrain::GenerateVertices()
         chunk.Load();
     }
 }
+
+size_t Terrain::GetTotalVertices() const
+{
+    size_t totalVertices = 0;
+
+    for (const auto *chunk: m_chunks.GetActiveChunks())
+        totalVertices += chunk->GetVerticesCount();
+
+    return totalVertices;
+}

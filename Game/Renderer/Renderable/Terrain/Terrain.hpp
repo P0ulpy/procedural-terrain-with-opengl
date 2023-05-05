@@ -23,7 +23,9 @@ public:
     void GenerateVertices();
     void AddChunk(int32_t chunkX, int32_t chunkZ, const std::vector<float>& vertices, const std::vector<uint32_t>& indices);
 
-    ChunkContainer& GetChunks() { return m_chunks; }
+    [[nodiscard]] ChunkContainer& GetChunks() { return m_chunks; }
+    [[nodiscard]] size_t GetTotalVertices() const;
+
 private:
     sf::Clock waterClock;
     uint32_t m_program {};

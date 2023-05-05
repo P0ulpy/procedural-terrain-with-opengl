@@ -25,7 +25,8 @@ public:
     void Render(Camera& camera) override;
     void Cleanup() override;
 
-    bool IsGenerated() const { return m_generated; }
+    [[nodiscard]] bool IsGenerated() const { return m_generated; }
+    [[nodiscard]] size_t GetVerticesCount() const { return m_vertices.size() / 5; }
 
 private:
     bool m_generated = false;

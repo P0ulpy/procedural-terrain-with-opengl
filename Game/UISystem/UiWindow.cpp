@@ -8,11 +8,6 @@
 #include <imgui.h>
 #include <iostream>
 
-UIWindow::UIWindow()
-{
-
-}
-
 UIWindow::UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond, ImGuiWindowFlags flags)
     : m_title(title)
     , m_size(size)
@@ -28,8 +23,6 @@ void UIWindow::OnGuiBegin()
         ImGui::SetNextWindowSize(m_size, m_cond);
 
     ImGui::Begin(m_title.c_str(), &m_isOpen, m_flags);
-
-    ImGui::TextUnformatted("Test");
 }
 
 void UIWindow::OnGuiEnd()

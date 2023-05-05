@@ -21,7 +21,7 @@ SET(GAME_SOURCES
         Map/TerrainGenerator.cpp
         Map/ChunkContainer.hpp
         Map/ChunkContainer.cpp
-    )
+        UISystem/UiText.cpp UISystem/UiText.hpp UISystem/UiButton.cpp UISystem/UiButton.hpp UISystem/UiInputInt.cpp UISystem/UiInputInt.hpp UISystem/UISliderFloat.cpp UISystem/UISliderFloat.hpp UISystem/UiSliderInt.cpp UISystem/UiSliderInt.hpp)
 
 # Packages
 find_package(GLEW REQUIRED)

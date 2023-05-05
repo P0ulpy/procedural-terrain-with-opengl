@@ -10,6 +10,8 @@ void Scene::Update(float dt)
     {
         updatable->Update(dt);
     }
+
+    OnUpdate(dt);
 }
 
 void Scene::Render(Camera& camera)
