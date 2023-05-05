@@ -14,7 +14,7 @@
 class Chunk : public IRenderable
 {
 public:
-    constexpr static int32_t SIZE = 128;
+    constexpr static int32_t SIZE = 64;
 
     Chunk();
     ~Chunk() override = default;
@@ -25,7 +25,11 @@ public:
     void Render(Camera& camera) override;
     void Cleanup() override;
 
+    bool IsGenerated() const { return m_generated; }
+
 private:
+    bool m_generated = false;
+
     GLuint VAO {}, VBO {}, EBO {};
     std::vector<float> m_vertices {};
     std::vector<uint32_t> m_indices {};

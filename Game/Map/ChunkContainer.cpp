@@ -18,6 +18,7 @@ const Chunk& ChunkContainer::operator()(int32_t x, int32_t z) const
 
 void ChunkContainer::FreeChunks()
 {
+    m_activeChunks.clear();
     m_data.clear();
 }
 
@@ -38,7 +39,7 @@ Chunk &ChunkContainer::GetPlayerChunk(float playerX, float playerZ)
 ChunkContainer::ChunkContainerIndex ChunkContainer::GetChunkIndex(float playerX, float playerZ)
 {
     return {
-        static_cast<int32_t>(std::floor(playerX / (float)Chunk::SIZE)),
-        static_cast<int32_t>(std::floor(playerZ / (float)Chunk::SIZE))
+        static_cast<int32_t>(std::floor((playerX + Chunk::SIZE / 2) / (float)Chunk::SIZE)),
+        static_cast<int32_t>(std::floor((playerZ + Chunk::SIZE / 2) / (float)Chunk::SIZE))
     };
 }

@@ -23,9 +23,9 @@ public:
     void GenerateVertices();
     void AddChunk(int32_t chunkX, int32_t chunkZ, const std::vector<float>& vertices, const std::vector<uint32_t>& indices);
 
+    ChunkContainer& GetChunks() { return m_chunks; }
 private:
     sf::Clock waterClock;
-    //Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
     uint32_t m_program {};
 
     Texture grassTexture = Texture ("Assets/Textures/grass.png" );

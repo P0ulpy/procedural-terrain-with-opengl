@@ -1,12 +1,37 @@
 #include "TerrainGenerator.hpp"
 
+#include "../GameLoop/GameLoop.hpp"
+
 TerrainGenerator::TerrainGenerator(Terrain *terrain)
     : m_terrain(terrain)
 {}
 
 void TerrainGenerator::Update(float deltaTime)
 {
+    auto camPos = GameLoop::Instance()->camera->GetTransform().pos;
 
+    auto chunkIndex = ChunkContainer::GetChunkIndex(camPos.x, camPos.z);
+
+    if (m_lastChunkIndex != chunkIndex)
+    {
+        //GenerateChunks if we are in a new chunk
+        GenerateNewChunks(chunkIndex.first, chunkIndex.second);
+        m_lastChunkIndex = chunkIndex;
+    }
+}
+
+void TerrainGenerator::GenerateNewChunks(int32_t chunkX, int32_t chunkZ)
+{
+    m_newGeneratedChunks = 0;
+
+    m_terrain->GetChunks().GetActiveChunks().clear();
+
+    // Generate chunks around us
+    for (int x = chunkX - m_chunksAroundUs; x <= chunkX + m_chunksAroundUs; ++x)
+        for (int z = chunkZ - m_chunksAroundUs; z <= chunkZ + m_chunksAroundUs; ++z)
+            SetChunkActive(x, z);
+
+    std::cout << "Number of new chunks generated : " << m_newGeneratedChunks << std::endl;
 }
 
 void TerrainGenerator::GenerateAllChunks(int playerPosX, int playerPosZ)
@@ -16,21 +41,35 @@ void TerrainGenerator::GenerateAllChunks(int playerPosX, int playerPosZ)
     m_perlin.~PerlinNoise();
     m_perlin = PerlinNoise(m_frequency, m_amplitude, m_lacunarity, m_persistance);
 
-    auto chunkIndex = ChunkContainer::GetChunkIndex(0, 0);
+    auto chunkIndex = ChunkContainer::GetChunkIndex(playerPosX, playerPosZ);
 
     // Generate chunks around us
     for (int x = chunkIndex.first - m_chunksAroundUs; x < chunkIndex.first + m_chunksAroundUs; ++x)
         for (int z = chunkIndex.second - m_chunksAroundUs; z < chunkIndex.second + m_chunksAroundUs; ++z)
-            GenerateChunk(x, z);
+            SetChunkActive(x, z);
 
     m_terrain->GenerateVertices();
+}
+
+void TerrainGenerator::SetChunkActive(int32_t chunkX, int32_t chunkZ)
+{
+    auto& chunks = m_terrain->GetChunks();
+    auto* chunk = &chunks(chunkX, chunkZ);
+
+    if (!chunk->IsGenerated())
+    {
+        ++m_newGeneratedChunks;
+        GenerateChunk(chunkX, chunkZ);
+    }
+
+    chunks.GetActiveChunks().push_back(chunk);
 }
 
 void TerrainGenerator::GenerateChunk(int32_t chunkX, int32_t chunkZ)
 {
     // position of up-left corner of the chunk
-    int32_t chunkWorldPosX = chunkX * Chunk::SIZE + chunkX * - 1;
-    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE + chunkZ * - 1;
+    int32_t chunkWorldPosX = chunkX * Chunk::SIZE - Chunk::SIZE / 2+ chunkX * - 1;
+    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE - Chunk::SIZE / 2+ chunkZ * - 1;
 
     // vectors size reservation
     //constexpr size_t verticesPerRow = Chunk::SIZE * Chunk::SIZE;

@@ -19,13 +19,19 @@ void Chunk::Generate(const std::vector<float> &vertices,
                      const std::vector<uint32_t> &indices,
                      GLuint program)
 {
+    m_generated = true;
     m_vertices = vertices;
     m_indices = indices;
     m_program = program;
+
+    Load();
 }
 
 void Chunk::Load()
 {
+    if(!m_generated)
+        return;
+
     glUseProgram(m_program);
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

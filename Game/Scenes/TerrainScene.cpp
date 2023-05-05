@@ -24,6 +24,4 @@ void TerrainScene::Init()
 
     terrainGenerator->SetSeed(121);
     terrainGenerator->GenerateAllChunks(0, 0);
-
-
 }

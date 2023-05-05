@@ -23,22 +23,27 @@ public:
     void SetSeed(unsigned int seed);
 
 public:
+    int m_seed = 0;
+
     float m_frequency = 0.4f, m_amplitude = 1.f, m_lacunarity = 2.f, m_persistance = 0.5f, m_redistribution = 2.f;
+    float m_textureRepeat = 10.0f;
     int m_octaves = 8;
 
     int generationDistance = 50;
     int maxHeight = 50;
-    int terraces = 30;
 
-    int m_chunksAroundUs = 2;
+    int m_chunksAroundUs = 8;
 
 private:
+    void GenerateNewChunks(int32_t chunkX, int32_t chunkZ);
     void GenerateChunk(int32_t chunkX, int32_t chunkZ);
+    void SetChunkActive(int32_t chunkX, int32_t chunkZ);
 
 private:
     Terrain* m_terrain { nullptr };
     PerlinNoise m_perlin;
 
-    float m_textureRepeat = 10.0f;
-    int m_seed = 0;
+    //Debug number of new chunks generated
+    int m_newGeneratedChunks = 0;
+    ChunkContainer::ChunkContainerIndex m_lastChunkIndex { 0, 0 };
 };

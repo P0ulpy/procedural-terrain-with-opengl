@@ -63,9 +63,9 @@ void Terrain::Render(Camera& camera)
 
     glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
 
-    for(auto& [ key, chunk ] : m_chunks.GetData())
+    for(auto* chunk : m_chunks.GetActiveChunks())
     {
-        chunk.Render(camera);
+        chunk->Render(camera);
     }
 
     glDisable(GL_BLEND);
