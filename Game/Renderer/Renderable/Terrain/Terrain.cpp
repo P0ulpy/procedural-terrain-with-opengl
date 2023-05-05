@@ -5,16 +5,10 @@
 
 void Terrain::Load()
 {
-    grassTexture = Texture ("Assets/Textures/grass.png" );
-    rockTexture = Texture ("Assets/Textures/rock.bmp" );
-    sandTexture = Texture ("Assets/Textures/sand.bmp" );
-    waterTexture = Texture ("Assets/Textures/water.bmp" );
-    snowTexture = Texture ("Assets/Textures/neige.bmp" );
-
     // TODO : Put in terrain class, chunk should not be responsible for loading shaders
     ShaderInfo shader[] = {
-            { GL_VERTEX_SHADER,   "Assets/Shaders/triangles.vert" },
-            { GL_FRAGMENT_SHADER, "Assets/Shaders/triangles.frag" },
+            { GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert" },
+            { GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag" },
             { GL_NONE, nullptr }
     };
 
@@ -62,9 +56,12 @@ void Terrain::Render(Camera& camera)
     GLint timeLocation = glGetUniformLocation(m_program, "time");
     glUniform1f(timeLocation, time);
 
+    auto model = Mat4f::Identity();
+    auto mvp = model * camera.GetViewProjectionMatrix();
+
     auto mvpLocation = glGetUniformLocation(m_program, "model");
 
-    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, camera.GetViewProjectionMatrix().Data());
+    glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, mvp.Data());
 
     for(auto& [ key, chunk ] : m_chunks.GetData())
     {

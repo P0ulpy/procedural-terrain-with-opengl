@@ -25,8 +25,14 @@ public:
 
 private:
     sf::Clock waterClock;
-    Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
+    //Texture grassTexture, rockTexture, sandTexture, waterTexture, snowTexture;
     uint32_t m_program {};
+
+    Texture grassTexture = Texture ("Assets/Textures/grass.png" );
+    Texture rockTexture = Texture ("Assets/Textures/rock.bmp" );
+    Texture sandTexture = Texture ("Assets/Textures/sand.bmp" );
+    Texture waterTexture = Texture ("Assets/Textures/water.bmp" );
+    Texture snowTexture = Texture ("Assets/Textures/neige.bmp" );
 
     ChunkContainer m_chunks;
 };

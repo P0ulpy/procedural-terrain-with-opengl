@@ -11,7 +11,10 @@
 #include "Math/Vector.hpp"
 
 GameCamera::GameCamera(sf::RenderTarget &target)
-        : Camera(target, {}, 45.f / 180.0f * PI<float>, 0.1f, 500.f)
+        : Camera(target, {
+            {0, 100, 0},
+            { 0, 0, 0 }
+            }, 45.f / 180.0f * PI<float>, 0.1f, 500.f)
 {}
 
 void GameCamera::Update(float dt)

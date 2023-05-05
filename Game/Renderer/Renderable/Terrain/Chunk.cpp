@@ -28,8 +28,8 @@ void Chunk::Load()
 {
     glUseProgram(m_program);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -61,7 +61,6 @@ void Chunk::Load()
 
 void Chunk::Render(Camera& camera)
 {
-
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
