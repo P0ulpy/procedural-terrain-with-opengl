@@ -1,6 +1,5 @@
 #include <SFML/Window.hpp>
 #include <GL/glew.h>
-#include <array>
 #include "Math/Matrix.hpp"
 #include "Map/MapGenerator.h"
 #include "imgui.h"
@@ -9,25 +8,26 @@
 #include "UserInterface.hpp"
 #include "Skybox.hpp"
 
-int main()
-{
+int main() {
     // set version of opengl to 4.6
     const sf::ContextSettings context_settings(24, 8, 4, 4, 6);
     // cr�e la fen�tre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "OpenGL", sf::Style::Default, context_settings);
     window.setVerticalSyncEnabled(true);
-    
+
     // activation de la fen�tre
     window.setActive(true);
 
-   // ImGui::SFML::Init(window);
+
 
     // fucking lines of hell
     glewExperimental = GL_TRUE;
     if (glewInit())
         throw std::runtime_error("Error init glew");
 
-    Point3df cameraPos { 0, 200.f, 0.f };
+    ImGui::SFML::Init(window);
+
+    Point3df cameraPos{0, 10.f, 0.f};
     float cameraAlpha = 0;
     float cameraBeta = 0;
     int seed = 121;
@@ -36,7 +36,7 @@ int main()
     SkyBox skybox;
     map.SetSeed(seed);
     map.GenerateAllChunks(0, 0);
-    
+
     //map.Generate();
     sf::Clock dtClock;
     // la boucle principale
@@ -47,11 +47,13 @@ int main()
         // gestion des �v�nements
         sf::Event event{};
         while (window.pollEvent(event)) {
-            //ImGui::SFML::ProcessEvent(event);
+            ImGui::SFML::ProcessEvent(event);
             if (event.type == sf::Event::Closed) {
                 // on stoppe le programme
                 running = false;
-             //  ImGui::SFML::Shutdown();
+                window.close();
+                return 0;
+                ImGui::SFML::Shutdown();
             } else if (event.type == sf::Event::Resized) {
                 // on ajuste le viewport lorsque la fen�tre est redimensionn�e
                 glViewport(0, 0, event.size.width, event.size.height);
@@ -103,7 +105,7 @@ int main()
                         break;
                     case sf::Keyboard::Escape:
                         window.close();
-                       // ImGui::SFML::Shutdown();
+                        ImGui::SFML::Shutdown();
                         return 0;
                     case sf::Keyboard::I:
                         map.terraces = map.terraces + 1;
@@ -114,9 +116,8 @@ int main()
                         map.GenerateAllChunks(0, 0);
                         break;
                 }
-            } else if (event.type == sf::Event::MouseMoved)
-            {
-                sf::Vector2i halfWindowSize = { (int)window.getSize().x / 2, (int)window.getSize().y / 2 };
+            } else if (event.type == sf::Event::MouseMoved) {
+                sf::Vector2i halfWindowSize = {(int) window.getSize().x / 2, (int) window.getSize().y / 2};
 
                 cameraAlpha += static_cast<float>(event.mouseMove.x - halfWindowSize.x) * -0.001f;
                 cameraBeta += static_cast<float>(event.mouseMove.y - halfWindowSize.y) * 0.001f;
@@ -125,24 +126,8 @@ int main()
             }
         }
 
-       // ImGui::SFML::Update(window, dtClock.restart());
 
-       //ImGui::Begin("Terrain parameters");
-       //if (ImGui::SliderInt("Seed", &seed, 0, 256)) {
-       //    map.SetSeed(seed);
-       //}
-
-       //ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f");
-       //ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f");
-       //ImGui::SliderInt("Nbr of Terraces", &map.terraces, 0.0f,100.0f,"%.2d");
-
-       //if (ImGui::Button("Change vertice mode")) {
-       //    
-       //}
-
-       //ImGui::End();
-
-       // UserInterface::drawInfo(dt, static_cast<int>(map.GetVertices().size() / 5)); // 1 sommet = 5 composantes
+        // UserInterface::drawInfo(dt, static_cast<int>(map.GetVertices().size() / 5)); // 1 sommet = 5 composantes
 
 
 
@@ -153,7 +138,7 @@ int main()
         Mat4<float> v = Mat4<float>::RotationX(-cameraBeta) * Mat4<float>::RotationY(-cameraAlpha) *
                         Mat4<float>::Translation(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 
-        float aspect = (float)window.getSize().x / (float)window.getSize().y;
+        float aspect = (float) window.getSize().x / (float) window.getSize().y;
         float fov = 45.0f / 180.0f * 3.14159265358979323846f;
         float n = 0.1f;
         float f = 500.f;
@@ -161,30 +146,51 @@ int main()
         auto p = Mat4f::Projection(aspect, fov, f, n);
         map.checkPlayerChunk(cameraPos.x, cameraPos.z);
         Mat4<float> vp = p * v;
-       
-        
-      
+
         skybox.Render(vp, cameraPos);
         map.Render(vp);
-        /*glBindVertexArray(0);
+        glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
-       // glActiveTexture(GL_TEXTURE0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         glFlush();
+        ImGui::SFML::Update(window, dtClock.restart());
+        UserInterface::drawInfo(dt, 40);
+        ImGui::Begin("Terrain parameters");
+        if (ImGui::SliderInt("Seed", &seed, 1, 256)) {
+            //mapGenerator.setSeed(seed);
+            //map.GenerateAllChunks(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+        }
+
+        if (ImGui::SliderFloat("Frequency", &map.m_frequency, 0.0f, 10.0f, "%.2f")) {
+//            map.GenerateAllChunks(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+        }
+        if (ImGui::SliderFloat("Redistribution", &map.m_redistribution, 0.0f, 10.0f, "%.2f")) {
+//            map.GenerateAllChunks(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+        };
+        if (ImGui::SliderInt("Nbr of Terraces", &map.terraces, 0.0f, 100.0f, "%.2d")) {
+//            map.GenerateAllChunks(static_cast<int>(cameraPos.x), static_cast<int>(cameraPos.z));
+        }
+
+        if (ImGui::Button("Change vertices mode")) {
+            //
+        }
+
+        ImGui::End();
+
+        //UserInterface::drawTerrainParameters(seed,map, cameraPos);
 
 
 
         // termine la trame courante (en interne, �change les deux tampons de rendu)
-        //ImGui::SFML::Render(window);
+        ImGui::SFML::Render(window);
         window.display();
 
 
-        
     }
 
     // lib�ration des ressources...
-    // ImGui::SFML::Shutdown();
+    ImGui::SFML::Shutdown();
     return 0;
 }
 
