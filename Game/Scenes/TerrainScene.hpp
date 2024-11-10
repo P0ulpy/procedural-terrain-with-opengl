@@ -1,12 +1,8 @@
-//
-// Created by Flo on 20/04/2023.
-//
-
 #pragma once
 
-#include "../GameLoop/Scene.hpp"
-#include "../UISystem/UiText.hpp"
-#include "../Map/TerrainGenerator.hpp"
+#include <GameLoop/Scene.hpp>
+#include <UISystem/UiText.hpp>
+#include <Objects/Map/TerrainGenerator.hpp>
 
 class TerrainScene : public Scene
 {
@@ -15,9 +11,6 @@ public:
 
 protected:
     void OnUpdate(float deltaTime) override;
-
-private:
-    void SetVerticesMode(uint32_t mode);
 
 private:
     // Objects

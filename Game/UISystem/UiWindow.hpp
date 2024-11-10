@@ -1,14 +1,10 @@
-//
-// Created by Flo on 22/04/2023.
-//
-
 #pragma once
 
 #include <string>
 #include <string_view>
 #include <imgui.h>
 
-#include "Widget.hpp"
+#include <UISystem/Widget.hpp>
 
 class UIWindow : public Widget
 {

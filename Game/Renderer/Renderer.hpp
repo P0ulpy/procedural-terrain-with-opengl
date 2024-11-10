@@ -6,7 +6,7 @@
 
 #include <GL/glew.h>
 #include <SFML/Window/Window.hpp>
-#include "Camera/Camera.hpp"
+#include <Renderer/Camera/Camera.hpp>
 
 class Renderer
 {

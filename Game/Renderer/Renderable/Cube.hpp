@@ -6,7 +6,7 @@
 
 #include <gl/glew.h>
 
-#include "IRenderable.hpp"
+#include <Renderer/Renderable/IRenderable.hpp>
 
 template <typename T>
 class Cube : public IRenderable

@@ -2,7 +2,7 @@
 // Created by Flo on 15/04/2023.
 //
 
-#include "Camera.hpp"
+#include <Renderer/Camera/Camera.hpp>
 
 Camera::Camera(sf::RenderTarget& target, const Transform& transform, float fov, float near, float far)
         : m_target(&target)

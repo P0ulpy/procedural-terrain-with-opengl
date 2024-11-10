@@ -1,14 +1,10 @@
-//
-// Created by Flo on 05/05/2023.
-//
-
 #pragma once
 
-
-#include "Widget.hpp"
 #include <imgui.h>
 #include <string_view>
 #include <functional>
+
+#include <UISystem/Widget.hpp>
 
 class UIButton : public Widget
 {

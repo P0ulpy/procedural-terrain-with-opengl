@@ -24,7 +24,7 @@
  * or copy at http://opensource.org/licenses/MIT)
  */
 
-#include "PerlinNoise.h"
+#include "PerlinNoise.hpp"
 
 #include <cstdint>  // int32_t/uint8_t
 #include <array>

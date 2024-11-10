@@ -1,19 +1,15 @@
-//
-// Created by Flo on 29/04/2023.
-//
-
 #pragma once
 
 #include <map>
 
-#include <Renderable/Terrain/Chunk.hpp>
-#include <Math/Point.hpp>
+#include <Renderer/Renderable/Terrain/Chunk.hpp>
+#include <Renderer/Math/Point.hpp>
 
 struct ChunkContainer
 {
-    using ChunkContainerIndex = std::pair<int32_t, int32_t>;
+    using Index = std::pair<int32_t, int32_t>;
 
-    static ChunkContainerIndex GetChunkIndex(float playerX, float playerZ);
+    static Index GetChunkIndex(float playerX, float playerZ);
 
     Chunk& GetPlayerChunk(float playerX, float playerZ);
 
@@ -25,9 +21,9 @@ struct ChunkContainer
 
     [[nodiscard]] std::vector<Chunk*>& GetActiveChunks() { return m_activeChunks; }
     [[nodiscard]] const std::vector<Chunk*>& GetActiveChunks() const { return m_activeChunks; }
-    [[nodiscard]] std::map<ChunkContainerIndex, Chunk>& GetData() { return m_data; }
+    [[nodiscard]] std::map<Index, Chunk>& GetData() { return m_data; }
 
 private:
-    std::map<ChunkContainerIndex, Chunk> m_data;
+    std::map<Index, Chunk> m_data;
     std::vector<Chunk*> m_activeChunks;
 };

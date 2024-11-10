@@ -1,13 +1,9 @@
-//
-// Created by Flo on 22/04/2023.
-//
-
 #pragma once
 
 #include <vector>
 #include <memory>
 
-#include "../Objects/IUpdatable.hpp"
+#include <Objects/IUpdatable.hpp>
 
 class Widget
 {

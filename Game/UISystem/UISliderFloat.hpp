@@ -1,7 +1,3 @@
-//
-// Created by Flo on 05/05/2023.
-//
-
 #pragma once
 
 #include <string>
@@ -9,7 +5,7 @@
 
 #include <imgui.h>
 
-#include "Widget.hpp"
+#include <UISystem/Widget.hpp>
 
 class UISliderFloat : public Widget
 {

@@ -2,13 +2,13 @@
 // Created by Flo on 14/04/2023.
 //
 
-#include "GameLoop.hpp"
 #include <imgui.h>
 #include <imgui-SFML.h>
 
 #include <SFML/Window/ContextSettings.hpp>
 
-#include <Renderer.hpp>
+#include <GameLoop/GameLoop.hpp>
+#include <Renderer/Renderer.hpp>
 
 GameLoop* GameLoop::s_instance = nullptr;
 

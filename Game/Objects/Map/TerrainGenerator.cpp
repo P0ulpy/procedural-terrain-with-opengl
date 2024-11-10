@@ -1,6 +1,5 @@
-#include "TerrainGenerator.hpp"
-
-#include "../GameLoop/GameLoop.hpp"
+#include <Objects/Map/TerrainGenerator.hpp>
+#include <GameLoop/GameLoop.hpp>
 
 TerrainGenerator::TerrainGenerator(Terrain *terrain)
     : m_terrain(terrain)
@@ -31,7 +30,7 @@ void TerrainGenerator::GenerateNewChunks(int32_t chunkX, int32_t chunkZ)
         for (int z = chunkZ - m_chunksAroundUs; z <= chunkZ + m_chunksAroundUs; ++z)
             SetChunkActive(x, z);
 
-    std::cout << "Number of new chunks generated : " << m_newGeneratedChunks << std::endl;
+    std::cout << "Generated " << m_newGeneratedChunks << " Chunk(s)" << '\n';
 }
 
 void TerrainGenerator::GenerateAllChunks(int playerPosX, int playerPosZ)
@@ -69,15 +68,18 @@ void TerrainGenerator::SetChunkActive(int32_t chunkX, int32_t chunkZ)
 void TerrainGenerator::GenerateChunk(int32_t chunkX, int32_t chunkZ)
 {
     // position of up-left corner of the chunk
-    int32_t chunkWorldPosX = chunkX * Chunk::SIZE - Chunk::SIZE / 2+ chunkX * - 1;
-    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE - Chunk::SIZE / 2+ chunkZ * - 1;
+    int32_t chunkWorldPosX = chunkX * Chunk::SIZE - Chunk::SIZE / 2 + chunkX * - 1;
+    int32_t chunkWorldPosZ = chunkZ * Chunk::SIZE - Chunk::SIZE / 2 + chunkZ * - 1;
 
     // vectors size reservation
-    //constexpr size_t verticesPerRow = Chunk::SIZE * Chunk::SIZE;
-    //constexpr size_t verticesCount = verticesPerRow * 5; // 5 represent the count of vertices we add each time we loop
-    std::vector<float> vertices;//(verticesCount);
-    //constexpr size_t indicesCount = ((Chunk::SIZE - 1) * Chunk::SIZE) * 2;
-    std::vector<uint32_t> indices;//(indicesCount);
+    constexpr size_t VerticesPerRow = Chunk::SIZE * Chunk::SIZE;
+    constexpr size_t VerticesCount = VerticesPerRow * 5; // 5 represent the count of vertices we add each time we loop
+    constexpr size_t IndicesCount = ((Chunk::SIZE - 1) * Chunk::SIZE) * 2;
+
+    std::vector<float> vertices;
+    vertices.reserve(VerticesCount);
+    std::vector<uint32_t> indices;
+    indices.reserve(IndicesCount);
 
     for(int x = chunkWorldPosX; x < chunkWorldPosX + Chunk::SIZE; ++x)
     {

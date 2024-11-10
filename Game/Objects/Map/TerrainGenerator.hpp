@@ -1,10 +1,10 @@
 #include <vector>
 #include <iostream>
 
-#include <ProceduralAlgo/PerlinNoise.h>
-#include <Renderable/Terrain/Terrain.hpp>
+#include <PerlinNoise.hpp>
+#include <Renderer/Renderable/Terrain/Terrain.hpp>
 
-#include "../Objects/IUpdatable.hpp"
+#include <Objects/IUpdatable.hpp>
 
 class TerrainGenerator : public IUpdatable
 {
@@ -45,9 +45,9 @@ private:
     Terrain* m_terrain { nullptr };
     PerlinNoise m_perlin;
 
-    //Debug number of new chunks generated
+    // Used for monitoring purposes
     int m_newGeneratedChunks = 0;
-    ChunkContainer::ChunkContainerIndex m_lastChunkIndex { 0, 0 };
+    ChunkContainer::Index m_lastChunkIndex { 0, 0 };
 
     bool m_needToGenerateAllChunks = false;
 };

@@ -1,18 +1,32 @@
-//
-// Created by Flo on 20/04/2023.
-//
+#include <Scenes/TerrainScene.hpp>
 
-#include "TerrainScene.hpp"
+#include <Renderer/Renderable/Terrain/Terrain.hpp>
+#include <Renderer/Renderable/SkyBox.hpp>
 
-#include <Renderable/Terrain/Terrain.hpp>
-#include <Renderable/SkyBox.hpp>
+#include <UISystem/UiWindow.hpp>
+#include <GameLoop/GameLoop.hpp>
+#include <UISystem/UiButton.hpp>
+#include <UISystem/UiInputInt.hpp>
+#include <UISystem/UISliderFloat.hpp>
+#include <UISystem/UiSliderInt.hpp>
 
-#include "../UISystem/UiWindow.hpp"
-#include "../GameLoop/GameLoop.hpp"
-#include "../UISystem/UiButton.hpp"
-#include "../UISystem/UiInputInt.hpp"
-#include "../UISystem/UISliderFloat.hpp"
-#include "../UISystem/UiSliderInt.hpp"
+void SetVerticesMode(uint32_t mode)
+{
+    switch (mode) {
+        case 0:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+        case 1:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+            break;
+        case 2:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            break;
+        default:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+    }
+}
 
 void TerrainScene::Init()
 {
@@ -153,22 +167,4 @@ void TerrainScene::OnUpdate(float deltaTime)
 
     auto chunkPos = ChunkContainer::GetChunkIndex(camPos.x, camPos.z);
     m_cameraChunkText->SetText("Camera Chunk: " + std::to_string(chunkPos.first) + ", " + std::to_string(chunkPos.second));
-}
-
-void TerrainScene::SetVerticesMode(uint32_t mode)
-{
-    switch (mode) {
-        case 0:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            break;
-        case 1:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-            break;
-        case 2:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            break;
-        default:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            break;
-    }
 }

@@ -2,7 +2,7 @@
 // Created by Flo on 14/04/2023.
 //
 
-#include "Scene.hpp"
+#include <GameLoop/Scene.hpp>
 
 void Scene::Update(float dt)
 {

@@ -3,12 +3,12 @@
 #include <vector>
 #include <SFML/System/Clock.hpp>
 
-#include <Renderable/IRenderable.hpp>
-#include "../../../Map/ChunkContainer.hpp"
-#include <Renderable/Terrain/Chunk.hpp>
-#include <Shader/Shader.hpp>
-#include <Texture/Texture.hpp>
-#include <Math/Matrix.hpp>
+#include <Renderer/Renderable/IRenderable.hpp>
+#include <Renderer/Renderable/Terrain/Chunk.hpp>
+#include <Renderer/Shader/Shader.hpp>
+#include <Renderer/Texture/Texture.hpp>
+#include <Renderer/Math/Matrix.hpp>
+#include <Objects/Map/ChunkContainer.hpp>
 
 class Terrain : public IRenderable
 {

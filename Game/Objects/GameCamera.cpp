@@ -1,14 +1,10 @@
-//
-// Created by Flo on 20/04/2023.
-//
-
+#include <iostream>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include <iostream>
 
-#include "GameCamera.hpp"
-#include "../GameLoop/GameLoop.hpp"
-#include "Math/Vector.hpp"
+#include <Objects/GameCamera.hpp>
+#include <GameLoop/GameLoop.hpp>
+#include <Renderer/Math/Vector.hpp>
 
 GameCamera::GameCamera(sf::RenderTarget &target)
         : Camera(target, {
@@ -21,16 +17,15 @@ void GameCamera::Update(float dt)
 {
     HandleKeyboard(dt);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::RAlt))
-        m_lockMouse = !m_lockMouse;
-
     if(!m_lockMouse)
         HandleMouse(dt);
 }
 
 void GameCamera::HandleKeyboard(float dt)
 {
+    // Vector3df forwardVector = m_transform.GetForward();
     Vector3df forwardVector = Transform::Forward(); //m_transform.GetForward();
+    // Vector3df rightVector = Vector3df::Cross(forwardVector, Transform::Up());
     Vector3df rightVector = Transform::Right(); //Vector3df::Cross(forwardVector, Transformable::Up());
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
@@ -47,6 +42,19 @@ void GameCamera::HandleKeyboard(float dt)
         m_transform.pos += rightVector * (camSpeed * dt);
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         m_transform.pos -= rightVector * (camSpeed * dt);
+
+    static bool escapeKeyPressed = false;
+    bool lockCamKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+
+    if(lockCamKeyPressed && !escapeKeyPressed)
+    {
+        m_lockMouse = !m_lockMouse;
+        escapeKeyPressed = true;
+    }
+    if (!lockCamKeyPressed)
+    {
+        escapeKeyPressed = false;
+    }
 }
 
 void GameCamera::HandleMouse(float dt)
@@ -56,12 +64,13 @@ void GameCamera::HandleMouse(float dt)
 
     if(mousePos != cCenter)
     {
+        constexpr int MaxMouseDelta = 10;
         auto delta = mousePos - cCenter;
 
-        if(delta.x > 0) delta.x = 1;
-        if(delta.y > 0) delta.y = 1;
-        if(delta.x < 0) delta.x = -1;
-        if(delta.y < 0) delta.y = -1;
+        if(delta.x > MaxMouseDelta) delta.x = 1;
+        if(delta.y > MaxMouseDelta) delta.y = 1;
+        if(delta.x < -MaxMouseDelta) delta.x = -1;
+        if(delta.y < -MaxMouseDelta) delta.y = -1;
 
         float yawDelta = static_cast<float>(delta.x) * -1.f * camSensitivity;
         float pitchDelta = static_cast<float>(delta.y) * 1.f * camSensitivity;

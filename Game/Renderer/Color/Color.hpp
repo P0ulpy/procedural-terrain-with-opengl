@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../Math/Point.hpp"
+#include <Renderer/Math/Point.hpp>
 
 template<typename T>
 struct Color

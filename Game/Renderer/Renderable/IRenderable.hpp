@@ -1,10 +1,6 @@
-//
-// Created by Flo on 17/04/2023.
-//
-
 #pragma once
 
-#include "Camera/Camera.hpp"
+#include <Renderer/Camera/Camera.hpp>
 
 class IRenderable
 {

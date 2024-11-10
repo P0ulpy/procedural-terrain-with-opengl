@@ -1,12 +1,8 @@
-//
-// Created by Flo on 20/04/2023.
-//
-
-#include "Shader.hpp"
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#include <Renderer/Shader/Shader.hpp>
 
 GLuint Shader::LoadShaders(ShaderInfo* shaderInfo)
 {

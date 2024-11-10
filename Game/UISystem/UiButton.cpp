@@ -1,8 +1,4 @@
-//
-// Created by Flo on 05/05/2023.
-//
-
-#include "UiButton.hpp"
+#include <UISystem/UiButton.hpp>
 
 UIButton::UIButton(const std::string_view &text, const ImVec2 &size)
     : m_text(text)

@@ -2,9 +2,10 @@
 
 #include <array>
 #include <vector>
-#include <Texture/Texture.hpp>
-#include <Shader/Shader.hpp>
-#include "IRenderable.hpp"
+
+#include <Renderer/Texture/Texture.hpp>
+#include <Renderer/Shader/Shader.hpp>
+#include <Renderer/Renderable/IRenderable.hpp>
 
 class SkyBox : public IRenderable
 {

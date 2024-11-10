@@ -1,12 +1,7 @@
-//
-// Created by Flo on 20/04/2023.
-//
-
 #pragma once
 
-#include <Camera/Camera.hpp>
-
-#include "IUpdatable.hpp"
+#include <Renderer/Camera/Camera.hpp>
+#include <Objects/IUpdatable.hpp>
 
 class GameCamera : public Camera, public IUpdatable
 {

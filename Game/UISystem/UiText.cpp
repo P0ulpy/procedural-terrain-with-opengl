@@ -1,9 +1,5 @@
-//
-// Created by Flo on 05/05/2023.
-//
-
-#include "UiText.hpp"
 #include <imgui.h>
+#include <UISystem/UiText.hpp>
 
 UIText::UIText(const std::string_view &text)
         : m_text(text)

@@ -3,7 +3,7 @@
 #include <array>
 #include <cmath>
 
-#include "Point.hpp"
+#include <Renderer/Math/Point.hpp>
 
 template<typename Type>
 struct Mat4

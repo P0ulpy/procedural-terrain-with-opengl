@@ -1,10 +1,6 @@
-//
-// Created by Flo on 22/04/2023.
-//
-
 #pragma once
 
-#include "Point.hpp"
+#include <Renderer/Math/Point.hpp> 
 
 template<typename T>
 struct Vector3d : public Point3d<T>

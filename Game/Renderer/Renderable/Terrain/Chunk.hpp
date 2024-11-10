@@ -5,11 +5,10 @@
 #pragma once
 
 #include <vector>
-
 #include <gl/glew.h>
 
-#include <Texture/Texture.hpp>
-#include <Renderable/IRenderable.hpp>
+#include <Renderer/Texture/Texture.hpp>
+#include <Renderer/Renderable/IRenderable.hpp>
 
 class Chunk : public IRenderable
 {
@@ -19,7 +18,7 @@ public:
     Chunk();
     ~Chunk() override = default;
 
-    void Generate(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, GLuint program);
+    void AssignModel(const std::vector<float>& vertices, const std::vector<uint32_t>& indices, GLuint program);
 
     void Load() override;
     void Render(Camera& camera) override;

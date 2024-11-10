@@ -2,8 +2,8 @@
 // Created by Flo on 20/04/2023.
 //
 
-#include "Color/Color.hpp"
-#include "Shader/Shader.hpp"
+#include <Renderer/Color/Color.hpp>
+#include <Renderer/Shader/Shader.hpp>
 
 template<typename T>
 struct vertex_struct_cube

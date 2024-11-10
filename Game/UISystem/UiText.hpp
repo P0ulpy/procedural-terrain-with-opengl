@@ -1,12 +1,8 @@
-//
-// Created by Flo on 05/05/2023.
-//
-
 #pragma once
 
 #include <string>
 #include <string_view>
-#include "Widget.hpp"
+#include <UISystem/Widget.hpp>
 
 class UIText : public Widget
 {

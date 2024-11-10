@@ -1,4 +1,4 @@
-#include "SkyBox.hpp"
+#include <Renderer/Renderable/SkyBox.hpp>
 
 void SkyBox::Load()
 {

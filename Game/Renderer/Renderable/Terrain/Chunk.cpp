@@ -1,10 +1,6 @@
-//
-// Created by Flo on 29/04/2023.
-//
-
 #include <gl/glew.h>
 
-#include "Chunk.hpp"
+#include <Renderer/Renderable/Terrain/Chunk.hpp>
 
 Chunk::Chunk() {}
 
@@ -15,13 +11,13 @@ void Chunk::Cleanup()
     glDeleteBuffers(1, &EBO);
 }
 
-void Chunk::Generate(const std::vector<float> &vertices,
+void Chunk::AssignModel(const std::vector<float> &vertices,
                      const std::vector<uint32_t> &indices,
                      GLuint program)
 {
     m_generated = true;
-    m_vertices = vertices;
-    m_indices = indices;
+    m_vertices = std::move(vertices);
+    m_indices = std::move(indices);
     m_program = program;
 
     Load();

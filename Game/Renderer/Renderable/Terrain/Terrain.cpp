@@ -1,11 +1,10 @@
-#include "Terrain.hpp"
+#include <gl/glew.h>
+#include <SFML/Graphics/Image.hpp>
 
-#include "gl/glew.h"
-#include "SFML/Graphics/Image.hpp"
+#include <Renderer/Renderable/Terrain/Terrain.hpp>
 
 void Terrain::Load()
 {
-    // TODO : Put in terrain class, chunk should not be responsible for loading shaders
     ShaderInfo shader[] = {
             { GL_VERTEX_SHADER,   "Assets/Shaders/terrain.vert" },
             { GL_FRAGMENT_SHADER, "Assets/Shaders/terrain.frag" },
@@ -20,7 +19,6 @@ void Terrain::Load()
 void Terrain::Cleanup()
 {
     m_chunks.FreeChunks();
-    //glDeleteProgram(m_program);
 }
 
 void Terrain::Render(Camera& camera)
@@ -83,7 +81,7 @@ void Terrain::AddChunk(
         const std::vector<uint32_t>& indices)
 {
     m_chunks(chunkX, chunkZ)
-        .Generate(vertices, indices, m_program);
+        .AssignModel(vertices, indices, m_program);
 }
 
 void Terrain::GenerateVertices()

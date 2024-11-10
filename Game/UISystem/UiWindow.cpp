@@ -1,12 +1,8 @@
-//
-// Created by Flo on 22/04/2023.
-//
-
-#include "UiWindow.hpp"
-
 #include <imgui-SFML.h>
 #include <imgui.h>
 #include <iostream>
+
+#include <UISystem/UiWindow.hpp>
 
 UIWindow::UIWindow(const std::string_view& title, const ImVec2& size, ImGuiCond cond, ImGuiWindowFlags flags)
     : m_title(title)

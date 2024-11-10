@@ -5,8 +5,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window.hpp>
 
-#include "Scene.hpp"
-#include "../Objects/GameCamera.hpp"
+#include <GameLoop/Scene.hpp>
+#include <Objects/GameCamera.hpp>
 
 class GameLoop
 {

@@ -1,8 +1,4 @@
-//
-// Created by Flo on 02/05/2023.
-//
-
-#include "ChunkContainer.hpp"
+#include <Objects/Map/ChunkContainer.hpp>
 
 Chunk& ChunkContainer::operator()(int32_t x, int32_t z)
 {
@@ -36,7 +32,7 @@ Chunk &ChunkContainer::GetPlayerChunk(float playerX, float playerZ)
     return (*this)(chunkX, chunkZ);
 }
 
-ChunkContainer::ChunkContainerIndex ChunkContainer::GetChunkIndex(float playerX, float playerZ)
+ChunkContainer::Index ChunkContainer::GetChunkIndex(float playerX, float playerZ)
 {
     return {
         static_cast<int32_t>(std::floor((playerX + Chunk::SIZE / 2) / (float)Chunk::SIZE)),

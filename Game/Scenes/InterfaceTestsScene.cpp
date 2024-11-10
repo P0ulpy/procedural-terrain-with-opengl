@@ -1,11 +1,7 @@
-//
-// Created by Flo on 20/04/2023.
-//
-
-#include "InterfaceTestsScene.hpp"
-#include "Renderable/Cube.hpp"
-#include "../UISystem/UiWindow.hpp"
-#include "../UISystem/UiText.hpp"
+#include <Scenes/InterfaceTestsScene.hpp>
+#include <Renderer/Renderable/Cube.hpp>
+#include <UISystem/UiWindow.hpp>
+#include <UISystem/UiText.hpp>
 
 void InterfaceTestsScene::Init()
 {

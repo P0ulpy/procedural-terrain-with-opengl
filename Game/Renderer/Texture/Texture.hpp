@@ -2,12 +2,11 @@
 
 #include <string>
 #include <stdexcept>
-
 #include <gl/glew.h>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/Image.hpp>
 
-#include <Math/Matrix.hpp>
+#include <Renderer/Math/Matrix.hpp>
 
 struct Texture
 {

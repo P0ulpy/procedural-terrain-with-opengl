@@ -1,8 +1,4 @@
-//
-// Created by Flo on 22/04/2023.
-//
-
-#include "Widget.hpp"
+#include <UISystem/Widget.hpp>
 
 Widget::~Widget()
 {
