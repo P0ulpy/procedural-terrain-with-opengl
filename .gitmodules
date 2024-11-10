@@ -4,6 +4,3 @@
 	branch = master
 	tag = 2022.09.27
 	commit = 6ca56aeb457f033d344a7106cb3f9f1abf8f4e98
-[submodule "vendors/cpp-logger"]
-	path = vendors/cpp-logger
-	url = https://github.com/P0ulpy/cpp-logger.git
