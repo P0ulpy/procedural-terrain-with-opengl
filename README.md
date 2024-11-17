@@ -23,9 +23,9 @@ You can download the game binaries from the [latest release](https://github.com/
 ![User Interface](.github/images/user_interface.png)
 
 ## Controls
-- **W** : Move forward
+- **Z** : Move forward
 - **S** : Move backward
-- **A** : Move left
+- **Q** : Move left
 - **D** : Move right
 - **Space** : Move up
 - **Left Shift** : Move down
