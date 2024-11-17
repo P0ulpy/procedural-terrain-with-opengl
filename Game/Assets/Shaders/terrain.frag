@@ -22,7 +22,7 @@ vec3 Lights(vec3 normal) {
 
     vec3 viewDir = normalize(lightPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8);
 
     vec3 ambient = 0.1 * vec3(1.0, 1.0, 1.0);
     vec3 diffuse = diff * vec3(2.0, 2.0, 2.0);

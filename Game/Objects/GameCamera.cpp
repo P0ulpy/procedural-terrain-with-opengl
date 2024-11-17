@@ -8,10 +8,15 @@
 #include <Utils/SFMLInputsHelper.hpp>
 
 GameCamera::GameCamera(sf::RenderTarget &target)
-        : Camera(target, {
-            {0, 100, 0},
-            { 0, 0, 0 }
-            }, 45.f / 180.0f * PI<float>, 0.1f, 2000.f)
+        : Camera(
+            target, 
+            {
+                { 0, 50, 0 },
+                { 0, 0, 0 }
+            }, 
+            45.f / 180.0f * PI<float>, 
+            0.1f, 
+            2000.f)
 {}
 
 void GameCamera::Update(float dt)
