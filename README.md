@@ -108,4 +108,4 @@ This project is open-source and available under the MIT License. See the [LICENS
 
 ## Acknowledgments
 - This project was developed as part of our studies to learn OpenGL and procedural generation techniques.
-- Special thanks to our instructors and peers for their support and feedback.
+- Special thanks to our professors and peers for their support and feedback.
