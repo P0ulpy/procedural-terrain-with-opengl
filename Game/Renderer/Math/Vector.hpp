@@ -5,7 +5,7 @@
 template<typename T>
 struct Vector3d : public Point3d<T>
 {
-    Vector3d(const T x = 0, const T y = 0, const T z = 0) : Point3d<T>(x, y, z) {}
+    constexpr Vector3d(const T x = 0, const T y = 0, const T z = 0) : Point3d<T>(x, y, z) {}
     Vector3d(const Vector3d& vec): Point3d<T>(vec) {}
 
     Vector3d Cross(const Vector3d& other) const { return Cross(*this, other); }

@@ -18,9 +18,10 @@ void Camera::ComputeViewProjection()
 {
     float aspect = GetAspectRatio();
 
-    m_viewMatrix = Mat4f::RotationX(-m_transform.rot.yawn)
-                   * Mat4f::RotationY(-m_transform.rot.pitch)
-                   * Mat4f::Translation(-m_transform.pos.x, -m_transform.pos.y, -m_transform.pos.z);
+    m_viewMatrix = 
+        Mat4f::RotationX(-m_transform.rot.yaw)
+        * Mat4f::RotationY(-m_transform.rot.pitch)
+        * Mat4f::Translation(-m_transform.pos.x, -m_transform.pos.y, -m_transform.pos.z);
 
     m_projectionMatrix = Mat4f::Projection(aspect, _fov, _far, _near);
     m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;

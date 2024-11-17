@@ -5,56 +5,48 @@
 #include <Objects/GameCamera.hpp>
 #include <GameLoop/GameLoop.hpp>
 #include <Renderer/Math/Vector.hpp>
+#include <Utils/SFMLInputsHelper.hpp>
 
 GameCamera::GameCamera(sf::RenderTarget &target)
         : Camera(target, {
             {0, 100, 0},
             { 0, 0, 0 }
-            }, 45.f / 180.0f * PI<float>, 0.1f, 500.f)
+            }, 45.f / 180.0f * PI<float>, 0.1f, 2000.f)
 {}
 
 void GameCamera::Update(float dt)
 {
-    HandleKeyboard(dt);
-
-    if(!m_lockMouse)
+    if(sf::KeyboardUtils::isKeyHasPressed(sf::Keyboard::Escape))
+    {
+        m_disableMovements = !m_disableMovements;
+    }
+ 
+    if(!m_disableMovements)
+    {
         HandleMouse(dt);
+        HandleKeyboard(dt);
+    }
 }
 
 void GameCamera::HandleKeyboard(float dt)
 {
-    // Vector3df forwardVector = m_transform.GetForward();
-    Vector3df forwardVector = Transform::Forward(); //m_transform.GetForward();
-    // Vector3df rightVector = Vector3df::Cross(forwardVector, Transform::Up());
-    Vector3df rightVector = Transform::Right(); //Vector3df::Cross(forwardVector, Transformable::Up());
+    Vector3df forwardVector = m_transform.GetForward();
+    Vector3df leftVector = m_transform.GetLeft();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
         m_transform.pos -= forwardVector * (camSpeed * dt);
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         m_transform.pos += forwardVector * (camSpeed * dt);
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        m_transform.pos += Transform::Up() * (camSpeed * dt);
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        m_transform.pos -= Transform::Up() * (camSpeed * dt);
-
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        m_transform.pos += rightVector * (camSpeed * dt);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        m_transform.pos += Transform::Up * (camSpeed * dt);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        m_transform.pos -= Transform::Up * (camSpeed * dt);
+    
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        m_transform.pos -= rightVector * (camSpeed * dt);
-
-    static bool escapeKeyPressed = false;
-    bool lockCamKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
-
-    if(lockCamKeyPressed && !escapeKeyPressed)
-    {
-        m_lockMouse = !m_lockMouse;
-        escapeKeyPressed = true;
-    }
-    if (!lockCamKeyPressed)
-    {
-        escapeKeyPressed = false;
-    }
+        m_transform.pos += leftVector * (camSpeed * dt);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        m_transform.pos -= leftVector * (camSpeed * dt);
 }
 
 void GameCamera::HandleMouse(float dt)
@@ -67,15 +59,10 @@ void GameCamera::HandleMouse(float dt)
         constexpr int MaxMouseDelta = 10;
         auto delta = mousePos - cCenter;
 
-        if(delta.x > MaxMouseDelta) delta.x = 1;
-        if(delta.y > MaxMouseDelta) delta.y = 1;
-        if(delta.x < -MaxMouseDelta) delta.x = -1;
-        if(delta.y < -MaxMouseDelta) delta.y = -1;
+        float pitchDelta = static_cast<float>(-delta.x) * camSensitivity;
+        float yawDelta = static_cast<float>(delta.y) * camSensitivity;
 
-        float yawDelta = static_cast<float>(delta.x) * -1.f * camSensitivity;
-        float pitchDelta = static_cast<float>(delta.y) * 1.f * camSensitivity;
-
-        m_transform.Rotate(pitchDelta, yawDelta, 0.f);
+        m_transform.Rotate(yawDelta, pitchDelta, 0.f);
 
         sf::Mouse::setPosition(GetCenter(), GameLoop::Instance()->window);
     }

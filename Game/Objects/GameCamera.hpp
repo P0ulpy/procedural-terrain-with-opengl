@@ -14,9 +14,9 @@ public:
     void HandleKeyboard(float dt);
     void HandleMouse(float dt);
 
-    float camSpeed = 30.f;
+    float camSpeed = 50.f;
     float camSensitivity = 0.01f;
 
 protected:
-    bool m_lockMouse = false;
+    bool m_disableMovements = false;
 };

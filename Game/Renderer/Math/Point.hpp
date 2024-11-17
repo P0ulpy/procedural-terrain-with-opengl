@@ -9,22 +9,22 @@
 template <typename T>
 struct EulerRotation
 {
-    T yawn;
+    T yaw;
     T pitch;
     T roll;
 
-    EulerRotation(const T yawn = 0, const T pitch = 0, const T roll = 0)
-        : yawn(yawn), pitch(pitch), roll(roll)
+    EulerRotation(const T yaw = 0, const T pitch = 0, const T roll = 0)
+        : yaw(yaw), pitch(pitch), roll(roll)
     {}
 
     EulerRotation(const EulerRotation& angle)
-            : yawn(angle.yawn), pitch(angle.pitch), roll(angle.roll)
+            : yaw(angle.yaw), pitch(angle.pitch), roll(angle.roll)
     {}
 
     EulerRotation ToRad() const
     {
         return {
-            DegToRad<T>(yawn),
+            DegToRad<T>(yaw),
             DegToRad<T>(pitch),
             DegToRad<T>(roll)
         };
@@ -33,7 +33,7 @@ struct EulerRotation
     EulerRotation ToDeg() const
     {
         return {
-                RadToDeg<T>(yawn),
+                RadToDeg<T>(yaw),
                 RadToDeg<T>(pitch),
                 RadToDeg<T>(roll)
         };
@@ -53,7 +53,7 @@ struct Point2d
 template<typename T>
 struct Point3d
 {
-    Point3d(const T x = 0, const T y = 0, const T z = 0): x(x), y(y), z(z) {}
+    constexpr Point3d(const T x = 0, const T y = 0, const T z = 0): x(x), y(y), z(z) {}
     Point3d(const Point3d& pt): x(pt.x), y(pt.y), z(pt.z) {}
 
     T x;
